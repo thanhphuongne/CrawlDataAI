@@ -1,0 +1,30 @@
+.title-block {
+  @extend .font-2xl;
+  @extend .font-semibold;
+  @extend .pd-b-2;
+  color: var(--heading-color);
+}
+.title {
+  @extend .font-xl;
+  @extend .font-semibold;
+  color: var(--heading-color);
+}
+
+.text-primary {
+  color: var(--primary-text-color);
+  @extend .font-medium;
+}
+
+.text-secondary {
+  color: var(--secondary-text-color);
+  @extend .font-medium;
+  @extend .font-sm;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
+.text-ellipsis-multi-line {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}

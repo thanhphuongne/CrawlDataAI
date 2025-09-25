@@ -1,0 +1,189 @@
+.text-field,
+input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+  font-weight: normal;
+}
+button {
+  font-family: inherit;
+}
+.text-field,
+input,
+textarea,
+select {
+  padding-right: calc(9 * var(--base-space));
+  padding-left: calc(3 * var(--base-space));
+  padding-top: calc(1.5 * var(--base-space));
+  padding-bottom: calc(1.5 * var(--base-space));
+  border-radius: calc(2 * var(--base-space));
+  min-height: 40px;
+  backdrop-filter: blur(10px);
+}
+.text-field,
+input:not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  border: 1px solid var(--input-border-color);
+  transition: all 300ms;
+  background-color: var(--input-bg-color);
+  color: var(--input-color);
+  &:disabled,
+  &.disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+  &:focus,
+  &:focus-visible {
+    box-shadow: 0px 0px 2px 2px var(--input-box-shadow-color);
+    outline: none;
+  }
+  &.lg {
+    min-height: 48px;
+  }
+  // &::-moz-placeholder {
+  //   color: var(--input-placeholder-color);
+  //   opacity: 1;
+  // }
+}
+
+select {
+  option {
+    color: rgb(var(--gray-9));
+  }
+  &:disabled {
+    border-color: rgb(var(--gray-3));
+    color: rgb(var(--gray-3));
+  }
+}
+.textarea,
+textarea {
+  height: 120px;
+}
+
+.checkbox,
+input[type="checkbox"],
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid rgb(var(--white));
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  min-height: auto;
+  cursor: pointer;
+  background: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--white));
+  margin-left: 0;
+  margin-right: calc(3 * var(--base-space));
+  transform: translateY(1px);
+  &::before {
+    content: "";
+    transition: all 300ms;
+  }
+
+  &:disabled {
+    border-color: rgb(var(--gray-7));
+  }
+  &:focus {
+    box-shadow: 0px 0px 2px 2px rgb(var(--green-7), 0.2);
+  }
+}
+input[type="radio"] {
+  border-radius: 50%;
+  &::before {
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
+    border-radius: 50%;
+    border: 1px solid transparent;
+  }
+  &:checked {
+    border-color: rgb(var(--green-7));
+    &::before {
+      background: rgb(var(--green-7));
+      border-color: rgb(var(--white));
+    }
+  }
+}
+.checkbox,
+input[type="checkbox"] {
+  border-radius: 4px;
+  &::before {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-check-lg' viewBox='0 0 16 16'%3E%3Cpath d='M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z'/%3E%3C/svg%3E");
+    opacity: 0;
+  }
+  &:checked {
+    background-color: rgb(var(--green-7));
+    border-color: rgb(var(--green-7));
+    &::before {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  &:disabled {
+    cursor: not-allowed;
+    &:checked {
+      background-color: rgb(var(--gray-6));
+      border-color: rgb(var(--gray-6));
+    }
+  }
+}
+
+label {
+  font-weight: var(--font-medium);
+  .checkbox,
+  input[type="checkbox"] {
+    transform: translateY(2px);
+  }
+  &:has(.checkbox:checked, input[type="checkbox"]):checked {
+    color: rgb(var(--green-7));
+  }
+  &.disabled {
+    color: rgb(var(--gray-3));
+  }
+}
+
+.ng-select .ng-select-container,
+input,
+input:not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+.text-field,
+app-camera-select,
+app-data-select,
+select {
+  &.ng-invalid.ng-touched {
+    &,
+    &:focus,
+    &:active,
+    & > .ng-select .ng-select-container {
+      border-color: rgba(var(--red-4), 0.6);
+      box-shadow: 0px 0px 2px 2px rgba(var(--red-5), 0.3);
+    }
+  }
+}
+app-data-select,
+app-camera-select {
+  &.ng-invalid.ng-touched {
+    box-shadow: none;
+    border: none;
+  }
+}
+
+.input-btn-clear-text {
+  cursor: pointer;
+  > svg {
+    fill: var(--input-color);
+    stroke: rgb(var(--red-5));
+    transition: all 300ms;
+  }
+
+  &:hover > svg,
+  &:active > svg {
+    --input-color: rgb(var(--red-4));
+    stroke: rgb(var(--white));
+  }
+}

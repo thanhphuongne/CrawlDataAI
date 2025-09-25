@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contribution Confirmation</title>
+    <style>
+      body {
+        color: #1f1f1f;
+        line-height: 20px;
+        font-size: 12pt;
+        font-family: "Times New Roman", serif;
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 20px;
+      }
+      .logo-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin-left: 25px;
+        margin-right: 25px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .logo-container svg {
+        max-width: 60px;
+      }
+      .app-link {
+        font-size: 14px;
+        text-decoration: none;
+        color: #0056d2;
+      }
+      .container {
+        max-width: 600px;
+        margin: 30px auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .content {
+        margin: 20px 0;
+      }
+      .button {
+        display: block;
+        width: fit-content;
+        background: #0056d2;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+        margin: 20px auto;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo-container">
+      <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+      <img src="https://quynhon.ai/_nuxt/icons/icon_64x64.2b34ec.png" alt="Logo">
+
+      <a href="https://qaiscoring.qaidora.com" class="app-link">Go to App</a>
+    </div>
+    <div class="container">
+        <div class="content">
+            <h2>Contribution Processing Update</h2>
+            <p>Hi You,</p>
+            <p>We are pleased to inform you that your Contribution has been successfully processed. Below are the details of your submission:</p>
+            <h3>Contribution Details:</h3>
+            <ul>
+                <li><strong>Category:</strong> <%= category %></li>
+                <li><strong>Descriptions:</strong> <%= descriptions %></li>
+                <li><strong>Supervisor:</strong> <%= supervisor %></li>
+            </ul>
+            <% if (approverApproved) { %>
+                <p style="color: green;"><strong>Status:</strong> Approved</p>
+            <% } else { %>
+                <p style="color: red;"><strong>Status:</strong> Cancelled</p>
+                <p><strong>Reason:</strong> <%= comment %></p>
+            <% } %>
+            <a href="https://qaiscoring.qaidora.com" class="button">View Contribution</a>
+        </div>
+        <div class="footer">
+            <p>Thank you for your contribution.<br>© 2025 Quy Nhon AI. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<ng-select
+  bindLabel="name"
+  bindValue="id"
+  (focus)="onTouched && onTouched()"
+  [ariaDisabled]="disabled"
+  [multiple]="false"
+  [closeOnSelect]="!multiple"
+  [items]="listUserType"
+  [(ngModel)]="selectedId"
+  [clearable]="clearable"
+  (change)="changeValue()"
+  [placeholder]="placeholder | translate"
+>
+  <ng-template
+    ng-option-tmp
+    let-item="item"
+    let-search="searchTerm"
+    let-item$="item$"
+    let-index="index"
+    ><input
+      *ngIf="multiple"
+      id="item-{{ index }}"
+      type="checkbox"
+      [checked]="item$.selected"
+    />
+    <span>{{ item.name }}</span>
+  </ng-template>
+</ng-select>

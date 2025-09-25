@@ -1,0 +1,42 @@
+$active-background-color: #ffffff;
+$hover-background-color: #f3f4f6;
+$text-color: #18191b;
+$active-text-color: #0083fc;
+$hover-text-color: #18191b;
+
+.item {
+  color: $text-color;
+  position: relative;
+  user-select: none;
+  ul {
+    list-style-type: none;
+  }
+
+  & > a {
+    clear: both;
+    color: inherit;
+    // display: block;
+    font-weight: 400;
+    line-height: 1.42857143;
+    padding: 3px 20px;
+    padding-left: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    height: 38px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    &:hover {
+      background-color: $hover-background-color;
+      outline: 0;
+      text-decoration: none;
+    }
+  }
+
+  &.active {
+    background-color: $active-background-color;
+    color: $active-text-color;
+    outline: 0;
+    text-decoration: none;
+  }
+}

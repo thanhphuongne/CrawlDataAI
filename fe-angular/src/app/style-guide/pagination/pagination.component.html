@@ -1,0 +1,50 @@
+<div
+  class="pd-x-3 pt-9 pb-9 color-white h-full"
+  style="background-color: rgba(255, 255, 255, 0.1);"
+>
+  <div id="pagination">
+    <h1 class="color-white">Pagination</h1>
+    <hr />
+    <p>Directive <code>app-pagination</code></p>
+    <h3 class="color-white">Properties</h3>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pb-2 font-bold"
+    >
+      <div class="w-p-2">Property</div>
+      <div class="w-p-5">Accept value</div>
+      <div class="w-p-5">Description</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pb-2 pt-2"
+    >
+      <div class="w-p-2"><code>pageIndex</code></div>
+      <div class="w-p-5">number</div>
+      <div class="w-p-5">Page index</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pb-2 pt-2"
+    >
+      <div class="w-p-2"><code>pageSize</code></div>
+      <div class="w-p-5">
+        number, 12 | 25 | 50 | 100
+      </div>
+      <div class="w-p-5">Default: 12.</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pb-2 pt-2"
+    >
+      <div class="w-p-2"><code>collectionSize</code></div>
+      <div class="w-p-5">
+        number
+      </div>
+      <div class="w-p-5">Total item of table</div>
+    </div>
+    <div class="mt-4">
+      <app-pagination
+        [pageIndex]="1"
+        [pageSize]="12"
+        [collectionSize]="200"
+      ></app-pagination>
+    </div>
+  </div>
+</div>

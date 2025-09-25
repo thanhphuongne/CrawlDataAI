@@ -1,0 +1,27 @@
+<video autoplay [muted]="'muted'" loop id="myVideo">
+  <source src="../../assets/videos/video_bg.mp4" type="video/mp4" />
+</video>
+
+<div class="home-container">
+  <div class="container-bottom">
+    <div class="img-logo">
+      <img src="../../../assets/images/img_reward_logo.png" alt="">
+    </div>
+    <div class="scoring-table">
+      <app-app-score-table
+        [isLoading]="isLoading()"
+        [records]="listRecord()"
+        [pageSize]="limit"
+      ></app-app-score-table>
+
+      <nz-pagination
+        [nzPageIndex]="offset"
+        [nzTotal]="totalRecord"
+        nzShowSizeChanger
+        [nzPageSize]="limit"
+        (nzPageIndexChange)="pageSizeChange($event)"
+        (nzPageSizeChange)="pageTotalSizeChange($event)"
+      ></nz-pagination>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+.pagination {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1px;
+  li {
+    list-style: none;
+  }
+}
+
+.page-link {
+  position: relative;
+  font-weight: var(--font-medium);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(8 * var(--base-space));
+  height: calc(8 * var(--base-space));
+  border: 1px solid var(--pagination-item-border);
+  text-align: center;
+  color: var(--pagination-color);
+  padding: calc(var(--base-space));
+  letter-spacing: 0.01em;
+  border-radius: calc(0.5 * var(--base-space));
+  &:hover,
+  &.active,
+  .active > & {
+    color: var(--pagination-color-active);
+    background-color: var(--pagination-item-bg-active);
+    border-color: var(--pagination-item-border-active);
+  }
+
+  &:focus {
+    box-shadow: 0px 0px 0px 2px rgba(72, 172, 235, 0.48);
+  }
+
+  &.disabled,
+  .disabled > & {
+    pointer-events: none;
+  }
+}
+
+.page-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-right: 0;
+}
+
+.app-pagination {
+  .ng-select-container {
+    height: calc(8 * var(--base-space)) !important;
+    min-height: calc(8 * var(--base-space)) !important;
+  }
+  .ng-value {
+    margin-right: calc(2 * var(--base-space));
+  }
+}

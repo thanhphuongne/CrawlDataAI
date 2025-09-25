@@ -1,0 +1,86 @@
+<div class="top-filter mg-b-4">
+  <div class="mg-b-2">
+    <a
+      class="font-semibold font-sm"
+      [routerLink]="notifiUrl"
+      [queryParams]="{
+        customerId: getNotifiParams.customerId,
+        page: getNotifiParams.page,
+        startTime: getNotifiParams.startTime,
+        endTime: getNotifiParams.endTime,
+        type: getNotifiParams.type
+      }"
+      title="{{ 'Back to list' | translate }}"
+      >{{ 'Back to list' | translate }}</a
+    >
+    <div class="h4 font-semibold mg-t-2 ">
+      {{ title || '--' }}
+    </div>
+  </div>
+</div>
+<div class="br-t-4 w-full">
+  <div [app-card]>
+    @if (isLoading()) {
+    <app-skeleton [repeat]="10"></app-skeleton>
+    }@else{ @if(textWarning()){
+    <div class="mg-y-4 pd-x-2 flex align-items-center justify-start gap-2">
+      <p class="mg-b-0">{{ textWarning() }}</p>
+    </div>
+    } @if(inforNotifyDetail()){
+    <div class="row">
+      <div class="col-12 col-lg-6 flex flex-column gap-4">
+        <div
+          class="flex align-items-center justify-between"
+          *ngFor="let item of itemNotifyDetais"
+        >
+          <span class="color-white">{{ item.label | translate }}</span>
+          <ng-container [ngSwitch]="item.type">
+            <ng-container *ngSwitchCase="'Fraction'">
+              <div
+                *ngIf="
+                  inforNotifyDetail()[item.denominators];
+                  else falseConditionFraction
+                "
+              >
+                <span
+                  [ngClass]="
+                    inforNotifyDetail()[item.value] >
+                    inforNotifyDetail()[item.denominators]
+                      ? 'color-red-5 font-bold'
+                      : 'font-bold color-green-5'
+                  "
+                >
+                  {{ inforNotifyDetail()[item.value] }}</span
+                >
+                / {{ inforNotifyDetail()[item.denominators] }}
+              </div>
+              <ng-template #falseConditionFraction>
+                <span>{{ inforNotifyDetail()[item.value] }}</span>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngSwitchCase="'DateTime'">
+              <span>{{
+                inforNotifyDetail()[item.value]
+                  | date: dateFormatEnum.DATE_HOUR_24_PIPE
+              }}</span>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Time'">
+              <span>{{
+                inforNotifyDetail()[item.value]
+                  | date: dateFormatEnum.TIME_24_FORMAT
+              }}</span>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <span>
+                {{ inforNotifyDetail()[item.value] || '--' }}
+              </span>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    }@else {
+    <app-no-data></app-no-data>
+    } }
+  </div>
+</div>

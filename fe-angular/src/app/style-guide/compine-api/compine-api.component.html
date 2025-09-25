@@ -1,0 +1,29 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="combine-apis">
+    <h1>Combine apis</h1>
+    <hr />
+    <h3>Combine api files to single file.</h3>
+    <form [app-card] class="w-p-12 w-lg-p-4">
+      <div class="w-full mg-b-3">
+        <app-form-label>Api files (.json)</app-form-label>
+        <input
+          type="file"
+          accept=".json"
+          class="w-full"
+          multiple="true"
+          required
+          (change)="uploadFiles($event)"
+        />
+      </div>
+      <button
+        app-button
+        type="submit"
+        [disabled]="!filesData"
+        [ngClass]="{ disabled: !filesData }"
+        (click)="filesData && combineFiles()"
+      >
+        Combine
+      </button>
+    </form>
+  </div>
+</div>

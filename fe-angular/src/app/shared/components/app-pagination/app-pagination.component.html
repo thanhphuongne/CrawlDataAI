@@ -1,0 +1,46 @@
+<div
+  class="flex align-items-center app-pagination"
+  *ngIf="collectionSize() > 0"
+  [ngClass]="{
+    'justify-end': showPageSize(),
+    'justify-center': !showPageSize(),
+  }"
+>
+  @if (showPageSize()) {
+    <div class="app-pagination_total">
+      {{ 'Total' | translate }} {{ collectionSize() }}
+      {{ 'record' | translate }}
+    </div>
+    <ng-select
+      [items]="listPageSize"
+      class="min-w-25 h-8 mg-r-2 mg-l-2 app-pagination_select"
+      [ngModel]="pageSize()"
+      (ngModelChange)="onChangePageSize($event)"
+      [clearable]="false"
+    >
+      <ng-template ng-label-tmp let-item="item"
+        ><span class="ng-value-label">
+          {{ item }} / {{ 'page' | translate }}
+        </span></ng-template
+      >
+    </ng-select>
+  }
+  <ngb-pagination
+    [collectionSize]="collectionSize()"
+    [page]="pageIndex()"
+    [pageSize]="pageSize()"
+    [maxSize]="maxSize"
+    (pageChange)="changeNumberPage($event)"
+    [rotate]="true"
+  >
+    <ng-template ngbPaginationPrevious>
+      <app-icon [icon]="icons.CarretLeft" [size]="'16'"></app-icon>
+    </ng-template>
+    <ng-template ngbPaginationEllipsis>
+      <app-icon [icon]="icons.Ellipsis" [size]="'16'"></app-icon>
+    </ng-template>
+    <ng-template ngbPaginationNext>
+      <app-icon [icon]="icons.CarretRight" [size]="'16'"></app-icon>
+    </ng-template>
+  </ngb-pagination>
+</div>

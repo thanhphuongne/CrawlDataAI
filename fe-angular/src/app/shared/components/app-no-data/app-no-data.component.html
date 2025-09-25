@@ -1,0 +1,9 @@
+<div class="flex flex-col align-items-center p-4">
+  <app-icon [size]="iconSize() + ''" [icon]="listIcons.NoData"></app-icon>
+  @if (title()) {
+    <h4 class="mb-3">{{ title() | translate }}</h4>
+  }
+  @if (message()) {
+    <p class="m-0">{{ message() | translate }}</p>
+  }
+</div>

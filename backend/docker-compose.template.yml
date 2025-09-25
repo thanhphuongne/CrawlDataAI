@@ -1,0 +1,64 @@
+version: "3.7"
+
+services:
+  # app:
+  #   build: ./
+  #   container_name: dss-backend
+  #   volumes:
+  #     - .:/app
+  #   tty: true
+  #   command:
+  #     - /bin/bash
+  #   ports:
+  #     - 3001:3001
+  #     - 9339:9339
+  #   expose:
+  #     - 3001
+  #     - 9339
+  #   links:
+  #     - rabbitmq:3.9.11-management-alpine
+  postgres:
+    image: postgres:14-alpine
+    container_name: dss-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_DB}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PW}
+    ports:
+      - '${DB_PORT}:5432'
+    volumes:
+      - ./postgres_dss:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+  # mongo:
+  #   image: mongo:5.0.5
+  #   container_name: dss-mongo
+  #   restart: always
+  #   ports:
+  #     - 27017:27017
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  #     MONGO_ENV_FILE: /run/secrets/mongo/.env
+  #   volumes:
+  #     - ./mongo/data:/data/db
+  #     - ./.env:/run/secrets/mongo/.env
+  #     - ./mongo/entry-scripts:/docker-entrypoint-initdb.d
+  # redis:
+  #   image: redis:6.2-alpine
+  #   container_name: dss-redis
+  #   restart: always
+  #   volumes:
+  #     - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+  #   command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+  #   ports:
+  #     - 6379:6379
+  # rabbitmq:
+  #   image: rabbitmq:3.9.11-management-alpine
+  #   container_name: dss-rabbitmq
+  #   volumes:
+  #     - ./rabbitmq/rabbitmq_management.conf:/etc/rabbitmq/rabbitmq.conf
+  #     - ./rabbitmq/data:/var/lib/rabbitmq
+  #   ports:
+  #     - 5672:5672
+  #     - 15672:15672

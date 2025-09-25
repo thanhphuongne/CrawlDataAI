@@ -1,0 +1,73 @@
+//
+//  Sweetalert2
+//
+.overlay-container {
+  position: relative;
+  z-index: 1111;
+}
+.swal2-container {
+  .swal2-title {
+    font-size: 1.1rem;
+    font-weight: var(--font-semibold);
+    color: rgb(var(--gray-9));
+  }
+}
+.swal2-actions {
+  width: 100%;
+  gap: calc(3 * (var(--base-space)));
+  .app-btn {
+    min-width: 180px;
+  }
+}
+.swal2-icon {
+  &.swal2-icon-show {
+    border: none;
+  }
+  &.swal2-question {
+    border-color: rgb(var(--blue-4));
+    color: rgb(var(--blue-6));
+  }
+  &.swal2-success {
+    [class^="swal2-success-line"] {
+      background-color: rgb(var(--green-4));
+    }
+
+    .swal2-success-ring {
+      border-color: rgba(var(--green-4), 0.3);
+    }
+  }
+  &.swal2-warning {
+    border-color: rgb(var(yellow-5));
+    color: rgb(var(yellow-5));
+  }
+}
+
+.swal2-styled {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.swal2-progress-steps {
+  .swal2-progress-step {
+    background: rgb(var(blue-6));
+    &.swal2-active-progress-step {
+      background: rgb(var(blue-6));
+      & ~ .swal2-progress-step,
+      & ~ .swal2-progress-step-line {
+        background: rgba(var(blue-6), 0.3);
+      }
+    }
+  }
+
+  .swal2-progress-step-line {
+    background: rgb(var(blue-6));
+  }
+}
+
+.swal2-loader {
+  border-color: rgb(var(blue-6)) transparent rgb(var(blue-6)) transparent;
+}
+div:where(.swal2-container) .swal2-popup .swal2-html-container{
+  font-size: 1rem;
+}

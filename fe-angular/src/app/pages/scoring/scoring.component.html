@@ -1,0 +1,212 @@
+<div class="container-fluid scoring-container">
+  <div class="col common-col">
+    <div class="row row-back">
+      <button class="btn-back" nzType="text" nz-button (click)="goHome()">
+        <span nz-icon nzType="left"></span>
+        Home
+      </button>
+    </div>
+    <div class="row common-row p-0 m-0">
+      <div class="actions">
+        <button class="btn-add" nzType="default" nz-button (click)="logNew()">
+          <span nz-icon nzType="plus"></span>
+          New
+        </button>
+      </div>
+    </div>
+    <div class="row common-row p-0 m-0">
+      <div class="table-container">
+        <app-app-log-table
+          class="log-table"
+          [isLoading]="isLoading()"
+          [records]="listRecord()"
+          [pageSize]="limit"
+        ></app-app-log-table>
+        <nz-pagination
+          [nzPageIndex]="offset"
+          [nzTotal]="totalRecord"
+          nzShowSizeChanger
+          [nzPageSize]="limit"
+          (nzPageIndexChange)="pageSizeChange($event)"
+          (nzPageSizeChange)="pageTotalSizeChange($event)"
+        ></nz-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal-->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="modalTitle"
+  (nzOnCancel)="handleCancel()"
+  [nzFooter]="modalFooter"
+  [nzWidth]="'33%'"
+  nzMaskClosable="false"
+>
+  <div *nzModalContent>
+    <nz-spin [nzSpinning]="isLoading()">
+      <form [formGroup]="logForm">
+        <!-- Category -->
+        <div class="row form-row">
+          <div>
+            <label class="text-sm font-medium text-gray-900 title-input"
+              >Category</label
+            >
+          </div>
+          <div class="sl-agent">
+            <nz-select id="category" formControlName="category">
+              @for (item of categoryOptions; track $index) {
+                <nz-option
+                  [nzValue]="item.value"
+                  [nzLabel]="item.label"
+                ></nz-option>
+              }
+            </nz-select>
+          </div>
+          <div
+            *ngIf="isFieldInvalid('category')"
+            class="text-sm text-red-600 mt-1"
+          >
+            Category is required!
+          </div>
+        </div>
+
+        <div class="row form-row">
+          <!-- Approver -->
+          <div class="col">
+            <div>
+              <label class="text-sm font-medium text-gray-900 title-input"
+                >Approver</label
+              >
+            </div>
+            <div class="sl-agent">
+              <nz-select id="approver" formControlName="approver">
+                @for (item of approverOptions; track item) {
+                  <nz-option
+                    [nzValue]="item.value"
+                    [nzLabel]="item.label"
+                  ></nz-option>
+                }
+              </nz-select>
+            </div>
+            <div
+              *ngIf="isFieldInvalid('approver')"
+              class="text-sm text-red-600 mt-1"
+            >
+              Approver is required!
+            </div>
+          </div>
+        </div>
+
+        <div class="row form-row">
+          <!-- Supervisor -->
+          <div class="col">
+            <div>
+              <label class="text-sm font-medium text-gray-900 title-input"
+                >Supervisor</label
+              >
+            </div>
+            <div class="sl-agent">
+              <input
+                id="supervisor"
+                formControlName="supervisor"
+                nz-input
+                [nzAutocomplete]="auto"
+              />
+              <nz-autocomplete
+                [nzDataSource]="supervisorOptions"
+                nzBackfill
+                #auto
+              ></nz-autocomplete>
+            </div>
+            <div
+              *ngIf="isFieldInvalid('supervisor')"
+              class="text-sm text-red-600 mt-1"
+            >
+              Supervisor is required!
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="row form-row">
+          <div class="col">
+            <div>
+              <label
+                for="desc"
+                class="text-sm font-medium text-gray-900 title-input"
+              >
+                Description</label
+              >
+            </div>
+
+            <textarea
+              id="desc"
+              formControlName="desc"
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm pr-10"
+              type="text"
+              rows="5"
+              nz-input
+            ></textarea>
+
+            <div
+              *ngIf="isFieldInvalid('desc')"
+              class="text-sm text-red-600 mt-1"
+            >
+              Description is required!
+            </div>
+          </div>
+        </div>
+
+        <!-- Created Date - Created By -->
+        <div class="row form-row">
+          <div class="col">
+            <div>
+              <label
+                id="receivedMail"
+                formControlName="receivedMail"
+                nz-checkbox
+                >Please send me an email upon the process is changed</label
+              >
+            </div>
+          </div>
+        </div>
+      </form>
+    </nz-spin>
+  </div>
+</nz-modal>
+
+<!-- Header of Modal -->
+<ng-template #modalTitle>
+  <div class="template-header">
+    <span class="title-header-template">{{ 'New record' }}</span>
+  </div>
+</ng-template>
+
+<!-- Footer of Modal -->
+<ng-template #modalFooter>
+  <div class="row container-btn">
+    <div class="col-3">
+      <button
+        type="button"
+        class="px-4 py-2 w-full bg-white-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 btn-cancel"
+        (click)="handleCancel()"
+      >
+        Cancel
+      </button>
+    </div>
+    <div class="col-3">
+      <button
+        type="submit"
+        class="px-2 py-2 w-full bg-blue-500 active-text rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 btn-popup"
+        [ngClass]="!logForm.valid ? 'de-active' : 'active'"
+        [disabled]="!logForm.valid"
+        (click)="saveAction()"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- End Modal-->

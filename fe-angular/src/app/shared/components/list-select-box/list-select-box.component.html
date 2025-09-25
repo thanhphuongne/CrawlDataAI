@@ -1,0 +1,49 @@
+<div class="list-select-box-container" (clickOutside)="onClickOutSide($event)">
+  <div
+    [class]="'list-select-box'"
+    [ngClass]="{ 'open-select': !disableFocus && isOpen, disabled: disabled }"
+    (click)="onToggleMenu()"
+    [ngStyle]="zStyle"
+  >
+    {{ selectedItem.name }}
+    <i class="select-caret fa fa-caret-down"></i>
+  </div>
+  <div class="list-menu" *ngIf="isOpen" @menuDropDown>
+    <div class="search-tree-box" *ngIf="enableSearch">
+      <input
+        type="text"
+        [(ngModel)]="keyWord"
+        (ngModelChange)="onKeyWordChange($event)"
+        class="search-tree-input"
+        [ngClass]="{ 'input-search-icon': !keyWord }"
+        [placeholder]="placeholder | translate"
+        [ngModelOptions]="{ standalone: true }"
+        autocomplete="off"
+        clearInput
+      />
+    </div>
+    <div
+      class="dropdown-menu"
+      [app-loader]="isSearching"
+      [style.overflow-y]="isSearching ? 'hidden' : 'auto'"
+    >
+      <div
+        class="list-menu-item"
+        [class.active]="item == selectedItem"
+        *ngFor="let item of listItems; let i = index"
+        (click)="onClickItem(item)"
+      >
+        {{ item.name }}
+        <i *ngIf="item == selectedItem" class="fa fa-check select-checkbox"></i>
+      </div>
+
+      <div
+        class="show-more-button"
+        *ngIf="showMoreText"
+        (click)="onClickShowMore($event)"
+      >
+        {{ showMoreText }}
+      </div>
+    </div>
+  </div>
+</div>

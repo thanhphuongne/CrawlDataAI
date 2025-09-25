@@ -1,0 +1,20 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="typo" class="mg-b-8">
+    <h1>Icons</h1>
+    <div id="icons" class="flex gap-2 flex-wrap">
+      <div
+        class="pd-2 w-p-2 text-center border-b-1 border-solid border-gray-3"
+        *ngFor="let item of iconList"
+      >
+        <span
+          [app-icon]="item[1]"
+          [icon-size]="'30'"
+          class="w-10 h-10 flex align-items-center justify-center"
+          style="margin:0 auto"
+        >
+        </span>
+        <p>{{ item[0] }}</p>
+      </div>
+    </div>
+  </div>
+</div>

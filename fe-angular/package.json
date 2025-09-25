@@ -1,0 +1,122 @@
+{
+  "name": "doramask",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build-prod": "npm run env -s && ng build --configuration production",
+    "build": "npm run env -s && ng build --configuration dev",
+    "build:stats": "ng build --configuration production --stats-json true",
+    "analyze": "webpack-bundle-analyzer dist/stats.json",
+    "prepare": "cd .. && husky FrontEnd/.husky",
+    "api-gen": "ng-openapi-gen --input src/app/core/template/openapi.yaml --output src/app/open-api"
+  },
+  "dependencies": {
+    "@angular-builders/custom-webpack": "^18.0.0",
+    "@angular-eslint/eslint-plugin": "^18.3.1",
+    "@angular-eslint/schematics": "^19.0.2",
+    "@angular/animations": "^18.2.8",
+    "@angular/cdk": "^18.2.8",
+    "@angular/common": "^18.2.8",
+    "@angular/compiler": "^18.2.8",
+    "@angular/core": "^18.2.8",
+    "@angular/forms": "^18.2.8",
+    "@angular/localize": "^18.2.8",
+    "@angular/platform-browser": "^18.2.8",
+    "@angular/platform-browser-dynamic": "^18.2.8",
+    "@angular/router": "^18.2.8",
+    "@ant-design/icons-angular": "^19.0.0",
+    "@auth0/angular-jwt": "^5.2.0",
+    "@fullcalendar/angular": "^6.1.15",
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/list": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
+    "@microsoft/signalr": "^8.0.7",
+    "@ng-bootstrap/ng-bootstrap": "^17.0.1",
+    "@ng-select/ng-select": "^13.9.1",
+    "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
+    "@types/crypto-js": "^4.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.9.0",
+    "@videogular/ngx-videogular": "~10.0.1",
+    "angular-svg-icon": "^18.0.2",
+    "angular-tree-grid": "^7.0.0",
+    "animate.css": "^4.1.1",
+    "bootstrap": "~5.3.3",
+    "crypto-js": "^4.2.0",
+    "date-fns": "^4.1.0",
+    "file-saver": "^2.0.5",
+    "hls.js": "^1.5.16",
+    "konva": "^9.3.15",
+    "moment": "^2.30.1",
+    "ng-apexcharts": "^1.15.0",
+    "ng-openapi-gen": "^0.52.0",
+    "ng-terminal": "^6.2.0",
+    "ng-zorro-antd": "^18.2.1",
+    "ngx-dropzone": "^3.1.0",
+    "ngx-toastr": "^19.0.0",
+    "sweetalert2": "^11.14.3",
+    "tippy.js": "^6.3.7",
+    "tslib": "^2.7.0",
+    "xlsx": "^0.18.5",
+    "xlsx-js-style": "^1.2.0"
+  },
+  "devDependencies": {
+    "@angular-builders/dev-server": "^7.3.1",
+    "@angular-devkit/build-angular": "^18.2.8",
+    "@angular/cli": "^18.2.8",
+    "@angular/compiler-cli": "^18.2.8",
+    "@angular/language-service": "^18.2.8",
+    "@eslint/js": "^9.12.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.10.7",
+    "autoprefixer": "^10.4.20",
+    "codelyzer": "^6.0.2",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.12.0",
+    "hads": "^3.0.3",
+    "https-proxy-agent": "^7.0.5",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3",
+    "pretty-quick": "^4.0.0",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.9.0",
+    "webpack-bundle-analyzer": "^4.10.2"
+  },
+  "browser": {
+    "http": false,
+    "https": false,
+    "url": false,
+    "util": false,
+    "net": false
+  },
+  "prettier": {
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.scss",
+        "options": {
+          "singleQuote": false
+        }
+      }
+    ]
+  },
+  "postinstall": "husky install",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint",
+      "prettier --write --ignore-unknown"
+    ]
+  }
+}

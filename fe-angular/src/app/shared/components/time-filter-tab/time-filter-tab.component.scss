@@ -1,0 +1,11 @@
+.filter-time-item {
+  transition: all 300ms;
+  cursor: pointer;
+  background: transparent;
+  color: var(--link-color);
+  &.active,
+  &:hover {
+    background: var(--btn-color);
+    color: var(--btn-color-hover);
+  }
+}

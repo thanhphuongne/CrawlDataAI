@@ -1,0 +1,45 @@
+.mobileLayout {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 576px) {
+  .mobileLayout {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+.role-detail {
+  max-height: 85vh;
+  overflow: hidden;
+}
+.footer-block-detail {
+  bottom: 32px;
+  right: 44px;
+}
+.right-side {
+  height: 67vh;
+  overflow-y: scroll;
+  padding-bottom: 68px;
+  padding-right: 12px;
+}
+.no_permission {
+  height: unset;
+}
+.left-side-child {
+  height: 64vh;
+  padding-bottom: 0;
+  overflow-y: scroll;
+  padding-right: 12px;
+}
+.left-side-child::-webkit-scrollbar,
+.right-side::-webkit-scrollbar {
+  width: 2px;
+  background-color: #f5f5f5;
+}
+
+.smlBtn {
+  width: 32px !important;
+  height: 32px !important;
+}

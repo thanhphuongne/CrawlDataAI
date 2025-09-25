@@ -1,0 +1,46 @@
+<nz-table
+  class="scoring-table bg-white"
+  #basicTable
+  [nzData]="records()"
+  [nzBordered]="false"
+  [nzSize]="'small'"
+  [nzShowPagination]="false"
+  [nzLoading]="isLoading()"
+  [nzPageSize]="pageSize()"
+>
+  <thead>
+    <tr>
+      @for (column of columns; track column) {
+        @if (!headerCenter.includes(column.field)) {
+          <th class="font-md">
+            <b>{{ column.name }}</b>
+          </th>
+        } @else {
+          <th nzAlign="center" class="font-md">
+            <b>{{ column.name }}</b>
+          </th>
+        }
+      }
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td nzWidth="100" nzAlign="center">
+        {{ i + 1 }}
+      </td>
+      <td nzAlign="center">{{ data?.date }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.description }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.category }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.type }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.score }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.supervisor }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.approver }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.status }}</td>
+      <td class="font-semi" nzAlign="center">{{ data?.note }}</td>
+      <td class="font-semi" nzAlign="center">
+        <button nz-button nzType="primary">Approve</button>
+        <button nz-button nzType="primary" nzDanger>Cancel</button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

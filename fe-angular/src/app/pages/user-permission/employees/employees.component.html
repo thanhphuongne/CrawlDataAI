@@ -1,0 +1,1109 @@
+<div class="mb-4">
+  <div class="row">
+    <div>
+        <div>
+          <button
+            app-button
+            btn-size="md"
+            [btn-variant]="'secondary'"
+            type="button"
+            class="h-10 mr-1"
+            (click)="openSyncDataModal(syncDataModal)"
+            *permissions="[permissionList.userAdd]; allowCustomerAdmin: true"
+          >
+            <i
+              class="inline-flex items-center"
+              [app-icon]="icons.Refresh"
+              icon-size="18"
+            ></i>
+            <span class="d-md-none">{{ 'Sync' | translate }}</span>
+          </button>
+          <button
+            app-button
+            [btn-variant]="'secondary'"
+            type="button"
+            (click)="openImportModal(importUserModal)"
+            class="h-10 mr-1"
+            *permissions="[permissionList.userAdd]; allowCustomerAdmin: true"
+          >
+            <i
+              class="inline-flex items-center"
+              [app-icon]="icons.Import"
+              [icon-size]="'16'"
+            ></i>
+            <span class="d-md-none">{{ 'Import' | translate }}</span>
+          </button>
+          <button
+            app-button
+            type="button"
+            (click)="openUserModal(addUserModal)"
+            class="h-10"
+            *permissions="[permissionList.userAdd]; allowCustomerAdmin: true"
+          >
+            <i
+              class="inline-flex items-center"
+              [app-icon]="icons.UserPlus"
+              [icon-size]="'16'"
+            ></i>
+            <span class="d-md-none">{{ 'Add' | translate }}</span>
+          </button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="mb-4">
+  <div class="wrap-table">
+    <table>
+      <thead>
+        <tr>
+          <th class="w-12">{{ 'No.' | translate }}</th>
+          <th *ngIf="type() === 'employees'">{{ 'User name' | translate }}</th>
+          <th class="min-w-[145px]" *ngIf="type() !== 'employees'">
+            {{ 'Citizen Identity Card' | translate }}
+          </th>
+          <th class="min-w-[90px]">{{ 'First name' | translate }}</th>
+          <th class="min-w-[90px]">{{ 'Last name' | translate }}</th>
+          <th *ngIf="type() === 'blacklist'">{{ 'Time' | translate }}</th>
+          <th>{{ 'Email' | translate }}</th>
+          <th>{{ 'Gender' | translate }}</th>
+          <th *ngIf="type() === 'employees'">{{ 'Departments' | translate }}</th>
+          <th style="width: 140px">{{ 'Images' | translate }}</th>
+          <th *ngIf="type() === 'employees'" class="w-35">
+            {{ 'Allow Login' | translate }}
+          </th>
+          <th class="w-40">{{ 'Status' | translate }}</th>
+          <th
+            class="w-30 min-w-30"
+            *permissions="
+              [permissionList.userUpdate, permissionList.userDelete];
+              operation: 'OR';
+              allowCustomerAdmin: true
+            "
+          >
+            {{ 'Actions' | translate }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="isLoading(); else dataTemplate">
+          <td colspan="12">
+            <app-skeleton type="multi-lines" [repeat]="12"></app-skeleton>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-pagination
+  [pageIndex]="getUserparams().PageIndex"
+  [collectionSize]="totalUsers()"
+  (pageChange)="changeNumberPage($event)"
+></app-pagination>
+
+<ng-template #dataTemplate>
+  <tr
+    *ngIf="
+      !isLoading() && listUsers() && listUsers().length === 0;
+      else listUserTemplate
+    "
+  >
+    <td colspan="12" class="text-center">
+      <app-no-data message="{{ 'No data found!' | translate }}"></app-no-data>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #listUserTemplate>
+  <tr *ngFor="let item of listUsers(); let i = index">
+    <td>
+      {{ getUserparams().PageSize * (getUserparams().PageIndex - 1) + i + 1 }}
+    </td>
+    <td class="text-primary" *ngIf="type() === 'employees'">
+      {{ item.userName }}
+    </td>
+    <td class="text-primary" *ngIf="type() !== 'employees'">
+      {{ item.citizenIdentityCard }}
+    </td>
+    <td>
+      {{ item.firstName }}
+    </td>
+    <td>{{ item.lastName }}</td>
+    <td *ngIf="type() === 'blacklist'">
+      <p class="mb-0">
+        {{ 'Form date' | translate }}: 
+        {{ item.startTime | date: dateDisplayFormat.DEFAULT_FORMAT_PIPE }}
+      </p>
+      <p class="mb-0">
+        {{ 'To date' | translate }}: 
+        {{ item.endTime | date: dateDisplayFormat.DEFAULT_FORMAT_PIPE }}
+      </p>
+    </td>
+    <td>{{ item.email }}</td>
+    <td>{{ (item.gender === 1 ? 'Male' : 'Female') | translate }}</td>
+    <td *ngIf="type() === 'employees'">{{ item.departmentName }}</td>
+
+    <td>
+      <div class="flex justify-center">
+        <span
+          *ngIf="item.totalImage > 0"
+          [app-tag]="'success'"
+          >{{ 'Setted' | translate }}</span
+        >
+        <span
+          *ngIf="item.totalImage == 0"
+          [app-tag]="'general'"
+          >{{ 'Not setted' | translate }}</span
+        >
+      </div>
+    </td>
+    <td *ngIf="type() === 'employees'">
+      <ng-container
+        *permissions="
+          [permissionList.userUpdate];
+          allowCustomerAdmin: true;
+          else: allowLoginStatusTemplate
+        "
+      >
+        <input
+          *ngIf="
+            checkPermission(item?.allowUpdate);
+            else allowLoginStatusTemplate
+          "
+          type="checkbox"
+          #switchEnableLogin
+          [checked]="item.isEnableLogin"
+          (click)="
+            $event.preventDefault();
+            changeUserLoginPermission(
+              item,
+              changePasswordModal,
+              switchEnableLogin
+            )
+          "
+          [app-switch]="'success'"
+          [enabled-label]="'Yes' | translate"
+          [disabled-label]="'No' | translate"
+        />
+      </ng-container>
+      <ng-template #allowLoginStatusTemplate>
+        <span [app-tag]="item.isEnableLogin ? 'success' : 'general'">{{
+          (item.isEnableLogin ? 'Yes' : 'No') | translate
+        }}</span></ng-template
+      >
+    </td>
+    <td>
+      <ng-container
+        *permissions="
+          [permissionList.userUpdate];
+          allowCustomerAdmin: true;
+          else: statusTemplate
+        "
+      >
+        <input
+          *ngIf="checkPermission(item?.allowUpdate); else statusTemplate"
+          type="checkbox"
+          #switch
+          [checked]="item.status === 1"
+          (click)="$event.preventDefault(); changeUserStatus(switch, item)"
+          [app-switch]="'success'"
+          [enabled-label]="'Active' | translate"
+          [disabled-label]="'Deactive' | translate"
+          [isLoading]="isInAction(item.id)"
+        />
+      </ng-container>
+      <ng-template #statusTemplate>
+        <span [app-tag]="item.status === 1 ? 'success' : 'danger'">{{
+          (item.status === 1 ? 'Active' : 'Deactive') | translate
+        }}</span>
+      </ng-template>
+    </td>
+    <td
+      *permissions="
+        [permissionList.userUpdate, permissionList.userDelete];
+        operation: 'OR';
+        allowCustomerAdmin: true
+      "
+    >
+      <div
+        *ngIf="checkPermission(item?.allowUpdate)"
+        class="flex justify-start"
+      >
+        <button
+          app-button
+          [btn-variant]="'success'"
+          [btn-type]="'subtle'"
+          btn-size="sm"
+          [btn-squake]="true"
+          [ngbTooltip]="'Edit' | translate"
+          (click)="openUserModal(addUserModal, item)"
+          *permissions="[permissionList.userUpdate]; allowCustomerAdmin: true"
+        >
+          <i
+            class="inline-flex justify-center items-center"
+            [app-icon]="icons.PencilSimpleLine"
+            icon-size="16"
+          ></i>
+        </button>
+        <div *ngIf="type() === 'employees'">
+          <button
+            app-button
+            [btn-variant]="'danger'"
+            [btn-type]="'subtle'"
+            btn-size="sm"
+            [btn-squake]="true"
+            class="flex justify-center "
+            [ngbTooltip]="'Delete' | translate"
+            (click)="!item.isEnableLogin && handelDeleteEmployee(item)"
+            [disabled]="item.isEnableLogin"
+            [ngClass]="{
+              disabled: item.isEnableLogin
+            }"
+            *permissions="[permissionList.userDelete]; allowCustomerAdmin: true"
+          >
+            <i
+              class="inline-flex justify-center items-center"
+              [app-icon]="icons.Delete"
+              icon-size="16"
+            ></i>
+          </button>
+        </div>
+        <button
+          app-button
+          [btn-variant]="'success'"
+          [btn-type]="'subtle'"
+          btn-size="sm"
+          [btn-squake]="true"
+          [ngbTooltip]="'Change password' | translate"
+          [ngClass]="{ disabled: !item.isEnableLogin }"
+          [disabled]="!item.isEnableLogin"
+          (click)="openChangePasswordModal(changePasswordModal, item)"
+        >
+          <i
+            class="inline-flex justify-center items-center"
+            [app-icon]="icons.ChangePassword"
+            icon-size="16"
+          ></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #syncDataModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">
+      {{ 'Sync data to box' | translate }}
+    </h5>
+    <span
+      type="button"
+      (mousedown)="$event.preventDefault(); closeUserModal()"
+      app-button
+      [btn-variant]="'tertiary'"
+      [btn-type]="'text'"
+      [btn-size]="'sm'"
+      aria-hidden="true"
+    >
+      <span
+        [app-icon]="icons.Close"
+        class="flex items-center justify-center"
+      ></span>
+    </span>
+  </div>
+  <div class="modal-body">
+    <div class="mb-4 basis-full" *ngIf="type() === 'employees'">
+      <app-form-label [required]="true">{{
+        'Department' | translate
+      }}</app-form-label>
+      <app-tree-select
+        [type]="'department'"
+        [customerId]="getUserparams().CustomerId"
+        [multiple]="true"
+        [isSelectedAll]="true"
+        [isAllValue]="false"
+        [required]="true"
+        [listOptionInput]="listDepartments()"
+        [(ngModel)]="listDepartmentSyncData"
+        [functionKey]="permissionList.userAdd"
+      ></app-tree-select>
+    </div>
+  </div>
+
+  <div class="modal-footer gap-2 flex justify-end">
+    <button
+      type="button"
+      app-button
+      [btn-type]="'filled'"
+      [btn-variant]="'tertiary'"
+      (click)="closeSyncDataModal()"
+      [disabled]="isSyncing()"
+      [ngClass]="{
+        disabled: isSyncing()
+      }"
+    >
+      {{ 'Cancel' | translate }}
+    </button>
+    <button
+      type="button"
+      app-button
+      (click)="onSyncData()"
+      [disabled]="isSyncing() || listDepartmentSyncData().length === 0"
+      [ngClass]="{
+        disabled: isSyncing() || listDepartmentSyncData().length === 0
+      }"
+      [app-loader]="isSyncing()"
+    >
+      {{ 'Sync' | translate }}
+    </button>
+  </div>
+</ng-template>
+<ng-template #addUserModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">
+      {{ (selectedUser() && !onCreateNewUser() ? 'Update ' : 'Add ') | translate }}
+      {{ type() | translate }}
+    </h5>
+    <span
+      type="button"
+      (mousedown)="$event.preventDefault(); closeUserModal()"
+      app-button
+      [btn-variant]="'tertiary'"
+      [btn-type]="'text'"
+      [btn-size]="'sm'"
+      aria-hidden="true"
+      [ngClass]="{ disabled: creatingUser() }"
+    >
+      <span
+        [app-icon]="icons.Close"
+        class="flex items-center justify-center"
+      ></span>
+    </span>
+  </div>
+  <div class="px-4 pt-4">
+    <div
+      class="flex items-center nav-bar border-b-1 border-gray-3 border-solid"
+    >
+      <span
+        (click)="changeModelView('info')"
+        class="capitalize font-semibold py-2 px-2 pointer border-b-2 border-solid"
+        [ngClass]="{
+          'color-white': modalView() === 'info',
+          'border-transparent': modalView() !== 'info',
+        }"
+      >
+        {{ (type() === 'employees' ? 'employee ' : '') | translate
+        }}{{ 'information' | translate }}</span
+      >
+      <span
+        (click)="selectedUser()?.id && changeModelView('image')"
+        class="capitalize font-semibold py-2 px-2 ml-5 border-b-2 border-solid pointer"
+        [ngClass]="{
+          'disabled': !selectedUser()?.id,
+          'color-white': modalView() === 'image',
+          'border-transparent': modalView() === 'info',
+        }"
+        >{{ (type() === 'employees' ? 'employee ' : '') | translate
+        }}{{ 'images' | translate }}</span
+      >
+    </div>
+  </div>
+  <form
+    id="form-info"
+    [formGroup]="userForm"
+    (ngSubmit)="createUpdateUser(false, selectedUser()?.id)"
+    *ngIf="modalView() === 'info'"
+    ngbAutofocus
+  >
+    <div class="modal-body form-modal">
+      <app-validator-message type="block" *ngIf="errorCreateUser()" class="mb-4"
+        >{{ errorCreateUser()}}
+      </app-validator-message>
+      <div class="row">
+        <div
+          *ngIf="type() === 'employees'"
+          class="mb-4 basis-full "
+          [ngClass]="{
+            'lg:basis-1/2': userCustomerId() === 0
+          }"
+        >
+          <app-form-label [required]="true">{{
+            'Department' | translate
+          }}</app-form-label>
+          <app-tree-select
+            [type]="'department'"
+            [customerId]="getUserparams().CustomerId"
+            [functionKey]="
+              selectedUser()?.id
+                ? permissionList.userUpdate
+                : permissionList.userAdd
+            "
+            formControlName="departmentId"
+          ></app-tree-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-4 basis-full lg:basis-1/2" *ngIf="type() === 'employees'">
+          <app-form-label [required]="true">{{
+            'Account' | translate
+          }}</app-form-label>
+          <input
+            type="text"
+            class="w-full"
+            formControlName="userName"
+            autocomplete="one-time-code"
+            [inputControl]="userForm.controls.userName"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [placeholder]="'Enter username' | translate"
+          />
+          <app-validator-message
+            *ngIf="
+              userForm.controls.userName.touched &&
+              userForm.controls.userName.errors
+            "
+          >
+            <span *ngIf="userForm.controls.userName.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+            <span *ngIf="userForm.controls.userName.errors.userName">
+              {{
+                userForm.controls.userName.errors.userName.message | translate
+              }}
+            </span>
+          </app-validator-message>
+        </div>
+        <div class="mb-4 basis-full lg:basis-1/2" *ngIf="type() !== 'employees'">
+          <app-form-label [required]="type() !== 'employees'">{{
+            'Citizen Identity Card' | translate
+          }}</app-form-label>
+          <input
+            type="text"
+            class="w-full"
+            formControlName="citizenIdentityCard"
+            autocomplete="one-time-code"
+            [inputControl]="userForm.controls.citizenIdentityCard"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [placeholder]="'Enter citizen identity card' | translate"
+          />
+          <app-validator-message
+            *ngIf="
+              userForm.controls.citizenIdentityCard.touched &&
+              userForm.controls.citizenIdentityCard.errors
+            "
+          >
+            <span *ngIf="userForm.controls.citizenIdentityCard.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+          </app-validator-message>
+        </div>
+        <div class="mb-4 basis-full lg:basis-1/2">
+          <app-form-label [required]="true">{{
+            'Email' | translate
+          }}</app-form-label>
+          <input
+            type="email"
+            class="w-full"
+            formControlName="email"
+            [inputControl]="userForm.controls.email"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [placeholder]="'Enter email' | translate"
+          />
+          <app-validator-message
+            *ngIf="
+              userForm.controls.email.touched && userForm.controls.email.errors
+            "
+          >
+            <span *ngIf="userForm.controls.email.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+            <span *ngIf="userForm.controls.email.errors.email">
+              {{ listErrors.VALIDATOR.INVALID_EMAIL | translate }}
+            </span>
+          </app-validator-message>
+        </div>
+      </div>
+      <div class="row" *ngIf="type() === 'blacklist'">
+        <div class="mb-4 basis-full lg:basis-1/2">
+          <app-form-label>{{ 'Start time' | translate }}</app-form-label>
+          <app-date-time-picker
+            class="w-full"
+            [placeholder]="dateDisplayFormat.DEFAULT_FORMAT"
+            [displayFormat]="dateDisplayFormat.DEFAULT_FORMAT"
+            formControlName="startTime"
+            [maxDate]="userForm.controls.endTime.value"
+          ></app-date-time-picker>
+        </div>
+        <div class="mb-4 basis-full lg:basis-1/2">
+          <app-form-label>{{ 'End time' | translate }}</app-form-label>
+          <app-date-time-picker
+            class="w-full"
+            [placeholder]="dateDisplayFormat.DEFAULT_FORMAT"
+            [displayFormat]="dateDisplayFormat.DEFAULT_FORMAT"
+            formControlName="endTime"
+            [minDate]="userForm.controls.startTime.value"
+          ></app-date-time-picker>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-4 basis-full lg:basis-1/2">
+          <app-form-label>{{ 'First name' | translate }}</app-form-label>
+          <input
+            type="text"
+            class="w-full"
+            formControlName="firstName"
+            appInputExtendFeatures
+            [inputControl]="userForm.controls.firstName"
+            clearInput="true"
+            [placeholder]="'Enter first name' | translate"
+          />
+          <app-validator-message
+            *ngIf="
+              userForm.controls.firstName.touched &&
+              userForm.controls.firstName.errors
+            "
+          >
+            <span *ngIf="userForm.controls.firstName.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+          </app-validator-message>
+        </div>
+        <div class="mb-4 basis-full lg:basis-1/2">
+          <app-form-label>{{ 'Last name' | translate }}</app-form-label>
+          <input
+            type="text"
+            class="w-full"
+            formControlName="lastName"
+            [inputControl]="userForm.controls.lastName"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [placeholder]="'Enter last name' | translate"
+          />
+          <app-validator-message
+            *ngIf="
+              userForm.controls.lastName.touched &&
+              userForm.controls.lastName.errors
+            "
+          >
+            <span *ngIf="userForm.controls.lastName.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+          </app-validator-message>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-4 basis-full lg:basis-1/2">
+          <app-form-label>{{ 'Date of birth' | translate }}</app-form-label>
+          <input
+            type="text"
+            ngbDatepicker
+            class="w-full"
+            formControlName="dateOfBirth"
+            [placeholder]="'Enter date of birth' | translate"
+            (click)="dateOfBirth.toggle()"
+            [maxDate]="maxDate"
+            [minDate]="{ year: 1900, month: 1, day: 1 }"
+            #dateOfBirth="ngbDatepicker"
+          />
+          <app-validator-message
+            *ngIf="
+              userForm.controls.dateOfBirthtouched &&
+              userForm.controls.dateOfBirthtouched.errors
+            "
+          >
+            <span *ngIf="userForm.controls.dateOfBirthtouched.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+          </app-validator-message>
+        </div>
+        <div class="mb-4 basis-full lg:basis-1/2">
+          <app-form-label>{{ 'Phone' | translate }}</app-form-label>
+          <input
+            type="tel"
+            class="w-full"
+            formControlName="phoneNumber"
+            [inputControl]="userForm.controls.phoneNumber"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [placeholder]="'Enter phone number' | translate"
+          />
+
+          <app-validator-message
+            *ngIf="
+              userForm.controls.phoneNumber.touched &&
+              userForm.controls.phoneNumber.errors
+            "
+          >
+            <span *ngIf="userForm.controls.phoneNumber.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+            <span *ngIf="userForm.controls.phoneNumber.errors.phone">
+              {{
+                userForm.controls.phoneNumber.errors.phone.message | translate
+              }}
+            </span>
+          </app-validator-message>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-4 lg:basis-1/2">
+          <app-form-label>{{ 'Gender' | translate }}</app-form-label>
+          <select formControlName="gender" class="w-full"
+            ><option [value]="gender.male.value">
+              {{ gender.male.label | translate }} </option
+            ><option [value]="gender.female.value">
+              {{ gender.female.label | translate }}
+            </option></select
+          >
+        </div>
+        <div class="mb-4 basis-full lg:basis-1/2" *ngIf="type() === 'employees'">
+          <app-form-label>{{ 'Job title' | translate }}</app-form-label>
+          <input
+            type="text"
+            class="w-full"
+            formControlName="jobTitle"
+            [inputControl]="userForm.controls.jobTitle"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [placeholder]="'Enter job title of employee' | translate"
+          />
+        </div>
+      </div>
+      <div class="mb-4">
+        <app-form-label>{{ 'Address' | translate }}</app-form-label>
+        <textarea
+          class="w-full h-15"
+          formControlName="address"
+          [placeholder]="'Enter address' | translate"
+        ></textarea>
+      </div>
+      <div class="mb-4" *ngIf="type() !== 'employees'">
+        <app-form-label>{{ 'Description' | translate }}</app-form-label>
+        <textarea
+          class="w-full h-15"
+          formControlName="description"
+          [placeholder]="'Enter description' | translate"
+        ></textarea>
+      </div>
+    </div>
+    <div class="modal-footer gap-2 flex justify-end">
+      <button
+        type="button"
+        app-button
+        [btn-type]="'filled'"
+        [btn-variant]="'tertiary'"
+        (mousedown)="$event.preventDefault(); closeUserModal()"
+      >
+        {{ 'Cancel' | translate }}
+      </button>
+      <button
+        type="submit"
+        app-button
+        [disabled]="creatingUser() || this.userForm.invalid"
+        [ngClass]="{
+          disabled: creatingUser() || this.userForm.invalid
+        }"
+        [app-loader]="creatingUser()"
+      >
+        {{ (selectedUser() ? 'Update' : 'Add') | translate }}
+      </button>
+    </div>
+  </form>
+  <div id="form-image" *ngIf="modalView() === 'image'">
+    <div class="modal-body">
+      <div class="row">
+        <div class="basis-full md:basis-3/4">
+          <div class="row mb-4" *ngIf="userImages()?.length > 0">
+            <div
+              *ngFor="let image of userImages()"
+              class="basis-full lg:basis-1/6 relative"
+            >
+              <div class="h-30 overflow-hidden">
+                <img
+                  [src]="image.url"
+                  alt=""
+                  class="object-cover w-full h-full"
+                />
+              </div>
+              <span
+                class="w-5 h-5 block absolute color-red-5 top-0 right-3 z-index-1 cursor-pointer remove-image"
+                [ngbTooltip]="'Remove image' | translate"
+                (click)="removeImage(image)"
+                ><app-icon [icon]="icons.Close"></app-icon
+              ></span>
+            </div>
+          </div>
+          <div class="drag-drop" *ngIf="userImages()?.length < maxFiles">
+            <h3 class="title mb-2">
+              {{ 'Upload image' | translate }}
+            </h3>
+            <ngx-dropzone
+              style="
+            border: 1px dashed rgb(var(--blue-6));
+            border-radius: 8px;
+            background-color: rgb(var(--blue-1));
+          "
+              [accept]="'image/png,image/jpeg'"
+              [multiple]="true"
+              (change)="onSelect($event)"
+            >
+              <div
+                class="text-center color-black w-full"
+                *ngIf="files().length === 0 || !files()"
+              >
+                {{ 'Drag and drop your image here or' | translate }}
+
+                <span class="color-blue-6 font-semibold pointer">
+                  {{ 'Browse image' | translate }}</span
+                ><br />
+                <p class="color-gray-7 font-sm mg-0">
+                  {{ uploadMessage() | translate }}
+                </p>
+              </div>
+              <ngx-dropzone-preview
+                ngProjectAs="ngx-dropzone-preview"
+                *ngFor="let f of files()"
+                [file]="f"
+                [removable]="true"
+                (removed)="onRemove(f)"
+              >
+                <ngx-dropzone-label>
+                  <div
+                    class="flex items-center justify-center flex-column"
+                  >
+                    <img
+                      [src]="getPreviewFileUrl(f)"
+                      alt="{{ f.name }}"
+                      class="preview-img"
+                    />
+                    <span class="w-full mt-2 font-sm file-name">{{
+                      f.name
+                    }}</span>
+                  </div>
+                </ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+          </div>
+        </div>
+        <div
+          class="basis-full md:basis-1/4 border-solid border-l-1 border-gray-3 d-md-none"
+        >
+          <h3 class="mb-1">{{ 'Note' | translate }}</h3>
+          <p class="font-sm mb-2">
+            {{
+              "Images doesn't allow duplicate and should follow sample below"
+                | translate
+            }}
+          </p>
+          <img src="../../../assets/images/img-doc.jpg" alt="'note'" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer gap-2 flex justify-end">
+      <button
+        type="button"
+        app-button
+        [btn-type]="'filled'"
+        [btn-variant]="'tertiary'"
+        (click)="closeUserModal()"
+      >
+        {{ 'Cancel' | translate }}
+      </button>
+      <button
+        type="button"
+        app-button
+        [disabled]="
+          creatingUser() ||
+          (!selectedUser() && files()?.length < minFiles) ||
+          (selectedUser() &&
+            userImages()?.length < minFiles &&
+            files()?.length < minFiles)
+        "
+        [ngClass]="{
+          disabled:
+            creatingUser() ||
+            (!selectedUser() && files()?.length < minFiles) ||
+            (selectedUser() &&
+              userImages()?.length < minFiles &&
+              files()?.length < minFiles)
+        }"
+        (click)="onUpload()"
+        [app-loader]="creatingUser()"
+      >
+        {{
+          (selectedUser() && !onCreateNewUser() ? 'Update' : 'Upload') | translate
+        }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #importUserModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">
+      {{ 'Import' | translate }} {{ type() | translate }}
+    </h5>
+
+    <span
+      type="button"
+      (click)="!importingUser() && closeImportModal()"
+      app-button
+      [btn-variant]="'tertiary'"
+      [btn-type]="'text'"
+      [btn-size]="'sm'"
+      aria-hidden="true"
+      [ngClass]="{ disabled: importingUser() }"
+    >
+      <span
+        [app-icon]="icons.Close"
+        class="flex items-center justify-center"
+      ></span>
+    </span>
+  </div>
+  <div class="modal-body form-modal w-full">
+    <app-validator-message type="block" *ngIf="importError()">{{
+      importError()
+    }}</app-validator-message>
+
+    <ng-container *ngIf="type() === 'employees'">
+      <app-form-label [required]="true">{{
+        'Department' | translate
+      }}</app-form-label>
+
+      <app-tree-select
+        [type]="'department'"
+        [customerId]="getUserparams().CustomerId"
+        [functionKey]="permissionList.userAdd"
+        [(ngModel)]="idDepartmentImport"
+      ></app-tree-select>
+    </ng-container>
+
+    <div class="flex w-full row ml-1 mb-2 mt-1">
+      <div class="text-right pd-0">
+        <a
+          app-button
+          [btn-type]="'text'"
+          [btn-size]="'sm'"
+          target="_blank"
+          href="{{ originRoute }}"
+          >{{ 'Show list department' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <ngx-dropzone
+      style="
+      border: 1px dashed #0083fc;
+      border-radius: 8px;
+      background-color: #edf7ff;
+    "
+      [accept]="'.xls, .xlsx'"
+      [multiple]="false"
+      (change)="onAddFile($event)"
+      [disableClick]="true"
+      *ngIf="importFile().length === 0"
+      #drop
+    >
+      <div class="text-center color-black w-full">
+        {{ 'Drag and drop your file here or' | translate }}
+        <span
+          class="color-blue-6 font-semibold pointer"
+          (click)="drop.showFileSelector()"
+        >
+          {{ 'Browse file' | translate }}</span
+        ><br />
+        <p class="color-gray-7 font-sm mg-0">
+          {{ 'File support .xls, .xlsx' | translate }}
+        </p>
+        <p>
+          <a
+            href="../../../assets/templates/template_import_user.xlsx"
+            download
+            class="font-sm font-semibold"
+            title="{{ 'Download template' | translate }}"
+            >{{ 'Download template' | translate }}</a
+          >
+        </p>
+      </div>
+    </ngx-dropzone>
+    <div
+      class="flex items-center"
+      *ngIf="importFile().length > 0"
+      style="margin:0 auto"
+    >
+      <div>
+        <i
+          class="flex text-center bg-blue-5 br-2 pd-1 color-white"
+          [app-icon]="icons.FileXls"
+          [icon-size]="'40'"
+        ></i>
+      </div>
+      <div class="pd-3">
+        <div class="font-bold font-lg color-gray-10">
+          {{ importFile()[0].name }}
+        </div>
+        <span
+          class="color-red-3 font-sm pointer"
+          (click)="
+            $event.preventDefault(); importFile.set([]); importError.set(null)
+          "
+          >{{ 'Remove' | translate }}</span
+        >
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer gap-2 flex justify-end">
+    <button
+      type="button"
+      app-button
+      [btn-type]="'filled'"
+      [btn-variant]="'tertiary'"
+      (click)="closeImportModal()"
+    >
+      {{ 'Cancel' | translate }}
+    </button>
+    <button
+      type="submit"
+      app-button
+      [disabled]="importingUser() || !idDepartmentImport()"
+      [ngClass]="{
+        disabled:
+          importingUser() || !idDepartmentImport() || importFile().length === 0
+      }"
+      [app-loader]="importingUser()"
+      (click)="!importingUser() && importDataExcel()"
+    >
+      {{ 'Import' | translate }}
+    </button>
+  </div>
+</ng-template>
+<ng-template #changePasswordModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">
+      {{ 'Update password' | translate }}
+    </h5>
+    <span
+      type="button"
+      (click)="closeChangePasswordModal(true)"
+      app-button
+      [btn-variant]="'tertiary'"
+      [btn-type]="'text'"
+      [btn-size]="'sm'"
+      aria-hidden="true"
+      [ngClass]="{ disabled: creatingUser() }"
+    >
+      <span
+        [app-icon]="icons.Close"
+        class="flex items-center justify-center"
+      ></span>
+    </span>
+  </div>
+  <form
+    id="form-info"
+    [formGroup]="passwordForm"
+    (ngSubmit)="changePassword(selectedUser()?.id)"
+    ngbAutofocus
+  >
+    <div class="modal-body">
+      <div class="row">
+        <div class="mb-4 basis-full">
+          <app-form-label [required]="true">{{
+            'Password' | translate
+          }}</app-form-label>
+          <input
+            type="password"
+            class="w-full"
+            formControlName="password"
+            autocomplete="one-time-code"
+            [inputControl]="passwordForm.controls.password"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [showPassword]="true"
+            [placeholder]="'Enter new password' | translate"
+          />
+          <app-validator-message
+            *ngIf="
+              passwordForm.controls.password.touched &&
+              passwordForm.controls.password.errors
+            "
+          >
+            <span *ngIf="passwordForm.controls.password.errors.required">
+              {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+            </span>
+            <span
+              *ngIf="
+                passwordForm.controls.password.value &&
+                passwordForm.controls.password.errors.passwordStrength
+              "
+            >
+              {{
+                passwordForm.controls.password.errors.passwordStrength.message
+                  | translate
+              }}
+            </span>
+          </app-validator-message>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-4 basis-full">
+          <app-form-label [required]="true">{{
+            'Confirm password' | translate
+          }}</app-form-label>
+          <input
+            type="password"
+            class="w-full"
+            formControlName="confirmPassword"
+            autocomplete="one-time-code"
+            [inputControl]="passwordForm.controls.confirmPassword"
+            appInputExtendFeatures
+            [clearInput]="true"
+            [showPassword]="true"
+            [placeholder]="'Retype new password' | translate"
+          />
+          <app-validator-message
+            *ngIf="
+              passwordForm.controls.confirmPassword.value &&
+              passwordForm.controls.confirmPassword.value.length > 0 &&
+              passwordForm.controls.password.value !==
+                passwordForm.controls.confirmPassword.value
+            "
+          >
+            <span>
+              {{ 'Confirm password is not match' | translate }}
+            </span>
+          </app-validator-message>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer gap-2 flex justify-end">
+      <button
+        type="button"
+        app-button
+        [btn-type]="'filled'"
+        [btn-variant]="'tertiary'"
+        (click)="closeChangePasswordModal(true)"
+      >
+        {{ 'Cancel' | translate }}
+      </button>
+      <button
+        type="submit"
+        app-button
+        [disabled]="
+          this.passwordForm.invalid ||
+          !passwordForm.controls.confirmPassword.value ||
+          passwordForm.controls.confirmPassword.value !==
+            passwordForm.controls.password.value
+        "
+        [ngClass]="{
+          disabled:
+            this.passwordForm.invalid ||
+            !passwordForm.controls.confirmPassword.value ||
+            passwordForm.controls.confirmPassword.value !==
+              passwordForm.controls.password.value
+        }"
+      >
+        {{ 'Update' | translate }}
+      </button>
+    </div>
+  </form>
+</ng-template>

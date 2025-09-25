@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################akaCamBox_FE/dist
+/node_modules
+/.angular
+/dist
+dist.zip

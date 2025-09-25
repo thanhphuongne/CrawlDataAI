@@ -1,0 +1,14 @@
+.app-input {
+  &.has-icon {
+    input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+      padding-left: calc(10 * var(--base-space));
+    }
+  }
+  app-icon {
+    position: absolute;
+    left: calc(3 * var(--base-space));
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--input-color);
+  }
+}

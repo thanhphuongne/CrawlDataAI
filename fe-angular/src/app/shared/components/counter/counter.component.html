@@ -1,0 +1,21 @@
+<div class="ng-counter ng-counter--with-circle">
+  <div class="ng-counter__text">
+    <div class="flex flex-column align-items-center justify-center">
+      <span class="ng-counter__number color-red-5 font-bold">{{
+        to() - count
+      }}</span>
+      <span class="font-xl text-primary font-semibold">
+        {{ 'TIME_COUNT_DOWN_UNIT' | translate }}
+      </span>
+    </div>
+  </div>
+  <div class="ng-counter__circle">
+    <div class="ng-counter__circle__bg"></div>
+    <div
+      class="ng-counter__circle__bg_second"
+      [ngClass]="{ 'z-10': percentDone < 0.5 }"
+    ></div>
+    <div class="ng-counter__circle__bar" [ngStyle]="getBarStyle()"></div>
+    <div class="ng-counter__circle__fill" [ngStyle]="getFillStyle()"></div>
+  </div>
+</div>

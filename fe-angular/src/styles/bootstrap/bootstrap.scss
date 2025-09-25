@@ -1,0 +1,20 @@
+// Required
+@import "../../../node_modules/bootstrap/scss/functions";
+// Required
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/variables-dark";
+@import "../../../node_modules/bootstrap/scss/maps";
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+//Custom module
+@import "../../../node_modules/bootstrap/scss/containers";
+@import "../../../node_modules/bootstrap/scss/grid";
+@import "../../../node_modules/bootstrap/scss/modal";
+@import "../../../node_modules/bootstrap/scss/tooltip";
+
+//Custom Addon
+@import "./addons/datepicker";
+@import "./addons/pagination";
+@import "./addons/toasts";
+@import "./addons/nav";
+@import "./addons/tooltip";

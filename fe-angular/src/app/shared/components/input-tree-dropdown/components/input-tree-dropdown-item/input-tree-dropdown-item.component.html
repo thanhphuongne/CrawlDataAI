@@ -1,0 +1,80 @@
+<div class="item" (click)="select($event)">
+  <div class="item" [class.active]="item.selected && !needCheckBox">
+    <a href="javascript:void(0)" (click)="toggleOpen($event)">
+      <span>
+        <i
+          class="fa"
+          [class.fa-caret-right]="haveChildren && !isOpen"
+          [class.fa-caret-down]="haveChildren && isOpen"
+        ></i>
+      </span>
+      {{ needCheckBox ? ' ' : '' }}
+      {{ haveChildren ? '&nbsp;&nbsp;&nbsp;&nbsp;' : '' }}
+      <i *ngIf="needCheckBox" (click)="select($event)">
+        <svg
+          *ngIf="item.checked === false"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="2.75"
+            y="2.75"
+            width="18.5"
+            height="18.5"
+            rx="3.25"
+            fill="#fff"
+            stroke="#A5ABB3"
+            stroke-width="1.5"
+          />
+        </svg>
+        <svg
+          *ngIf="item.checked === true"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="#0083FC" />
+          <path
+            d="M14.655 8.854a.75.75 0 0 1 1.056.008.785.785 0 0 1 .028 1.08l-4.042 5.17a.761.761 0 0 1-.543.248.745.745 0 0 1-.551-.228l-2.68-2.741a.777.777 0 0 1-.242-.555.793.793 0 0 1 .222-.563.759.759 0 0 1 .55-.227.744.744 0 0 1 .543.247l2.121 2.168 3.518-4.584a.26.26 0 0 1 .02-.023Z"
+            fill="#fff"
+          />
+        </svg>
+      </i>
+      {{ needCheckBox ? '&nbsp;&nbsp;&nbsp;&nbsp;' : '' }}
+      <i
+        class="fa"
+        *ngIf="needCheckBox"
+        [class.fa-square-full]="item.checked === null"
+        (click)="select($event)"
+      ></i>
+      <span *ngIf="allowParentSelection" (click)="select($event)">
+        {{ !item.parent && item.fullText ? item.fullText : item.text }}</span
+      >
+      <span *ngIf="!allowParentSelection">
+        {{ !item.parent && item.fullText ? item.fullText : item.text }}</span
+      >
+      <i
+        *ngIf="item.selected && !needCheckBox"
+        class="fa fa-check select-checkbox"
+      ></i>
+    </a>
+  </div>
+  <ul
+    *ngIf="haveChildren && isOpen"
+    @itemDropDown
+    class="ui-select-choices"
+    role="menu"
+  >
+    <li *ngFor="let o of item.children | itemPipe: filter" role="menuitem">
+      <input-tree-dropdown-item
+        [item]="o"
+        [onTouchedCallBack]="onTouchedCallBack"
+      ></input-tree-dropdown-item>
+    </li>
+  </ul>
+</div>

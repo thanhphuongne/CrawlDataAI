@@ -1,0 +1,67 @@
+.app-main-body {
+  flex-direction: column;
+  background-image: url("../../assets/images/img_bg_main.png");
+}
+
+app-top-bar {
+  z-index: 9;
+}
+
+.main-content {
+  width: 100%;
+}
+
+.nav-bar {
+  position: absolute;
+  right: 60px;
+  top: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: transparent;
+  backdrop-filter: blur(3px);
+  border-radius: 10px;
+  z-index: 999;
+}
+
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.wrap-main-content {
+  background-color: transparent;
+  padding: 0;
+  height: 100%;
+}
+
+::ng-deep .swal2-popup {
+  .swal2-actions .app-btn {
+    width: 150px;
+    min-width: 150px;
+  }
+}
+
+@media (min-width: 576px) {
+  .swal2-actions.app-btn {
+    width: unset;
+    min-width: unset;
+  }
+}
+
+@media (min-width: 992px) {
+  .toogle-sidebar {
+    left: calc(100% - 16px);
+    bottom: 168px;
+    display: flex;
+    z-index: 111;
+
+    &:hover {
+      background-color: rgb(var(--blue-9));
+      color: rgb(var(--white));
+    }
+  }
+}

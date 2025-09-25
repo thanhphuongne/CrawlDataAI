@@ -1,0 +1,196 @@
+.color-accent {
+  color: rgba(var(--accent-color), var(--opacity));
+}
+
+.bg-accent {
+  background-color: rgba(var(--accent-color), var(--opacity-bg));
+}
+
+.border-accent {
+  border-color: rgba(var(--accent-color), var(--opacity));
+}
+
+.color-orange {
+  color: rgba(var(--orange), var(--opacity));
+}
+
+.bg-orange {
+  background-color: rgba(var(--orange), var(--opacity-bg));
+}
+
+.border-orange {
+  border-color: rgba(var(--orange), var(--opacity));
+}
+
+.color-primary {
+  color: rgba(var(--primary), var(--opacity));
+}
+
+.bg-primary {
+  background-color: rgba(var(--primary), var(--opacity-bg));
+}
+
+.border-primary {
+  border-color: rgba(var(--primary), var(--opacity));
+}
+
+.color-green {
+  color: rgba(var(--green), var(--opacity));
+}
+
+.bg-green {
+  background-color: rgba(var(--green), var(--opacity-bg));
+}
+
+.border-green {
+  border-color: rgba(var(--green), var(--opacity));
+}
+
+.color-green-neon {
+  color: rgba(var(--green-neon), var(--opacity));
+}
+
+.bg-green-neon {
+  background-color: rgba(var(--green-neon), var(--opacity-bg));
+}
+
+.border-green-neon {
+  border-color: rgba(var(--green-neon), var(--opacity));
+}
+
+// transparent
+.bg-transparent {
+  background-color: transparent;
+}
+
+.border-transparent {
+  border-color: transparent;
+}
+
+.text-transparent {
+  color: transparent;
+}
+
+// Black
+.bg-black {
+  background-color: rgba(var(--black), var(--opacity-bg));
+}
+
+.border-black {
+  border-color: rgba(var(--black), var(--opacity));
+}
+
+.color-black {
+  color: rgba(var(--black), var(--opacity));
+}
+
+// Black
+.bg-white {
+  background-color: rgba(var(--white), var(--opacity-bg));
+}
+
+.border-white {
+  border-color: rgba(var(--white), var(--opacity));
+}
+
+.border-white-1 {
+  border-color: rgba(var(--white), 0.1);
+}
+
+.color-white {
+  color: rgba(var(--white), var(--opacity));
+}
+
+.border-color {
+  border-color: var(--border-color);
+}
+
+// White
+@for $i from 1 to 10 {
+  .color-white-#{$i} {
+    color: rgba(var(--white), var(--opacity-#{$i}));
+  }
+
+  .bg-white-#{$i} {
+    background-color: rgba(var(--white), var(--opacity-#{$i}));
+  }
+
+  .border-white-#{$i} {
+    border-color: rgba(var(--white), var(--opacity-#{$i}));
+  }
+}
+
+// Blue
+@for $i from 1 to 12 {
+  .color-blue-#{$i} {
+    color: rgba(var(--blue-#{$i}), var(--opacity));
+  }
+
+  .bg-blue-#{$i} {
+    background-color: rgba(var(--blue-#{$i}), var(--opacity-bg));
+  }
+
+  .border-blue-#{$i} {
+    border-color: rgba(var(--blue-#{$i}), var(--opacity));
+  }
+}
+
+// Gray
+@for $i from 1 to 12 {
+  .color-gray-#{$i} {
+    color: rgba(var(--gray-#{$i}), var(--opacity));
+  }
+
+  .bg-gray-#{$i} {
+    background-color: rgba(var(--gray-#{$i}), var(--opacity-bg));
+  }
+
+  .border-gray-#{$i} {
+    border-color: rgba(var(--gray-#{$i}), var(--opacity));
+  }
+}
+
+// Red
+@for $i from 1 to 12 {
+  .color-red-#{$i} {
+    color: rgba(var(--red-#{$i}), var(--opacity));
+  }
+
+  .bg-red-#{$i} {
+    background-color: rgba(var(--red-#{$i}), var(--opacity-bg));
+  }
+
+  .border-red-#{$i} {
+    border-color: rgba(var(--red-#{$i}), var(--opacity));
+  }
+}
+
+// Green
+@for $i from 1 to 12 {
+  .color-green-#{$i} {
+    color: rgba(var(--green-#{$i}), var(--opacity));
+  }
+
+  .bg-green-#{$i} {
+    background-color: rgba(var(--green-#{$i}), var(--opacity-bg));
+  }
+
+  .border-green-#{$i} {
+    border-color: rgba(var(--green-#{$i}), var(--opacity));
+  }
+}
+
+// Yellow
+@for $i from 1 to 12 {
+  .color-yellow-#{$i} {
+    color: rgba(var(--yellow-#{$i}), var(--opacity));
+  }
+
+  .bg-yellow-#{$i} {
+    background-color: rgba(var(--yellow-#{$i}), var(--opacity-bg));
+  }
+
+  .border-yellow-#{$i} {
+    border-color: rgba(var(--yellow-#{$i}), var(--opacity));
+  }
+}

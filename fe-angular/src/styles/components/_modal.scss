@@ -1,0 +1,53 @@
+.d-block {
+  display: block;
+}
+.fade:not(.tooltip) {
+  transition: opacity 0.15s linear;
+  padding: 12px 8px;
+}
+.modal-title {
+  font-weight: var(--font-semibold);
+  font-size: var(--font-lg);
+  flex-grow: 1;
+}
+
+.modal-xl .modal-lg {
+  max-width: 1000px;
+}
+
+@media (min-width: 576px) {
+  .modal-sm {
+    --bs-modal-width: 360px;
+  }
+  .fade:not(.tooltip) {
+    padding: 0;
+  }
+}
+
+.wrap-notify-icon {
+  .notify {
+    background-color: rgba(var(--gray-3), var(--opacity));
+    app-icon {
+      color: rgba(var(--gray-6), var(--opacity));
+    }
+  }
+
+  .wrap-notify-list {
+    width: 400px;
+    height: 100vh;
+    max-height: 800px !important;
+    top: -27px !important;
+    right: -21px !important;
+    border-radius: 32px;
+  }
+
+  .display-icon-close {
+    display: block !important;
+  }
+
+  .footer-notify-content {
+    button {
+      display: none;
+    }
+  }
+}

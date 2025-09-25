@@ -1,0 +1,39 @@
+<div id="top-sidebar" class="top-sidebar">
+  @if (userProfile) {
+    <button
+      *ngIf="isShowLogBtn"
+      class="btn-scoring"
+      nz-button
+      nzType="default"
+      (click)="logScoring()"
+    >
+      Log
+    </button>
+    <nz-avatar-group class="profile">
+      @if (userProfile?.avatar) {
+        <nz-avatar nzText="{{ userProfile?.avatar }}"></nz-avatar>
+      } @else {
+        <nz-avatar [nzSize]="35" nzIcon="user"></nz-avatar>
+      }
+
+      <div class="dropdown">
+        <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+          <div class="user-info">
+            <span class="username">{{ userProfile?.username ?? 'Admin' }}</span>
+            <span class="user-role">{{ userProfile?.userType }}</span>
+          </div>
+          <span nz-icon nzType="down" style="font-size: 16px"></span>
+        </a>
+        <nz-dropdown-menu #menu="nzDropdownMenu" nzPlacement="bottomCenter">
+          <ul nz-menu>
+            @for (item of listTitle; track item) {
+              <li nz-menu-item>{{ item }}</li>
+            }
+          </ul>
+        </nz-dropdown-menu>
+      </div>
+    </nz-avatar-group>
+  } @else {
+    <button nz-button nzType="default">Login</button>
+  }
+</div>

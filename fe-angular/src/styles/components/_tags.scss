@@ -1,0 +1,16 @@
+.app-tag {
+  color: var(--tag-color);
+  border-color: var(--tag-border-color);
+  background-color: var(--tag-bg-color);
+  .clear-tag {
+    border-radius: 50%;
+    background: var(--btn-clear-select-bg);
+    color: var(--btn-clear-select-color);
+    cursor: pointer;
+    transition: all 300ms;
+    &:hover {
+      background: var(--btn-clear-select-hover-bg);
+      color: var(--btn-clear-select-hover-color);
+    }
+  }
+}

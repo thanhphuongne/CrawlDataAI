@@ -1,0 +1,87 @@
+.home-container {
+  width: 100%;
+  height: 100%;
+}
+
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: contain;
+}
+
+.box-shadow {
+  border-radius: 10px;
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.container-bottom {
+  position: absolute;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+
+  .img-logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 32%;
+
+    img {
+      width: auto;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .scoring-table {
+    display: flex;
+    flex-direction: column;
+    height: 66%;
+    width: 35%;
+    background-color: transparent;
+    overflow: hidden;
+    justify-content: flex-end;
+  }
+}
+
+::ng-deep {
+  .ant-pagination {
+    align-self: flex-end;
+    margin: 10px;
+  }
+
+  .ant-card-head-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .scoring-table {
+    .bg-white {
+      background-color: rgba($color: #ffff, $alpha: 0.2);
+    }
+
+    table {
+      background-color: transparent;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .container-bottom {
+    justify-content: space-between;
+
+    .scoring-table {
+      width: 45%;
+    }
+  }
+}

@@ -1,0 +1,44 @@
+.wrap-dt-picker {
+  button {
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .icon-clear {
+    position: absolute;
+    top: calc(50% - 6px);
+    right: 40px;
+    width: 12px;
+    height: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgb(var(--gray-4));
+    color: rgb(var(--gray-10));
+    font-weight: bolder;
+    cursor: pointer;
+  }
+  .date-picker {
+    opacity: 0;
+    visibility: hidden;
+    left: 0;
+    top: 0;
+    z-index: -1;
+  }
+  input:not([type="button"]):not([type="checkbox"]):not([type="radio"]){
+    padding-right: calc(10 * (var(--base-space)))
+  }
+  
+  .ng-select {
+    ::ng-deep.ng-value-container .ng-input {
+      padding-right: 12px;
+    }
+    ::ng-deep.ng-arrow-wrapper {
+      display: none;
+    }
+    ::ng-deep.ng-dropdown-panel-items {
+      max-height: 160px;
+    }
+  }
+}

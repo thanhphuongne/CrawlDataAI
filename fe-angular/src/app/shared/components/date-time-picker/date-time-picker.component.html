@@ -1,0 +1,79 @@
+<ng-template #dateTimeTemplate let-dp>
+  <div
+    #timePicker
+    class="dt-picker-footer border-t-1 border-solid border-white-1 mt-1 pt-2 flex justify-center align-items-center"
+  >
+    <ng-select
+      [items]="listHours"
+      [(ngModel)]="time.hour"
+      (ngModelChange)="onTimeChange('hour')"
+      (search)="onTagSearch($event, 'hour')"
+      (blur)="onTimeBlur('hour')"
+      class="w-15 mg-r-2"
+      bindLabel="name"
+      bindValue="id"
+      [clearable]="false"
+      placeholder="HH"
+    >
+    </ng-select>
+    :
+    <ng-select
+      [items]="listMinutes"
+      [(ngModel)]="time.minute"
+      (ngModelChange)="onTimeChange('minute')"
+      (search)="onTagSearch($event, 'minute')"
+      (blur)="onTimeBlur('minute')"
+      class="w-15 mg-l-2"
+      bindLabel="name"
+      bindValue="id"
+      [clearable]="false"
+      placeholder="mm"
+    >
+    </ng-select>
+  </div>
+</ng-template>
+<div class="wrap-dt-picker w-full relative" (focus)="onTouched()">
+  <input
+    type="text"
+    [(ngModel)]="dateTimeDisplay"
+    [disabled]="!disabled && disabled"
+    class="w-full pd-r-10"
+    (click)="datePicker.toggle()"
+    [placeholder]="placeholder"
+    (keyup)="onTextValueChange()"
+  />
+  <input
+    name="dp"
+    ngbDatepicker
+    #datePicker="ngbDatepicker"
+    [footerTemplate]="enableTimePicker && dateTimeTemplate"
+    class="date-picker absolute"
+    [minDate]="minDate()"
+    [maxDate]="maxDate()"
+    [(ngModel)]="date"
+    [autoClose]="enableTimePicker ? 'outside' : true"
+    (ngModelChange)="onDateChange()"
+  />
+  <button
+    [app-icon]="listIcons.Calendar"
+    [disabled]="disabled"
+    (click)="!disabled && datePicker.toggle()"
+    app-button
+    [btn-squake]="true"
+    btn-type="subtle"
+    btn-variant="tertiary"
+    btn-size="sm"
+    type="button"
+    class="absolute"
+    [ngClass]="{
+      disabled: disabled
+    }"
+  ></button>
+  <i
+    *ngIf="dateTimeDisplay && allowClear"
+    class="icon-clear"
+    [app-icon]="listIcons.Close"
+    icon-size="8"
+    (click)="dateTimeDisplay && handleClearDate()"
+  ></i>
+</div>

@@ -1,0 +1,213 @@
+<div class="mg-b-6">
+  <a class="font-semibold font-sm" [routerLink]="listUserRoleUrl">{{
+    'Back to role data' | translate
+  }}</a>
+  <h1 class="mg-0">
+    {{ pageTitle | translate }}
+  </h1>
+</div>
+<div class="row">
+  <div class="col-12 col-lg-4 mg-b-6">
+    <div [app-card]>
+      <h3 class="title pd-b-5 border-b-1 border-solid border-white-1 mg-b-5">
+        {{ 'User role data' | translate }}
+      </h3>
+      <div class="mg-b-4 col-12">
+        <app-form-label class="mg-b-3" [required]="true">{{
+          'Department' | translate
+        }}</app-form-label>
+        <app-tree-select
+          [customerId]="customerId"
+          [type]="'department'"
+          [multiple]="true"
+          [isSelectedAll]="true"
+          [isAllValue]="false"
+          [functionKey]="listPermission.user.userUpdate"
+          [(ngModel)]="selectedDepartment"
+        ></app-tree-select>
+      </div>
+      <div class="mg-b-4 col-12">
+        <app-form-label class="mg-b-3" [required]="true">{{ 'Area' | translate }}</app-form-label>
+        <app-tree-select
+          [customerId]="customerId"
+          [type]="'area'"
+          [multiple]="true"
+          [isSelectedAll]="true"
+          [isAllValue]="false"
+          [functionKey]="listPermission.user.userUpdate"
+          [(ngModel)]="selectedArea"
+        ></app-tree-select>
+      </div>
+      <div class="mg-b-4 col-12 flex justify-end">
+        <a
+          app-button
+          [btn-type]="'filled'"
+          [btn-variant]="'tertiary'"
+          [routerLink]="listUserRoleUrl"
+          class="mg-r-4"
+        >
+          {{ 'Cancel' | translate }}
+        </a>
+        <button
+          app-button
+          [disabled]="
+            isUpdate ||
+            selectedArea.length === 0 ||
+            selectedDepartment.length === 0
+          "
+          [ngClass]="{
+            disabled:
+              isUpdate ||
+              selectedArea.length === 0 ||
+              selectedDepartment.length === 0
+          }"
+          [ngClass]="{ disabled: isUpdate }"
+          [app-loader]="isUpdate"
+          (click)="!isUpdate && updateUserInRole()"
+          *permissions="
+            [listPermission.role.roleUpdate, listPermission.role.roleAdd];
+            allowCustomerAdmin: true
+          "
+        >
+          {{ 'Update' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-8 mg-b-6">
+    <div [app-card]>
+      <div class="pd-b-5 border-b-1 border-solid border-white-1 mg-b-5">
+        <h4 class="title mg-b-0 ">
+          {{ 'Role: ' | translate }}
+          <span class="color-blue-6">{{ roleData?.name }}</span>
+        </h4>
+      </div>
+      <!-- <div class="row mg-b-2">
+        <div class="col-12 col-md-9">
+          <h3 class="title mg-b-1">
+            {{ 'Role permissions' | translate }}
+            <i
+              class="inline-flex align-items-center"
+              [app-icon]="icons.Info"
+              [icon-size]="'16'"
+              [ngbTooltip]="'List permissions granted' | translate"
+            ></i>
+          </h3>
+        </div>
+      </div> -->
+      <app-skeleton
+        *ngIf="isLoadingPermission"
+        type="multi-lines"
+        [repeat]="5"
+      ></app-skeleton>
+      <div
+        *ngIf="
+          !isLoadingPermission &&
+          listPermissionIdGranted &&
+          listPermissionIdGranted.length === 0
+        "
+        class="pd-x-3 pd-b-6 text-center"
+      >
+        <app-icon
+          [icon]="icons.Info"
+          size="60"
+          customClass="justify-center mg-b-4 color-gray-6"
+        ></app-icon>
+        <h3 class="mg-b-1 font-bold">
+          {{ 'This role does not have any permission yet' | translate }}
+        </h3>
+        <p>{{ 'Please select and add from left side' | translate }}</p>
+      </div>
+      <div
+        *ngIf="listSitePermission"
+        class="list-permissions flex flex-column mg-b-4"
+        ngbAccordion
+      >
+        <div
+          class="group-user-permission flex flex-column gap-2"
+          *ngFor="
+            let groupPermission of listSitePermission;
+            let groupIndex = index
+          "
+        >
+          <h3
+            *ngIf="groupPermission.setted"
+            class="mg-b-1  title"
+            [ngClass]="{ 'mg-t-5': !!groupIndex }"
+          >
+            {{ groupPermission.groupName }}
+          </h3>
+          <ng-container
+            *ngFor="
+              let permission of groupPermission.listFunctionGroup;
+              let i = index
+            "
+          >
+            <div
+              class="border-1 border-solid border-white-1 br-2"
+              *ngIf="permission.activatedRole"
+              ngbAccordionItem
+              [collapsed]="false"
+            >
+              <div
+                ngbAccordionHeader
+                class="flex align-items-center pd-1 justify-between"
+              >
+                <div class="flex align-items-center">
+                  <div
+                    class="pd-x-2 pd-y-1 color-white font-semibold"
+                    app-text-ellipsis
+                    [ngbTooltip]="permission.groupName | translate"
+                  >
+                    {{ permission.groupName | translate }}
+                  </div>
+
+                  <span [app-tag]>{{
+                    countPermissionsGranted(permission) +
+                      (' permission(s) granted' | translate)
+                  }}</span>
+                </div>
+                <!-- <button
+                  app-button
+                  [btn-squake]="true"
+                  btn-type="subtle"
+                  btn-variant="tertiary"
+                  btn-size="sm"
+                  ngbAccordionButton
+                  ngbAccordionToggle
+                >
+                  <app-icon [icon]="icons.CarretDown"></app-icon>
+                </button> -->
+              </div>
+              <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                  <ng-template>
+                    <div
+                      class="pd-y-2 pd-x-2 flex flex-wrap overflow-hidden overflow-y-auto max-h-60"
+                    >
+                      <div
+                        class="w-md-p-6 w-p-12 mg-b-2 pd-x-1"
+                        *ngFor="let item of permission.listFunctionApp"
+                      >
+                        <input
+                          type="checkbox"
+                          id="{{ item.functionId }}"
+                          name="{{ item.functionId }}"
+                          [checked]="item.activatedRole"
+                          [value]="item.functionId"
+                          [disabled]="true"
+                        /><label for="{{ item.functionId }}">{{
+                          item.functionId | translate
+                        }}</label>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+.wrap-table {
+  border: 1px solid var(--table-border-color);
+  border-radius: calc(2 * (var(--base-space)));
+  overflow: auto;
+  table {
+    margin: 0;
+    border: none;
+  }
+  thead {
+    position: sticky;
+    top: 0;
+    left: 0;
+  }
+}

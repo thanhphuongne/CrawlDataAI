@@ -1,0 +1,382 @@
+.scoring-container {
+  .common-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .row-back {
+    width: 100%;
+  }
+
+  .common-row {
+    width: 95%;
+  }
+
+  .btn-back {
+    color: white;
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 30px;
+    margin-right: 18px;
+
+    .btn-add {
+      color: white;
+      align-items: center;
+      display: flex;
+      font-size: 15px;
+      margin-top: 10px;
+      background-color: transparent;
+    }
+  }
+
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    overflow: hidden;
+    margin-top: 10px;
+
+    .log-table {
+      background-color: yellow;
+      width: 100%;
+    }
+
+    .ant-table-tbody > tr > td {
+      padding: 10px 8px !important;
+    }
+  }
+
+  .ant-pagination {
+    align-self: flex-end;
+    margin: 10px 0 10px;
+  }
+}
+
+::ng-deep {
+  .ant-card-head-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .table-container {
+    .ant-table-tbody > tr > td {
+      padding: 10px 8px !important;
+    }
+  }
+}
+
+::ng-deep {
+  .ant-pagination {
+    align-self: flex-end;
+  }
+
+  .ant-input-prefix {
+    .anticon {
+      margin-right: 4px;
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .result {
+    .ant-picker {
+      input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+        padding: 0;
+        width: 100%;
+        border: none;
+        color: rgba(0, 0, 0, 0.85);
+      }
+
+      input {
+        border: none;
+        min-height: auto;
+      }
+
+      .anticon {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+
+  .ant-modal-header {
+    border-radius: 10px;
+  }
+
+  .title-input {
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+  }
+
+  .form-row {
+    margin-top: 10px;
+
+    textarea.ant-input,
+    .ant-select, input {
+      margin-top: 4px;
+    }
+  }
+
+  .ant-modal {
+    input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+      color: black;
+      font-weight: 500;
+      opacity: 1;
+    }
+
+    input:not([type="button"]):not([type="checkbox"]):not(
+        [type="radio"]
+      ):disabled {
+      background-color: #d5d5d5;
+    }
+
+    .template-header {
+      display: flex;
+      flex-direction: column;
+
+      .title-header-template {
+        font-size: 18px;
+        font-weight: 600;
+        color: black;
+        margin-top: 12px;
+        margin-bottom: 4px;
+      }
+
+      .desc-header-template {
+        font-size: 14px;
+        color: #535862;
+      }
+    }
+
+    input:read-only {
+      background-color: #d5d5d5 !important;
+    }
+  }
+
+  .ant-modal-body {
+    .job-name-container {
+      display: flex;
+      flex-direction: row;
+
+      a {
+        color: #0080ff;
+        text-decoration: underline;
+        font-size: 14px;
+      }
+    }
+
+    padding-top: 10px;
+  }
+
+  .ant-modal-footer {
+    padding: 16px;
+
+    button {
+      font-size: 14px;
+      font-weight: 600;
+
+      &.active-text {
+        color: white;
+      }
+    }
+  }
+
+  #input,
+  #output {
+    padding-right: 10px;
+  }
+
+  .gr-container-row {
+    padding-right: 0;
+
+    .gr-col {
+      padding-right: 0;
+    }
+
+    .gr-input {
+      border-radius: 5px;
+      padding: 0;
+
+      #jobName {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        text-indent: 10px;
+      }
+
+      &.read-only {
+        background-color: #d5d5d5;
+
+        #jobName {
+          border-radius: 0;
+        }
+      }
+
+      &.edit-mode {
+        border: 1px solid var(--input-border-color);
+        transition: all 300ms;
+        background-color: var(--input-bg-color);
+        color: var(--input-color);
+
+        #jobName {
+          border-radius: 8;
+        }
+      }
+    }
+  }
+
+  .ant-picker-content {
+    .ant-picker-time-panel-column {
+      flex-direction: column !important;
+    }
+  }
+
+  .time-container {
+    .ant-picker {
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      min-height: 40px;
+      border-radius: 4px;
+      font-size: 13px;
+
+      input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+        padding: 0;
+        width: 100%;
+        border: none;
+        color: rgba(0, 0, 0, 0.85);
+      }
+
+      input {
+        border: none;
+        min-height: auto;
+      }
+    }
+
+    .ant-picker-disabled {
+      background-color: #d5d5d5 !important;
+    }
+  }
+
+  .sl-agent {
+    .ant-select {
+      border-radius: 4px;
+      width: 100%;
+
+      .ant-select-selector {
+        width: 100%;
+        min-height: 40px;
+        border-radius: 4px;
+      }
+
+      .ant-select-selection-item {
+        font-size: 14px;
+        font-weight: 500;
+        color: black;
+        align-self: center;
+      }
+    }
+
+    .ant-select-disabled {
+      .ant-select-selector {
+        background-color: #d5d5d5 !important;
+      }
+    }
+  }
+
+  .btn-cancel {
+    border: 0.5px solid #d5d5d5;
+  }
+
+  .btn-custom {
+    height: 100%;
+
+    &.filter {
+      &.active {
+        color: rgba(59, 130, 246, 1) !important;
+      }
+
+      &.de-active {
+        color: rgba(59, 130, 246, 0.5) !important;
+      }
+    }
+
+    &.rm-filter {
+      &.active {
+        color: rgba(232, 54, 53, 1) !important;
+      }
+
+      &.de-active {
+        color: rgba(232, 54, 53, 0.5) !important;
+      }
+    }
+  }
+
+  .container-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .btn-popup {
+    max-width: 300px;
+
+    &.active {
+      background-color: rgba(59, 130, 246, 1) !important;
+    }
+
+    &.de-active {
+      background-color: rgba(59, 130, 246, 0.5) !important;
+    }
+  }
+
+  .ant-tag {
+    align-self: center;
+    text-align: center;
+    font-weight: 600;
+
+    &.done {
+      color: #ef3826;
+      background-color: rgba(239, 56, 38, 0.2) !important;
+    }
+    &.waiting {
+      color: #fd9a56;
+      background-color: rgba(253, 154, 86, 0.2) !important;
+    }
+    &.running {
+      color: #00b69b;
+      background-color: rgba(0, 182, 155, 0.2) !important;
+    }
+  }
+
+  .ant-spin .ant-spin-spinning {
+    z-index: 10000;
+  }
+
+  .add {
+    &.ant-btn > span + .anticon {
+      margin-left: 0;
+    }
+  }
+}

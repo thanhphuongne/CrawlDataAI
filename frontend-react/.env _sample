@@ -1,0 +1,6 @@
+# NEXT_PUBLIC_HOST_API=https://api.xoffer.io/web/v1
+NEXT_PUBLIC_HOST_API=http://127.0.0.1:3001/v1
+NEXT_PUBLIC_ASSETS_API=http://localhost:3032
+NEXT_PUBLIC_APP_DOMAIN=http://localhost:3032/
+NEXT_PUBLIC_CLIENT_ID=468096676598-t30ejo384gtkaah5n79ljvvki897ngut.apps.googleusercontent.com
+NEXT_PUBLIC_RPC_URL=https://rpc-amoy.polygon.technology

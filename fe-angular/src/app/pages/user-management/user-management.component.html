@@ -1,0 +1,328 @@
+<div class="table-container flex flex-column bg-white w-full h-full">
+  <div class="table-header flex justify-between align-items-center">
+    <div class="filter-bar flex align-items-center border-1">
+      <!-- Role Button -->
+      <div nz-dropdown [nzDropdownMenu]="rolesMenu" nzTrigger="click" nzPlacement="bottomLeft"
+        [(nzVisible)]="isOpenDropdownRoles">
+        <button class="flex align-items-center border-0 pd-md-x-2" nz-button nzType="default">
+          <span>Vai trò </span>
+          <i nz-icon nzType="down"></i>
+        </button>
+      </div>
+
+      <!-- Role List -->
+      <nz-dropdown-menu #rolesMenu="nzDropdownMenu">
+        <ul nz-menu class="flex-column">
+          @for (item of roleOptions; track $index) {
+          <li nz-menu-item>
+            <label nz-checkbox [ngModel]="item.selected" (ngModelChange)="onchangeRoles(item)">{{ item.label }}</label>
+          </li>
+          }
+        </ul>
+      </nz-dropdown-menu>
+      <span class="divider"></span>
+
+      <!-- Status Button -->
+      <nz-dropdown nz-dropdown [nzDropdownMenu]="statusMenu" nzTrigger="click" nzPlacement="bottomLeft"
+        [(nzVisible)]="isOpenDropdownStatus">
+        <button class="flex align-items-center border-0 pd-md-l-2 pd-md-r-3" nz-button nzType="default">
+          <span>Trạng thái </span>
+          <i nz-icon nzType="down"></i>
+        </button>
+      </nz-dropdown>
+      <span class="divider"></span>
+
+      <!-- Status List -->
+      <nz-dropdown-menu #statusMenu="nzDropdownMenu">
+        <ul nz-menu class="flex-column">
+          @for (item of statusOptions; track $index) {
+          <li nz-menu-item>
+            <label nz-checkbox [ngModel]="item.selected" (ngModelChange)="onchangeStatus(item)">{{ item.label }}</label>
+          </li>
+          }
+        </ul>
+      </nz-dropdown-menu>
+
+      <!-- Filter Button -->
+      <button class="border-0 color-blue-5 pd-md-l-3 pd-md-r-4 btn-custom filter" nzType="default" nzShape="round"
+        [ngClass]="tagValues().size > 0 ? 'active' : 'de-active'" [disabled]="tagValues().size <= 0"
+        (click)="onApplyFilters()">
+        Lọc
+      </button>
+      <span class="divider"></span>
+
+      <!-- Clear Filter Button -->
+      <button
+        class="px-6 py-2 border-0 text-red-500 rounded-md whitespace-nowrap w-auto min-w-[100px] text-center hover:bg-red-100 focus:outline-none btn-custom rm-filter"
+        nzType="default" nzShape="round" [ngClass]="tagValues().size > 0 ? 'active' : 'de-active'"
+        [disabled]="tagValues().size <= 0" (click)="onClearFilters()">
+        Hủy lọc
+      </button>
+    </div>
+
+    <div class="flex justify-end search">
+      <!-- Search Input -->
+      <nz-input-group [nzPrefix]="search">
+        <input nz-input placeholder="Tìm kiếm người dùng" [(ngModel)]="searchValue"
+          (ngModelChange)="onSearchChange()" />
+      </nz-input-group>
+      <ng-template #search>
+        <span nz-icon nzType="search" nzTheme="outline"></span>
+      </ng-template>
+
+      <!-- Add New -->
+      <button nz-button class="bg-blue-5 flex align-items-center inline-block add" nzType="primary"
+        *permissions="['ADMIN']" nzSize="large" (click)="showModal(viewModeEnum.CREATE)">
+        <span nz-icon nzType="plus" nzThem="outline"></span>
+        <span>Thêm mới người dùng</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="result">
+    @if (tagValues().size > 0) {
+    <div class="tags">
+      @for (tag of tagValues(); track tag; let ind = $index) {
+      <nz-tag [nzMode]="'closeable'" [nzColor]="'#108ee9'" (nzOnClose)="closeTag(tag)">{{ tag.value }}</nz-tag>
+      }
+    </div>
+    }
+  </div>
+
+  <app-user-management-table [usersInfo]="listRecord" [isLoading]="isLoading()" (openDialog)="openDialog($event)"
+    (deleteRecord)="onDelete($event)" class="pt-4"></app-user-management-table>
+
+  <nz-pagination [nzPageIndex]="offset" [nzTotal]="totalRecord" nzShowSizeChanger [nzPageSize]="limit"
+    (nzPageIndexChange)="pageSizeChange($event)" (nzPageSizeChange)="pageTotalSizeChange($event)"></nz-pagination>
+</div>
+
+<!-- Modal CREATE, EDIT, UPDATE-->
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" (nzOnCancel)="handleCancel()" [nzFooter]="modalFooter"
+  [nzWidth]="'38%'" nzMaskClosable="false">
+  <div *nzModalContent>
+    <form [formGroup]="userForm" class="space-y-2">
+      <div class="row d-flex align-items-center gr-container-row" style="display: none;">
+        <div class="col gr-col">
+          <nz-input-group class="gr-input">
+            <input id="id" formControlName="id" type="text" 
+              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+          </nz-input-group>
+        </div>
+      </div>
+      <!--User Name-->
+      <div class="job-name-container row">
+        <div class="col">
+          <div class="job-input row">
+            <div>
+              <label for="userName" class="text-sm font-medium text-gray-900">Tên đăng nhập</label>
+              <i *ngIf="mode !== 'VIEW'" nz-icon nzType="question-circle" nz-tooltip
+                nzTooltipTitle="Nhập tên đăng nhập (6 - 100 ký tự)" class="ml-2 cursor-pointer"></i>
+            </div>
+
+            <div class="row d-flex align-items-center gr-container-row">
+              <div class="col gr-col">
+                <nz-input-group class="gr-input">
+                  <input id="userName" formControlName="userName" type="text" [readonly]="mode !== viewModeEnum.CREATE"
+                    placeholder="Nhập tên đăng nhập"
+                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+                </nz-input-group>
+              </div>
+            </div>
+            <div *ngIf="
+                userForm.get('userName')?.errors?.['required'] &&
+                isFieldInvalid('userName')
+              " class="text-sm text-red-600 mt-1">
+              Tên đăng nhập là bắt buộc!
+            </div>
+            <div *ngIf="
+                userForm.get('userName')?.errors?.['minlength'] &&
+                isFieldInvalid('userName')
+              " class="text-sm text-red-600 mt-1">
+              Tên đăng nhập phải có ít nhất 6 ký tự.
+            </div>
+            <div *ngIf="
+                userForm.get('userName')?.errors?.['maxlength'] &&
+                isFieldInvalid('userName')
+              " class="text-sm text-red-600 mt-1">
+              Tên đăng nhập không được vượt quá 100 ký tự.
+            </div>
+            <div *ngIf="
+                userForm.get('userName')?.errors?.['pattern'] &&
+                isFieldInvalid('userName')
+              " class="text-sm text-red-600 mt-1">
+              Tên đăng nhập chỉ được chứa chữ cái hoặc số.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="job-name-container row">
+        <div class="col">
+          <div class="job-input row">
+            <div class="flex items-center">
+              <label for="passWord" class="text-sm font-medium text-gray-900">Mật khẩu</label>
+              <i *ngIf="mode !== 'VIEW'" nz-icon nzType="question-circle" nz-tooltip
+                nzTooltipTitle="Nhập mật khẩu (6 - 100 ký tự)" class="ml-2 cursor-pointer"></i>
+            </div>
+
+            <div class="row flex items-center gr-container-row">
+              <div class="col gr-col">
+                <nz-input-group [nzSuffix]="mode !== viewModeEnum.VIEW ? suffixIcon : null" class="gr-input">
+                  <input id="passWord" formControlName="passWord" [type]="passwordVisible ? 'text' : 'password'"
+                     placeholder="Nhập mật khẩu"
+                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+                </nz-input-group>
+              </div>
+            </div>
+            <div *ngIf="
+                userForm.get('passWord')?.hasError('required') &&
+                isFieldInvalid('passWord')
+              " class="text-sm text-red-600 mt-1">
+              Mật khẩu là bắt buộc!
+            </div>
+            <div *ngIf="
+                userForm.get('passWord')?.hasError('maxlength') &&
+                isFieldInvalid('passWord')
+              " class="text-sm text-red-600 mt-1">
+              Mật khẩu không được vượt quá 100 ký tự!
+            </div>
+            <div *ngIf="
+                userForm.get('passWord')?.hasError('minlength') &&
+                isFieldInvalid('passWord')
+              " class="text-sm text-red-600 mt-1">
+              Mật khẩu không được ít hơn 6 ký tự!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suffix Icon Template -->
+      <ng-template #suffixIcon>
+        <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" class="cursor-pointer"
+          (click)="togglePasswordVisibility()"></i>
+      </ng-template>
+
+
+      <!--fullName-->
+      <div class="job-name-container row">
+        <div class="col">
+          <div class="job-input row">
+            <div>
+              <label for="fullName" class="text-sm font-medium text-gray-900">Tên người dùng</label>
+              <i *ngIf="mode !== 'VIEW'" nz-icon nzType="question-circle" nz-tooltip
+                nzTooltipTitle="Nhập tên người dùng (6 - 100 ký tự)" class="ml-2 cursor-pointer"></i>
+            </div>
+
+            <div class="row d-flex align-items-center gr-container-row">
+              <div class="col gr-col">
+                <nz-input-group class="gr-input">
+                  <input id="fullName" formControlName="fullName" type="text"
+                  placeholder="Nhập tên người dùng"
+                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" />
+                </nz-input-group>
+              </div>
+            </div>
+            <div *ngIf="
+                userForm.get('fullName')?.hasError('required') &&
+                (userForm.get('fullName')?.dirty || userForm.get('fullName')?.touched)
+              " class="text-sm text-red-600 mt-1">
+              Tên người dùng là bắt buộc!
+            </div>
+            <div *ngIf="
+              userForm.get('fullName')?.hasError('maxlength') &&
+              isFieldInvalid('fullName')
+            " class="text-sm text-red-600 mt-1">
+              Tên người dùng không được vượt quá 100 ký tự!
+            </div>
+            <div *ngIf="
+              userForm.get('fullName')?.hasError('minlength') &&
+              isFieldInvalid('fullName')
+            " class="text-sm text-red-600 mt-1">
+              Tên người dùng không được ít hơn 6 ký tự!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6">
+        <!--Role-->
+        <div>
+          <div>
+            <label class="text-sm font-medium text-gray-900">Vai trò</label>
+            <i *ngIf="mode !== viewModeEnum.VIEW" nz-icon nzType="question-circle" nz-tooltip
+              nzTooltipTitle="Chọn vai trò người dùng" class="ml-2 cursor-pointer"></i>
+          </div>
+          <div class="sl-agent">
+            <nz-select id="role" formControlName="role">
+              @for (item of roleOptions; track item) {
+              <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+              }
+            </nz-select>
+          </div>
+          <div *ngIf="isFieldInvalid('role')" class="text-sm text-red-600 mt-1">
+            Role là bắt buộc
+          </div>
+        </div>
+        <!--Status-->
+        <div>
+          <div>
+            <label class="text-sm font-medium text-gray-900">Trạng thái</label>
+            <i *ngIf="mode !== viewModeEnum.VIEW" nz-icon nzType="question-circle" nz-tooltip
+              nzTooltipTitle="Chọn trạng thái tài khoản" class="ml-2 cursor-pointer"></i>
+          </div>
+          <div class="sl-agent">
+            <nz-select id="status" formControlName="status">
+              @for (item of statusOptions; track item) {
+              <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+              }
+            </nz-select>
+          </div>
+          <div *ngIf="isFieldInvalid('status')" class="text-sm text-red-600 mt-1">
+            Trạng thái là bắt buộc!
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</nz-modal>
+<!-- End Modal-->
+
+<!-- Header of Modal -->
+<ng-template #modalTitle>
+  <div class="template-header">
+    <img nz-image width="48px" height="48px" nzSrc="../../../assets/icons/ic_flag.png" nzDisablePreview="true" />
+    <span class="title-header-template">{{ getTitleModal() }}</span>
+    <span class="desc-header-template">{{ getDescModal() }}</span>
+  </div>
+</ng-template>
+
+<!-- Footer of Modal -->
+<ng-template #modalFooter>
+  <div class="row">
+    <div class="col-6">
+      <button type="button"
+        class="px-4 py-2 w-full bg-white-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 btn-cancel"
+        (click)="handleCancel()">
+        Đóng
+      </button>
+    </div>
+    <div class="col">
+      <button type="button" *ngIf="mode == viewModeEnum.VIEW" (click)="editMode()"
+        class="px-4 py-2 w-full bg-blue-500 active-text rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 btn-popup">
+        Chỉnh sửa
+      </button>
+      <button *ngIf="mode !== viewModeEnum.VIEW" type="submit" [disabled]="!userForm.valid" (click)="createUpdateUser()"
+        [ngClass]="!userForm.valid ? 'de-active' : 'active'"
+        class="px-4 py-2 w-full bg-blue-500 active-text rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 btn-popup">
+        Lưu
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- End Modal-->
+
+<!-- Job Popup -->
+<app-popup [type]="popupContent?.type" [title]="popupContent?.title" [content]="popupContent?.content"
+  [(isVisible)]="isShowPopup" (okOnChange)="confirmActions($event)">
+</app-popup>

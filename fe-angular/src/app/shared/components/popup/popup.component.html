@@ -1,0 +1,59 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  (nzOnCancel)="closeModal()"
+  (nzOnOk)="okAction()"
+  [nzFooter]="modalFooter"
+  [nzTitle]="modalTitle"
+>
+</nz-modal>
+
+<!-- Header of Modal -->
+<ng-template #modalTitle>
+  <div class="template-header-popup">
+    <img
+      nz-image
+      width="48px"
+      height="48px"
+      [nzSrc]="getPopupImage()"
+      nzDisablePreview="true"
+    />
+    <div class="container-text">
+      <span class="title-header-template">{{ title() }}</span>
+      <span class="desc-header-template">{{ content() }}</span>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Footer of Modal -->
+<ng-template #modalFooter>
+  <div class="btn-container">
+    @if (type() == popupType.CONFIRM || type() == popupType.CONFIRM_DELETE) {
+      <button
+        type="button"
+        class="px-4 py-2 bg-white-500 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 btn-custom btn-cancel"
+        (click)="closeModal()"
+      >
+        Hủy
+      </button>
+    }
+
+    @if (type() == popupType.CONFIRM || type() == popupType.CONFIRM_DELETE) {
+      <button
+        type="button"
+        (click)="okAction()"
+        class="px-4 py-2 bg-blue-500 active-text rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 btn-custom btn-confirm"
+      >
+        {{ type() == popupType.CONFIRM_DELETE ? 'Xóa' : 'OK' }}
+      </button>
+    } @else {
+      <button
+        type="submit"
+        class="px-4 py-2 bg-blue-500 active-text rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 btn-custom btn-ok"
+        (click)="okAction()"
+      >
+        OK
+      </button>
+    }
+  </div>
+</ng-template>
+<!-- End Modal-->

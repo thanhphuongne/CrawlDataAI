@@ -1,0 +1,346 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="spaces">
+    <h1>Spaces</h1>
+    <hr />
+    <p>
+      Base space is: <span class="color-red-4">4px</span> and define with
+      variable: <code>--base-space:4px;</code>
+    </p>
+    <p>This section will include height, width, border, padding, margin.</p>
+    <h5 class="color-black mg-t-5">Responsive rule</h5>
+    <p>
+      Breakpoint of responsive will follow bootstrap ver 5. Keywords using for
+      breakpoint (res_key): <code><i>blank</i>, sm, md, lg, xl, xxl</code>
+    </p>
+    <p>Keyword must add before value. Example: <code>w-sm-100vw</code></p>
+    <hr />
+    <div id="width" class="mg-b-6">
+      <h4 class="mg-b-4">Width</h4>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold">
+        <div class="w-p-3">Type</div>
+        <div class="w-p-3">Class</div>
+        <div class="w-p-6">Description</div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">View width</div>
+        <div class="w-p-3">
+          <code>.w-100vw</code>
+        </div>
+        <div class="w-p-6">
+          <code>width: 100vw</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">Pixel width</div>
+        <div class="w-p-3">
+          <code>.w-px</code><br />
+          <code>.w[res_key]-[width]</code>
+        </div>
+        <div class="w-p-6">
+          <code>width: 1px</code><br />
+          <p class="mg-0">
+            <code>res_key</code> follow responsive rule, start with
+            <code>-</code> except <code>blank</code>
+          </p>
+          <code>width</code> start from 0 to 40. With base width is 4px.
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">Full width</div>
+        <div class="w-p-3">
+          <code>.w-full</code><br />
+          <code>.min-w-full</code><br />
+          <code>.max-w-full</code><br />
+        </div>
+        <div class="w-p-6">
+          <code>width: 100%</code><br />
+          <code>min-width: 100%</code><br />
+          <code>max-width: 100%</code><br />
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">Percent width</div>
+        <div class="w-p-3">
+          <code>.w[res_key]-p-[col]</code><br />
+          <code>.min-w[res_key]-p-[col]</code><br />
+          <code>.max-w[res_key]-p-[col]</code><br />
+        </div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            <code>res_key</code> follow responsive rule, start with
+            <code>-</code> except <code>blank</code>
+          </p>
+          <p>
+            <code>col</code> follow rule
+            <span class="color-red-4">12 cols</span> start from 1 to 12
+          </p>
+          <p class="mg-0">
+            Example:<br />
+            <code>{{ ".w-p-6{width:50%}" }}</code><br /><code>{{ ".w-sm-p-6{width:50%}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">Max/min width</div>
+        <div class="w-p-3">
+          <code>.max-w-1</code><br />
+          <code>.min-w-1</code><br />
+          <code>.max-w[res_key]-[width]</code><br />
+        </div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            <code>max width: 4px</code>
+          </p>
+          <p>
+            <code>min width: 4px</code>
+          </p>
+          <p class="mg-0">
+            <code>res_key</code> follow responsive rule, start with
+            <code>-</code> except <code>blank</code>
+          </p>
+          <code>width</code> start from 0 to 100. With base width is 4px.
+        </div>
+      </div>
+    </div>
+    <div id="margin" class="mg-b-6">
+      <h4 class="color-black mg-b-2">Margin</h4>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold">
+        <div class="w-p-3">Class</div>
+        <div class="w-p-3">Direction</div>
+        <div class="w-p-6">Description</div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.mg[res_key]-[value]</code>
+        </div>
+        <div class="w-p-3">All</div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            <code>res_key</code> follow responsive rule, start with
+            <code>-</code> except <code>blank</code>
+          </p>
+          <p class="mg-0">
+            <code>value</code> start from 0 to 10 with space base 4px
+          </p>
+          <p class="mg-0">
+            Example: <code>{{ ".mg-md-3{margin:12px}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.mg[res_key]-l-[value]</code>
+        </div>
+        <div class="w-p-3">Left</div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            Example: <code>{{ ".mg-md-l-3{margin-left:12px}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.mg[res_key]-r-[value]</code>
+        </div>
+        <div class="w-p-3">Right</div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            Example: <code>{{ ".mg-md-r-3{margin-right:12px}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.mg[res_key]-t-[value]</code>
+        </div>
+        <div class="w-p-3">Top</div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            Example: <code>{{ ".mg-md-t-3{margin-top:12px}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.mg[res_key]-b-[value]</code>
+        </div>
+        <div class="w-p-3">Bottom</div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            Example: <code>{{ ".mg-md-b-3{margin-bottom:12px}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.mg[res_key]-y-[value]</code>
+        </div>
+        <div class="w-p-3">Top Bottom</div>
+        <div class="w-p-6">
+          <code>{{ ".mg-md-y-3{margin-top:12px; margin-bottom:12px}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.mg[res_key]-x-[value]</code>
+        </div>
+        <div class="w-p-3">Left Right</div>
+        <div class="w-p-6">
+          <code>{{ ".mg-md-x-3{margin-left:12px; margin-right:12px}" }}</code>
+        </div>
+      </div>
+    </div>
+    <div id="padding" class="mg-b-6">
+      <h4 class="color-black mg-b-2">Padding</h4>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold">
+        <div class="w-p-3">Class</div>
+        <div class="w-p-3">Direction</div>
+        <div class="w-p-6">Description</div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.pd[res_key]-[value]</code>
+        </div>
+        <div class="w-p-3">All</div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            <code>res_key</code> follow responsive rule, start with
+            <code>-</code> except <code>blank</code>
+          </p>
+          <p class="mg-0">
+            <code>value</code> start from 0 to 10 with space base 4px
+          </p>
+          <p class="mg-0">
+            Example: <code>{{ ".pd-md-3{padding:12px}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.pd[res_key]-l-[value]</code>
+        </div>
+        <div class="w-p-3">Left</div>
+        <div class="w-p-6">
+          <code>{{ ".pd-md-l-3{padding-left:12px}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.pd[res_key]-r-[value]</code>
+        </div>
+        <div class="w-p-3">Right</div>
+        <div class="w-p-6">
+          <code>{{ ".pd-md-r-3{padding-right:12px}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.pd[res_key]-t-[value]</code>
+        </div>
+        <div class="w-p-3">Top</div>
+        <div class="w-p-6">
+          <code>{{ ".pd-md-t-3{padding-top:12px}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.pd[res_key]-b-[value]</code>
+        </div>
+        <div class="w-p-3">Bottom</div>
+        <div class="w-p-6">
+          <code>{{ ".pd-md-b-3{padding-bottom:12px}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.pd[res_key]-y-[value]</code>
+        </div>
+        <div class="w-p-3">Top Bottom</div>
+        <div class="w-p-6">
+          <code>{{ ".pd-md-y-3{padding-top:12px; padding-bottom:12px}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.pd[res_key]-x-[value]</code>
+        </div>
+        <div class="w-p-3">Left Right</div>
+        <div class="w-p-6">
+          <code>{{ ".pd-md-x-3{padding-left:12px; padding-right:12px}" }}</code>
+        </div>
+      </div>
+    </div>
+    <div id="border-radius" class="mg-b-6">
+      <h4 class="color-black mg-b-2">Border radius</h4>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold">
+        <div class="w-p-3">Class</div>
+        <div class="w-p-3">Direction</div>
+        <div class="w-p-6">Description</div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.br[res_key]-[value]</code><br />
+          <code>.br[res_key]-round</code>
+        </div>
+        <div class="w-p-3">All</div>
+        <div class="w-p-6">
+          <p class="mg-0">
+            <code>res_key</code> follow responsive rule, start with
+            <code>-</code> except <code>blank</code>
+          </p>
+          <p class="mg-0">
+            <code>value</code> start from 0 to 10 with space base 4px
+          </p>
+          <p class="mg-0">
+            Example:
+            <code>{{ ".br-md-3{border-radius:12px}" }}</code><br /><code>{{ ".br-md-round{border-radius:50%}" }}</code>
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.br[res_key]-tl-[value]</code><br />
+          <code>.br[res_key]-tl-round</code>
+        </div>
+        <div class="w-p-3">Top Left</div>
+        <div class="w-p-6">
+          <code>{{ ".br-md-tl-3{border-top-left-radius:12px}" }}</code><br />
+          <code>{{ ".br-md-tl-round{border-top-left-radius:50%}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.br[res_key]-tr-[value]</code><br />
+          <code>.br[res_key]-tr-round</code>
+        </div>
+        <div class="w-p-3">Top right</div>
+        <div class="w-p-6">
+          <code>{{ ".br-md-tr-3{border-top-right-radius:12px}" }}</code><br />
+          <code>{{ ".br-md-tr-round{border-top-right-radius:50%}" }}</code>
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.br[res_key]-bl-[value]</code><br />
+          <code>.br[res_key]-bl-round</code><br />
+        </div>
+        <div class="w-p-3">Bottom left</div>
+        <div class="w-p-6">
+          <code>{{ ".br-md-bl-3{border-bottom-left-radius:12px}" }}</code><br />
+          <code>{{ ".br-md-bl-round{border-bottom-left-radius:50%}" }}</code><br />
+        </div>
+      </div>
+      <div class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2">
+        <div class="w-p-3">
+          <code>.br[res_key]-br-[value]</code><br />
+          <code>.br[res_key]-br-round</code><br />
+        </div>
+        <div class="w-p-3">Bottom right</div>
+        <div class="w-p-6">
+          <code>{{ ".br-md-br-3{border-bottom-right-radius:12px}" }}</code><br />
+          <code>{{ ".br-md-br-round{border-bottom-right-radius:50%}" }}</code><br />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

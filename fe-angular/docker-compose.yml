@@ -1,0 +1,22 @@
+﻿version: '3.4'
+
+services:
+  platform-portal:
+    container_name: platform-portal
+    image: 540302794831.dkr.ecr.ap-southeast-1.amazonaws.com/akacam/platform-portal:latest
+    build:
+      context: .
+      dockerfile: Dockerfile      
+    ports:
+      - 2003:80
+    hostname: platform-portal
+    restart: always
+    networks:
+      - akacam
+
+
+# CREATE NETWORK
+networks:
+  akacam:
+    name: akacam
+    driver: bridge

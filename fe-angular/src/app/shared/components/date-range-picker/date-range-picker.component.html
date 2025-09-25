@@ -1,0 +1,102 @@
+<div class="wrap-dt-picker w-full relative min-w-25">
+  <!-- Nút để mở Datepicker -->
+  <button
+    type="button"
+    class="w-full color-black flex justify-evenly align-items-center"
+    (click)="handleToggle()"
+    [disabled]="disabled"
+  >
+    {{ dateRangeDisplay || ('Ngày tạo' | translate) }}
+    <i nz-icon nzType="down" style="font-size: 12px;"></i>
+  </button>
+
+  <!-- Datepicker -->
+  <input
+    name="dp"
+    ngbDatepicker
+    #datePicker="ngbDatepicker"
+    class="date-picker absolute"
+    [autoClose]="'outside'"
+    (dateSelect)="onDateSelection($event)"
+    [dayTemplate]="dateRange"
+    [value]="
+      dateTimeUtils.dateObjectToDateString(this.fromDate, displayFormat())
+    "
+    [minDate]="minDate()"
+    [maxDate]="maxDate()"
+    [footerTemplate]="headerTemplate"
+  />
+</div>
+
+<ng-template
+  #dateRange
+  let-date
+  let-currentMonth="currentMonth"
+  let-focused="focused"
+>
+  <span
+    class="btn-light"
+    [class.focused]="focused"
+    [class.range]="isRange(date)"
+    [class.first]="isFirst(date)"
+    [class.today]="isToday(date)"
+    [class.last]="isLast(date)"
+    [class.faded]="isHovered(date) || isInside(date)"
+    [class.outside]="!isCurrentMonth(date, currentMonth)"
+    [class.text-muted]="!isCurrentMonth(date, currentMonth)"
+    (mouseenter)="setHoveredDate(date)"
+    (mouseleave)="setHoveredDate(null)"
+  >
+    {{ date.day }}
+  </span>
+</ng-template>
+
+<ng-template #headerTemplate let-dp>
+  <!-- <div class="flex justify-between gap-2 order-m-1 ng-dp-header-template">
+    <div class="header_template">
+      <input
+        type="text"
+        disabled
+        [ngModel]="startDate()"
+        class="w-full"
+        style="min-height: 36px"
+        [placeholder]="'Start date' | translate"
+      />
+      <i
+        *ngIf="startDate()"
+        class="icon-clear"
+        [app-icon]="listIcons.Close"
+        icon-size="8"
+        (click)="startDate && handleClearDate('start')"
+      ></i>
+    </div>
+    <div class="header_template">
+      <input
+        type="text"
+        disabled
+        [ngModel]="endDate()"
+        class="w-full"
+        style="min-height: 36px"
+        [placeholder]="'End date' | translate"
+      />
+      <i
+        *ngIf="endDate()"
+        class="icon-clear"
+        [app-icon]="listIcons.Close"
+        icon-size="8"
+        (click)="endDate && handleClearDate('end')"
+      ></i>
+    </div>
+  </div> -->
+  <div
+    class="flex justify-end border-solid border-t-1 border-white-100 pt-1 footer-template"
+  >
+    <a
+      app-button
+      btn-size="sm"
+      (click)="handleClearDate('all')"
+    >
+      <span>{{ 'Chọn ngày' | translate }}</span>
+    </a>
+  </div>
+</ng-template>

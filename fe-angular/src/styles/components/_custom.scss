@@ -1,0 +1,42 @@
+.disabled {
+  opacity: 0.68;
+  cursor: not-allowed;
+}
+.collapsing {
+  transition: height 350ms;
+  overflow: hidden;
+}
+.accordion-button:not(.collapsed) {
+  app-icon {
+    transform: rotateX(180deg);
+  }
+}
+
+.modal-content {
+  --bs-modal-border-radius: calc(2 * var(--base-space));
+}
+
+.app-chart-layout {
+  &.resizing {
+    .apexcharts-canvas {
+      overflow: hidden;
+    }
+  }
+  .apexcharts-canvas {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .wrap-chart-display {
+    overflow: hidden;
+    overflow-x: auto;
+  }
+  .apexcharts-legend {
+    bottom: 8px !important;
+  }
+  .apexcharts-tooltip,
+  .apexcharts-xaxistooltip,
+  .apexcharts-yaxistooltip {
+    transform: translateX(var(--offset));
+  }
+}

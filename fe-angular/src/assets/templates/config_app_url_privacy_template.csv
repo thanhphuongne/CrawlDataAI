@@ -1,0 +1,19 @@
+name,type,action,description,category
+Internet Download Manager,App,Block,Internet Download Manager,Licensed software 
+Adobe Acrobat Professional,App,Warning,Adobe Acrobat Professional,Licensed software 
+Adobe Acrobat Pro DC,App,Block,Adobe Acrobat Pro DC,Licensed software 
+Adobe Acrobat XI Pro,App,Warning,Adobe Acrobat XI Pro,Licensed software 
+Adobe Acrobat X Pro,App,Warning,Adobe Acrobat X Pro,Licensed software 
+Adobe Acrobat DC ,App,Warning,Adobe Acrobat DC ,Licensed software 
+Adobe AIR,App,Warning,Adobe AIR,Licensed software 
+WinZip,App,Warning,WinZip,Licensed software 
+WinRAR,App,Disable,WinRAR,Licensed software 
+PowerDVD,App,Disable,PowerDVD,Licensed software 
+CyberLink PowerDVD,App,Disable,CyberLink PowerDVD,Licensed software 
+ACDsee,App,Disable,ACDsee,Licensed software 
+AutoCAD,App,Disable,AutoCAD,Licensed software 
+Autodesk AutoCAD,App,Block,Autodesk AutoCAD,Licensed software 
+Babylon,App,Block,Babylon,Licensed software 
+Altium Designer,App,Block,Altium Designer,Licensed software 
+www.youtubekids.com,Url,Block,YouTube Kids,"Streaming Media Media Sharing"
+www.facebook.com,Url,Block,Facebook,Social Networking

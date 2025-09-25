@@ -1,0 +1,138 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="typo" class="mg-b-8">
+    <h1>Typography</h1>
+    <div id="title" class="border-b-1 border-solid border-gray-3">
+      <hr />
+      <h4 class="mg-b-4">Title, text class</h4>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3"><span class="title-block">Title block</span></div>
+        <div class="w-p-3">
+          <code>.title-block</code>
+        </div>
+        <div class="w-p-6"></div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3"><span class="title-block">Title</span></div>
+        <div class="w-p-3">
+          <code>.title</code>
+        </div>
+        <div class="w-p-6"></div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3"><span class="text-primary">Text primary</span></div>
+        <div class="w-p-3">
+          <code>.text-primary</code>
+        </div>
+        <div class="w-p-6"></div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3">
+          <span class="text-secondary">Text secondary</span>
+        </div>
+        <div class="w-p-3">
+          <code>.text-secondary</code>
+        </div>
+        <div class="w-p-6"></div>
+      </div>
+    </div>
+    <div id="font-sizes">
+      <hr />
+      <h4 class="mg-b-4">Font sizes</h4>
+      @for (item of fontData; track $index) {
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3" [ngClass]="item.css">{{ item.label }}</div>
+        <div class="w-p-3">
+          <code>{{ item.class }}</code>
+        </div>
+        <div class="w-p-6">{{ item.style }}</div>
+      </div>
+      }
+    </div>
+    <!---END FONT SIZES-->
+    <div id="font-weight">
+      <hr />
+      <h4 class="mg-b-4">Font weights</h4>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 font-bold">Text bold</div>
+        <div class="w-p-3">
+          <code>.font-bold</code>
+        </div>
+        <div class="w-p-6">font-weight:700</div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 font-semibold">Text semibold</div>
+        <div class="w-p-3">
+          <code>.font-semibold</code>
+        </div>
+        <div class="w-p-6">font-weight:600</div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 font-medium">Text medium</div>
+        <div class="w-p-3">
+          <code>.font-medium</code>
+        </div>
+        <div class="w-p-6">font-weight:500</div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 font-regular">Text regular</div>
+        <div class="w-p-3">
+          <code>.font-regular</code>
+        </div>
+        <div class="w-p-6">font-weight:400</div>
+      </div>
+    </div>
+    <!---END FONT WEIGHTS-->
+    <!---TEXT Transform-->
+    <div id="text-transform">
+      <hr />
+      <h4 class="mg-b-4">Text transforms</h4>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 uppercase">Uppercase</div>
+        <div class="w-p-3">
+          <code>.uppercase</code>
+        </div>
+        <div class="w-p-6">text-transform:uppercase</div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 capitalize">Capitalize</div>
+        <div class="w-p-3">
+          <code>.capitalize</code>
+        </div>
+        <div class="w-p-6">text-transform:capitalize</div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 lowercase">lowercase</div>
+        <div class="w-p-3">
+          <code>.lowercase</code>
+        </div>
+        <div class="w-p-6">text-transform:lowercase</div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 text-transform-none">none</div>
+        <div class="w-p-3">
+          <code>.text-transform-none</code>
+        </div>
+        <div class="w-p-6">text-transform:none</div>
+      </div>
+    </div>
+    <!---TEXT Transform-->
+    <div id="font-styles">
+      <hr />
+      <h4 class="mg-b-4">Font styles</h4>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 font-italic">Italic</div>
+        <div class="w-p-3">
+          <code>.font-italic</code>
+        </div>
+        <div class="w-p-6">font-style: italic;</div>
+      </div>
+      <div class="flex justify-start align-items-center gap-4 mg-b-5">
+        <div class="w-p-3 font-normal">Normal</div>
+        <div class="w-p-3">
+          <code>.font-normal</code>
+        </div>
+        <div class="w-p-6">font-style: normal;</div>
+      </div>
+    </div>
+  </div>
+</div>

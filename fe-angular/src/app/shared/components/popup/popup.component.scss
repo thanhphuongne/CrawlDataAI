@@ -1,0 +1,74 @@
+::ng-deep {
+  .ant-modal-header {
+    border-bottom: none;
+    border-radius: 10px;
+
+    .template-header-popup {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .container-text {
+        margin-left: 16px;
+        display: flex;
+        flex-direction: column;
+
+        .title-header-template {
+          font-size: 18px;
+          font-weight: 600;
+          color: black;
+          margin-top: 12px;
+          margin-bottom: 4px;
+        }
+
+        .desc-header-template {
+          font-size: 14px;
+          color: #535862;
+        }
+      }
+    }
+  }
+
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+
+  .ant-modal-body {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .ant-modal-footer {
+    border-top: none;
+  }
+
+  .btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-bottom: 15px;
+
+    .btn-custom {
+      width: auto;
+      padding: 6px 14px;
+      font-size: 14px;
+      font-weight: 600;
+
+      &.btn-cancel {
+        background-color: white;
+        border: 0.5px solid #d5d5d5;
+      }
+
+      &.btn-confirm {
+        background-color: #d92d20;
+        margin-left: 10px;
+        color: white;
+      }
+
+      &.btn-ok {
+        background-color: #4880ff;
+        color: white;
+      }
+    }
+  }
+}

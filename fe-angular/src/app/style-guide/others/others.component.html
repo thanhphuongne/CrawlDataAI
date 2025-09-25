@@ -1,0 +1,76 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="others">
+    <h1>Other directives</h1>
+    <hr />
+    <h3>Card</h3>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+    >
+      <div class="w-p-2">Property</div>
+      <div class="w-p-5">Accept value</div>
+      <div class="w-p-5">Description</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>[app-card]</code></div>
+      <div class="w-p-5">
+        'out-line' | 'boxed' | undefined
+      </div>
+      <div class="w-p-5">Default: "boxed". Type style display of card.</div>
+    </div>
+    <!--Primary-->
+    <div id="cards" class="mg-b-6 mg-t-6">
+      <div class="mg-b-4" [app-card]>
+        Boxed type of App-card
+      </div>
+      <div class="mg-b-4" [app-card]="'out-line'">
+        Out-line type of App-card
+      </div>
+    </div>
+    <h3>Text ellipsis</h3>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+    >
+      <div class="w-p-2">Property</div>
+      <div class="w-p-5">Accept value</div>
+      <div class="w-p-5">Description</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>app-text-ellipsis</code></div>
+      <div class="w-p-5"></div>
+      <div class="w-p-5"></div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>line</code></div>
+      <div class="w-p-5">
+        number
+      </div>
+      <div class="w-p-5">Default: 1</div>
+    </div>
+    <!--Primary-->
+    <div id="text-ellipsis" class="mg-b-6 mg-t-6 w-lg-p-6">
+      <div class="mg-b-4" app-text-ellipsis>
+        This is long text with one line ellipsis. This is long text with one
+        line ellipsis. This is long text with one line ellipsis.This is long
+        text with one line ellipsis.This is long text with one line ellipsis.
+        This is long text with one line ellipsis.This is long text with one line
+        ellipsis. This is long text with one line ellipsis.
+      </div>
+      <div class="mg-b-4" app-text-ellipsis [line]="3">
+        This is long text with 3 lines ellipsis. This is long text with 3 lines
+        ellipsis. This is long text with 3 lines ellipsis. This is long text
+        with 3 lines ellipsis. This is long text with 3 lines ellipsis. This is
+        long text with 3 lines ellipsis. This is long text with 3 lines
+        ellipsis. This is long text with 3 lines ellipsis. This is long text
+        with 3 lines ellipsis. This is long text with 3 lines ellipsis. This is
+        long text with 3 lines ellipsis. This is long text with 3 lines
+        ellipsis. This is long text with 3 lines ellipsis.
+      </div>
+    </div>
+  </div>
+</div>

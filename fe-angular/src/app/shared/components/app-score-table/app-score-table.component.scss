@@ -1,0 +1,35 @@
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+::ng-deep {
+  .ant-table-content {
+    margin-bottom: 0 !important;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding: 6px 6px !important;
+  }
+
+  .ant-table-cell {
+    &.font-semi {
+      font-weight: 600;
+    }
+  }
+
+  @media (min-width: 1335px) {
+    .status {
+      display: flex;
+      flex-direction: row;
+
+      img {
+        margin-left: 10px;
+      }
+    }
+  }
+}

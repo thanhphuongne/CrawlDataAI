@@ -1,0 +1,64 @@
+.ng-counter {
+  display: inline-block;
+  position: relative;
+  font-size: 150px;
+  
+}
+
+.ng-counter.ng-counter--with-circle {
+  width: 1em;
+  height: 1em;
+  box-sizing: content-box;
+}
+
+.ng-counter.ng-counter--with-circle .ng-counter__text {
+  align-items: center;
+  justify-content: center;
+  height: 1em;
+}
+
+.ng-counter__text {
+  display: flex;
+}
+
+.ng-counter__number,
+.ng-counter__prefix,
+.ng-counter__suffix,
+.ng-counter__finish_text {
+  font-size: 0.3em;
+  line-height: 1.1;
+}
+
+.ng-counter__circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  box-sizing: content-box;
+  clip: rect(auto, auto, auto, auto)
+}
+
+.ng-counter__circle__bar,
+.ng-counter__circle__fill {
+  position: absolute;
+  border: 0.08em solid;
+  width: 0.84em;
+  height: 0.84em;
+  clip: rect(0em, 0.5em, 1em, 0em);
+  border-radius: 50%;
+  box-sizing: content-box;
+}
+.ng-counter__circle__bg_second,
+.ng-counter__circle__bg {
+  position: absolute;
+  width: 0.84em;
+  height: 0.84em;
+  border: 0.08em solid;
+  border-radius: 50%;
+  box-sizing: content-box;
+  border-color: rgba(var(--gray-3), var(--opacity));
+}
+.ng-counter__circle__bg_second {
+  clip: rect(0em, 0.5em, 1em, 0em);
+}

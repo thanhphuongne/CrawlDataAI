@@ -1,0 +1,15 @@
+<div
+  class="check-box-container"
+  [ngClass]="{ 'check-box-text-disabled': disabled() }"
+>
+  <div
+    [id]="id()"
+    class="check-box"
+    (click)="onToggleCheckBox()"
+    [app-icon]="checkBoxIcon"
+    [icon-size]="iconSize() + ''"
+    [ngClass]="{ 'check-box-checked': value(), 'check-box-disabled': disabled() }"
+    [applyClass]="true"
+  ></div>
+  {{ text() }}
+</div>

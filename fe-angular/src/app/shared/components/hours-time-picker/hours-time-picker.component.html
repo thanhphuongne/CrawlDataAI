@@ -1,0 +1,6 @@
+<ngb-timepicker
+  [(ngModel)]="time"
+  [readonlyInputs]="readOnly()"
+  [spinners]="spinners()"
+  (ngModelChange)="changeTime($event)"
+></ngb-timepicker>

@@ -1,0 +1,55 @@
+.wrap-dt-picker {
+  button {
+    right: 2px;
+    // top: 50%;
+    // transform: translateY(-50%);
+  }
+  .date-picker {
+    opacity: 0;
+    visibility: hidden;
+    left: 0;
+    top: 0;
+    z-index: -1;
+  }
+  .dt-picker-footer {
+    max-width: 232px;
+  }
+  input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+    padding-right: calc(10 * (var(--base-space)));
+  }
+}
+::ng-deep .ngb-dp-day .outside {
+  opacity: 0.5;
+}
+.ng-dp-header-template {
+  input {
+    padding-right: calc(1 * (var(--base-space))) !important;
+  }
+}
+.header_template {
+  position: relative;
+  input {
+    font-weight: var(--font-semibold);
+    color: var(--date-range-header-color);
+    font-size: var(--font-sm);
+    opacity: 1;
+  }
+  input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):disabled {
+    opacity: 1;
+  }
+}
+.icon-clear {
+  position: absolute;
+  top: calc(50% - 6px);
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgb(var(--white));
+  color: rgb(var(--gray-10));
+  font-weight: bolder;
+  cursor: pointer;
+}

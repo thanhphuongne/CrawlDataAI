@@ -1,0 +1,115 @@
+.list-select-box-container {
+  color: #303336;
+  width: 100%;
+  min-width: 100px;
+  position: relative;
+  height: 36px;
+}
+
+.list-select-box {
+  appearance: none;
+  background-image: none;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  border: 1px solid #d3d8dd;
+  border-radius: 8px;
+  position: relative;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    border: 1px solid #0083fc;
+    box-shadow: 0px 0px 0px 2px rgba(72, 172, 235, 0.48);
+  }
+
+  &.disabled {
+    background: #f3f4f6 !important;
+    border: 1px solid #bcc2ca !important;
+    box-shadow: none !important;
+    cursor: not-allowed;
+    > .select-caret {
+      color: #d3d8dd !important;
+    }
+  }
+}
+
+.list-menu {
+  position: absolute;
+  width: 100%;
+  margin-top: 7px;
+  background-color: #fff;
+  border: 1px solid #a5abb3;
+  border-radius: 8px;
+  z-index: 1000;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  > .search-tree-box {
+    border: 1px solid #a5abb3;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    margin-top: -5px;
+    > .search-tree-input {
+      border: 1px solid #a5abb3;
+      border-radius: 8px;
+      width: calc(100% - 16px);
+      padding: 8px 10px;
+      gap: 8px;
+      margin: 8px;
+      height: 31px;
+      &:focus {
+        caret-color: #0083fc;
+        border: 1px solid #0083fc !important;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    display: block;
+    border: none;
+    font-size: 14px;
+    position: relative;
+    max-height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 100px;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+
+    .list-menu-item {
+      width: 100%;
+      padding: 8px 12px;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 30px;
+
+      &:hover {
+        background-color: #f3f4f6;
+      }
+
+      &.active {
+        color: #0083fc;
+      }
+    }
+  }
+  .show-more-button {
+    cursor: pointer;
+    color: #0083fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,75 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="skeletons">
+    <h1>Skeletons</h1>
+    <hr />
+    <h3>Properties</h3>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+    >
+      <div class="w-p-2">Property</div>
+      <div class="w-p-5">Accept value</div>
+      <div class="w-p-5">Description</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>type</code></div>
+      <div class="w-p-5">"grid-item" | "list-item" | "multi-lines"</div>
+      <div class="w-p-5">Default: "multi-lines" display type</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>repeat</code></div>
+      <div class="w-p-5">
+        <code>number</code>
+      </div>
+      <div class="w-p-5">Default: 1. Unlimited value accept only interger</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>customClass</code></div>
+      <div class="w-p-5">
+        <code>string</code>
+      </div>
+      <div class="w-p-5">Custom class for button.</div>
+    </div>
+    <hr />
+    <h3>Demos</h3>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+    >
+      <div class="w-p-2">Type</div>
+      <div class="w-p-5">Demo</div>
+      <div class="w-p-5">Description</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>grid-item</code></div>
+      <div class="w-p-5"><app-skeleton type="grid-item"></app-skeleton></div>
+      <div class="w-p-5">
+        <code>&lt;app-skeleton type="grid-item"&gt;&lt;/app-skeleton&gt;</code>
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>list-item</code></div>
+      <div class="w-p-5"><app-skeleton type="list-item"></app-skeleton></div>
+      <div class="w-p-5">
+        <code>&lt;app-skeleton type="list-item"&gt;&lt;/app-skeleton&gt;</code>
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>multi-lines</code></div>
+      <div class="w-p-5"><app-skeleton type="multi-lines" [repeat]="5"></app-skeleton></div>
+      <div class="w-p-5">
+        <code>&lt;app-skeleton type="multi-lines" [repeat]="5"&gt;&lt;/app-skeleton&gt;</code>
+      </div>
+    </div>
+  </div>
+</div>

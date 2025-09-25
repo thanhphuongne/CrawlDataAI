@@ -1,0 +1,90 @@
+:host(.ngx-toastr) {
+  --toast-color: rgb(var(--blue-6));
+  --toast-icon-color: rgb(var(--blue-6));
+  --toast-bg: rgb(var(--blue-1));
+  --toast-close-color: rgb(var(--blue-8));
+  border-radius: calc(2 * var(--base-space));
+  margin-bottom: 16px;
+  padding: calc(3 * var(--base-space)) calc(3 * var(--base-space))
+    calc(3 * var(--base-space)) calc(5 * var(--base-space));
+  display: flex;
+  background: var(--toast-bg);
+  min-width: 320px;
+  color: var(--toast-color);
+  .toast-icon {
+    color: var(--toast-icon-color);
+  }
+  .toast-message {
+    font-weight: var(--font-medium);
+  }
+  .close-button {
+    color: var(--toast-close-color);
+  }
+  & > a:hover {
+    color: rgb(var(--gray-10));
+  }
+}
+:host(.toast-info) {
+  .toast-icon {
+    & > *:not(.info-icon) {
+      display: none;
+    }
+  }
+}
+:host(.toast-success) {
+  --toast-color: rgb(var(--green-10));
+  --toast-bg: rgb(var(--green-3));
+  --toast-icon-color: rgb(var(--green-7));
+  --toast-close-color: rgb(var(--green-10));
+  .toast-icon {
+    color: rgb(var(--green-5));
+    & > *:not(.success-icon) {
+      display: none;
+    }
+  }
+}
+:host(.toast-error) {
+  --toast-color: rgb(var(--red-5));
+  --toast-bg: rgb(var(--red-2));
+  --toast-icon-color: rgb(var(--red-5));
+  --toast-close-color: rgb(var(--red-9));
+  .toast-icon {
+    & > *:not(.error-icon) {
+      display: none;
+    }
+  }
+}
+:host(.toast-warning) {
+  --toast-color: rgb(var(--yellow-8));
+  --toast-bg: rgb(var(--yellow-1));
+  --toast-icon-color: rgb(var(--yellow-5));
+  --toast-close-color: rgb(var(--yellow-9));
+  .toast-icon {
+    background: none;
+    & > *:not(.warning-icon) {
+      display: none;
+    }
+  }
+}
+:host(.toast-custom) {
+  .toast-icon {
+    .info-icon {
+      color: white;
+
+      svg {
+        color: white;
+      }
+    }
+  }
+}
+.toast-content {
+  width: calc(100% - 70px);
+}
+.toast-icon {
+  margin-right: calc(4 * var(--base-space));
+  margin-top: calc(0.5 * var(--base-space));
+  i {
+    display: inline-flex;
+    align-items: center;
+  }
+}

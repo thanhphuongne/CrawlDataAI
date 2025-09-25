@@ -1,0 +1,16 @@
+export enum LocalStorageKeyEnum {
+  MASTER_DATA_CACHED_KEY = 'master_data',
+  MASTER_DATA_CACHED_EXPIRED_KEY = 'master_data_expired',
+  TOKEN_KEY = 'token_key',
+  ROLE_PERMISSON = 'role_permission',
+  CREDENTIAL = 'user_credential',
+  CUSTOMER_ID = 'customer_id',
+  ID_READER_CONFIG = 'id_reader_config',
+  PAGE_SIZE = 'page_size',
+  HAS_CHILD = 'has_child',
+  LIST_CAMERAS = 'list_cameras',
+  CURRENT_PATH = 'curent_path',
+  CURRENT_JOB_ID = 'current_job_id',
+  CURRENT_LOG_ID = 'current_log_id',
+  CURRENT_VIDEO_ID = 'current_video_id',
+}

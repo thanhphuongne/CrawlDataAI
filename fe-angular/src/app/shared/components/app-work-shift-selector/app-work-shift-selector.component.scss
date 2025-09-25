@@ -1,0 +1,14 @@
+::ng-deep .ng-select-container {
+  max-height: 120px;
+  // overflow-y: scroll !important;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup {
+  padding: 8px 14px;
+}
+
+::ng-deep
+  .ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-child {
+  padding-left: 10px;
+}

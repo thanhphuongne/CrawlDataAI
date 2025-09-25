@@ -1,0 +1,76 @@
+.add-dialog-container {
+    padding: 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .flag {
+        height: 48px;
+        width: 48px;
+        font-size: 19px;
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        border: 1px solid #E9EAEB;
+        box-shadow: 0px 1px 2px 0px #0A0D120D;
+        color: #414651;
+        border-radius: 10px;
+    }
+    
+
+    .form-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .form-note {
+        font-size: 14px;
+        margin-bottom: 16px;
+        color: #666;
+    }
+
+    .ant-row {
+        margin-bottom: 16px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    [nz-form-control] input {
+        width: 100%;
+    }
+
+    .form-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+
+        button {
+            height: 48px;
+            font-size: 16px;
+            font-weight: bold;
+            width: calc(50% - 8px); // Tổng chiều rộng = form
+        }
+    }
+    .info-icon {
+        display: inline-block;
+        background-color: #868FA0; 
+        color: white;
+        border-radius: 50%; 
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 20px;
+        cursor: pointer;
+        margin-left: 8px;
+        i {
+            font-size: 14px;
+        }
+      }
+      nz-tooltip {
+        font-size: 14px;
+      }
+      
+}

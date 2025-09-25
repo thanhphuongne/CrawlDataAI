@@ -1,0 +1,68 @@
+<ng-select
+  #selectBox
+  class="w-full"
+  [items]="listWorkShifts"
+  [bindLabel]="'name'"
+  bindValue="id"
+  [clearable]="clearable"
+  (focus)="onTouched && onTouched()"
+  [searchable]="true"
+  (change)="changeWorkShiftSelect($event)"
+  [readonly]="readOnly"
+  [(ngModel)]="workshiftId"
+  [multiple]="multiple"
+  [closeOnSelect]="!multiple"
+  [placeholder]="placeholder | translate"
+  [groupBy]="multiple ? 'selectedAllGroup' : ''"
+  [selectableGroup]="true"
+  [selectableGroupAsModel]="false"
+  [searchable]="false"
+  [loading]="isLoading"
+  [loadingText]="'Loading data' | translate"
+>
+  <ng-template ng-header-tmp>
+    <div class="h-12 pd-1">
+      <input
+        type="text"
+        class="w-full"
+        autocomplete="off"
+        [(ngModel)]="textSearch"
+        (ngModelChange)="onSearch()"
+        appInputExtendFeatures
+        [clearInput]="false"
+        [placeholder]="'Search' | translate"
+      />
+    </div>
+  </ng-template>
+  <div *ngIf="multiple">
+    <ng-template
+      ng-optgroup-tmp
+      let-item="item"
+      let-item$="item$"
+      let-index="index"
+    >
+      <input
+        *ngIf="multiple"
+        id="item-{{ index }}"
+        type="checkbox"
+        [ngModel]="item$.selected"
+      />
+      {{ 'Select all' | translate }}
+    </ng-template>
+    <ng-template
+      ng-option-tmp
+      let-item="item"
+      let-item$="item$"
+      let-index="index"
+      let-search="searchTerm"
+    >
+      <input
+        *ngIf="multiple"
+        id="item-{{ index }}"
+        type="checkbox"
+        [checked]="item$.selected"
+      />
+      <span>{{ item.name }}</span>
+    </ng-template>
+  </div>
+</ng-select>

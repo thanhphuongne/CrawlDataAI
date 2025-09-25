@@ -1,0 +1,50 @@
+.wrapper-skeleton-loading {
+  display: flex;
+}
+
+// Animation
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.animated-background {
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: rgba(var(--white), 0.3);
+  background: linear-gradient(
+    to right,
+    rgba(var(--white), 0.3) 0%,
+    rgba(var(--white), 0.2) 25%,
+    rgba(var(--white), 0.3) 50%
+  );
+  background-size: 800px 104px;
+  position: relative;
+}
+
+// Page Elements
+.image-skeleton-loading {
+  @extend .animated-background;
+}
+
+.text-skeleton-loading {
+  flex-grow: 1;
+}
+
+.text-line-loading {
+  height: 16px;
+  width: 100%;
+  margin: 0 0 8px;
+  @extend .animated-background;
+  &:last-child {
+    margin: 0;
+  }
+}

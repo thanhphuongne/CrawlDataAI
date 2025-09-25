@@ -1,0 +1,162 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="button">
+    <h1>Form</h1>
+    <hr />
+    <h3>Input</h3>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+    >
+      <div class="w-p-4">Type</div>
+      <div class="w-p-8">Demo</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Date time picker</div>
+      <div class="w-p-8">
+        {{ dateVal | json }}
+        <div class="w-60">
+          <app-date-time-picker
+            [(ngModel)]="dateVal"
+            [enableTimePicker]="true"
+          ></app-date-time-picker>
+        </div>
+        <pre>
+          &lt;app-form-label [required]=&quot;true&quot;&gt;Label&lt;/app-form-label&gt;
+        </pre>
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Date range picker</div>
+      <div class="w-p-8">
+        {{ dateRange | json }}
+        <div class="w-60">
+          <app-date-range-picker
+            [(ngModel)]="dateRange"
+          ></app-date-range-picker>
+        </div>
+        <pre>
+        &lt;app-form-label [required]=&quot;true&quot;&gt;Label&lt;/app-form-label&gt;
+      </pre
+        >
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Label</div>
+      <div class="w-p-8">
+        <app-form-label [required]="true">Label</app-form-label>
+        <pre>
+          &lt;app-form-label [required]=&quot;true&quot;&gt;Label&lt;/app-form-label&gt;
+        </pre>
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Checkbox</div>
+      <div class="w-p-8">
+        <label for="checkbox" class="mg-0"
+          ><input type="checkbox" id="checkbox" />Check box</label
+        >
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Radio</div>
+      <div class="w-p-8">
+        <label for="radio" class="mg-0 mg-r-3"
+          ><input type="radio" id="radio" name="radio" />Radio</label
+        >
+        <label for="radio2" class="mg-0 mg-r-3"
+          ><input type="radio" id="radio2" name="radio" />Radio 2</label
+        >
+        <label for="radio2" class="mg-0"
+          ><input type="radio" id="radio3" name="radio" />Radio 3</label
+        >
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Input</div>
+      <div class="w-p-8">
+        <input type="text" placeholder="Input type text" />
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Select 2</div>
+      <div class="w-p-8">
+        <select>
+          <option>Option 1</option>
+          <option>Option 2</option>
+          <option>Option 3</option>
+          <option>Option 4</option>
+        </select>
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Extend input features</div>
+      <div class="w-p-8">
+        <input
+          type="password"
+          appInputExtendFeatures
+          [inputControl]=""
+          [clearInput]="1"
+          [showPassword]="1"
+        />
+        <pre>
+appInputExtendFeatures [inputControl]="" [clearInput]="1" [showPassword]="1"</pre
+        >
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Switch</div>
+      <div class="w-p-8">
+        <input
+          type="checkbox"
+          [app-switch]
+          [enabled-label]="'ENABLED'"
+          [disabled-label]="'DISABLED'"
+        />
+        <pre>
+type="checkbox"
+[app-switch]
+[enabled-label]="'ENABLED'"
+[disabled-label]="'DISABLED'"</pre
+        >
+      </div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-4">Switch with loading</div>
+      <div class="w-p-8">
+        <input
+          type="checkbox"
+          [app-switch]
+          [isLoading]="true"
+          [enabled-label]="'ENABLED'"
+          [disabled-label]="'DISABLED'"
+        />
+        <pre>
+type="checkbox"
+[app-switch]
+[isLoading]="'true'"
+[enabled-label]="'ENABLED'"
+[disabled-label]="'DISABLED'"</pre
+        >
+      </div>
+    </div>
+  </div>
+</div>

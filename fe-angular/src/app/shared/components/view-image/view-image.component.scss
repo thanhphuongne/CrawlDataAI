@@ -1,0 +1,21 @@
+.btn-previous-image {
+    position: absolute;
+    top: calc( 50% - 24px );
+    left: 0;
+    background: rgba(0,0,0,0.2);
+}
+
+.btn-previous-image:hover{
+    background-color: rgb(var(--gray-2));
+}
+
+.btn-next-image {
+    position: absolute;
+    top: calc( 50% - 24px );
+    right: 0;
+    background: rgba(0,0,0,0.2);
+}
+
+.btn-next-image:hover {
+    background-color: rgb(var(--gray-2));
+}

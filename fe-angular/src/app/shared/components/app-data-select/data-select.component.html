@@ -1,0 +1,105 @@
+<ng-select
+  #selectBox
+  class="w-full"
+  [items]="listItems"
+  [bindLabel]="labelType"
+  [bindValue]="bindValue"
+  [clearable]="clearable"
+  [searchable]="false"
+  (ngModelChange)="changeValue($event)"
+  (scrollToEnd)="allowLoadMore && loadMore()"
+  (focus)="onTouched && onTouched()"
+  [readonly]="readonly"
+  [(ngModel)]="selectedId"
+  [multiple]="multiple"
+  [closeOnSelect]="!multiple"
+  placeholder="{{ titleSelect | translate }}"
+  groupBy="selectedAllGroup"
+  [selectableGroup]="true"
+  [selectableGroupAsModel]="true"
+  [loading]="isLoading"
+  [loadingText]="'Loading data' | translate"
+>
+  <ng-template ng-header-tmp>
+    <input
+      type="text"
+      class="w-full"
+      autocomplete="off"
+      [(ngModel)]="textSearch"
+      (ngModelChange)="onSearch()"
+      appInputExtendFeatures
+      [clearInput]="false"
+      [placeholder]="'Search' | translate"
+    />
+  </ng-template>
+  <ng-template
+    *ngIf="isSelectedAll"
+    ng-label-tmp
+    let-item="item"
+    let-clear="clear"
+    ><span class="ng-value-label">{{
+      (item?.[bindValue]
+        ? type === 'box' && bindValue === 'id'
+          ? item[labelType] + ' - [' + item.areaName + ']'
+          : item[labelType]
+        : 'Select all'
+      ) | translate
+    }}</span
+    ><span
+      class="ng-value-icon left"
+      (click)="clear(item)"
+      *ngIf="item.disabled !== true"
+      >×</span
+    ></ng-template
+  >
+  <ng-template
+    *ngIf="isSelectedAll"
+    ng-optgroup-tmp
+    let-item="item"
+    let-item$="item$"
+    let-index="index"
+  >
+    <input
+      *ngIf="multiple"
+      id="item-{{ index }}"
+      type="checkbox"
+      [ngModel]="item$.selected"
+      [disabled]="item$.disabled"
+      [ngClass]="{
+        disabled: item$.disabled
+      }"
+    />
+    <span>{{ 'Select all' | translate }}</span>
+  </ng-template>
+  <ng-template
+    ng-option-tmp
+    let-item="item"
+    let-item$="item$"
+    let-index="index"
+    let-search="searchTerm"
+  >
+    <input
+      *ngIf="multiple"
+      id="item-{{ index }}"
+      type="checkbox"
+      [checked]="item$.selected"
+      [disabled]="item$.disabled"
+      [ngClass]="{
+        disabled: item$.disabled
+      }"
+    />
+    <b
+      *ngIf="type === 'employee'"
+      class="color-blue-8 uppercase w-7 h-7 mg-r-2 inline-flex align-items-center justify-center br-round bg-gray-3 font-bold"
+      style="font-size: 11px;"
+      >{{ getLabelOption(item) }}</b
+    >
+    <span class="inline-flex flex-column gap-1">
+      <span>{{ item?.userName ? item.userName : item[bindLabel] }}</span>
+      <i *ngIf="type === 'box'" class="text-sm"> {{ item.areaName }}</i>
+      <i *ngIf="type === 'employee' && item.fullName.trim()" class="text-sm">{{
+        item.fullName
+      }}</i>
+    </span>
+  </ng-template>
+</ng-select>

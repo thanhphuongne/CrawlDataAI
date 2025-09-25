@@ -1,0 +1,155 @@
+@mixin px2rem($val) {
+  font-size: calc($val/ 14) + rem;
+}
+html {
+  font-size: 14px;
+}
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  &:hover {
+    color: var(--link-hover-color);
+  }
+}
+.font-bold {
+  font-weight: var(--font-bold);
+}
+.font-semibold {
+  font-weight: var(--font-semibold);
+}
+.font-medium {
+  font-weight: var(--font-medium);
+}
+.font-regular {
+  font-weight: var(--font-regular);
+}
+.font-italic {
+  font-style: italic;
+}
+.font-normal {
+  font-style: normal;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.lowercase {
+  text-transform: lowercase;
+}
+.text-transform-none {
+  text-transform: none;
+}
+.to-ellipsis {
+  text-overflow: ellipsis;
+}
+.font-xs {
+  font-size: var(--font-xs);
+  line-height: calc(14 / 10);
+}
+.font-sm {
+  font-size: var(--font-sm);
+  line-height: calc(16 / 12);
+}
+.font-md {
+  font-size: var(--font-md);
+  line-height: calc(20 / 14);
+}
+.font-lg {
+  font-size: var(--font-lg);
+  line-height: calc(24 / 16);
+}
+.font-xl {
+  font-size: var(--font-xl);
+  line-height: calc(24 / 18);
+}
+.font-2xl {
+  font-size: var(--font-2xl);
+  line-height: calc(34 / 24);
+}
+.font-3xl {
+  font-size: var(--font-3xl);
+  line-height: calc(40 / 28);
+}
+.font-4xl {
+  font-size: var(--font-4xl);
+  line-height: calc(52 / 36);
+}
+.body,
+body {
+  @extend .font-md, .font-regular;
+  color: var(--body-color);
+}
+h1,
+.h1,
+h2,
+.h2 {
+  @extend .font-bold;
+  color: var(--heading-color);
+}
+h3,
+h4,
+h5,
+h6,
+.h3,
+.h4,
+.h5,
+.h6 {
+  @extend .font-semibold;
+  color: var(--heading-color);
+}
+
+h1,
+.h1 {
+  @extend .font-4xl;
+}
+h2,
+.h2 {
+  @extend .font-3xl;
+}
+h3,
+.h3 {
+  @extend .font-2xl;
+}
+h4,
+.h4 {
+  @extend .font-xl;
+}
+h5,
+.h5 {
+  @extend .font-lg;
+}
+h6,
+.h6 {
+  @extend .font-md;
+}
+
+/**Override css for font size**/
+code,
+.code,
+pre,
+.pre {
+  color: rgb(var(--red-5));
+  font-size: 90%;
+  font-family: "Courier New", Courier, monospace;
+}
+pre,
+.pre {
+  white-space: pre-wrap;
+}
+
+small,
+.small {
+  font-size: var(--font-sm);
+}
+
+.caption {
+  font-size: var(--font-sm);
+  font-weight: var(--font-semibold);
+}
+
+strong,
+b {
+  font-weight: var(--font-bold);
+}

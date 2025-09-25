@@ -1,0 +1,50 @@
+.wrap-sidebar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.wrap-sidebar {
+  direction: rtl;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translateX(-100%);
+  width: 300px;
+  height: 100vh;
+  z-index: 111;
+  overflow-y: scroll;
+}
+
+@media (min-width: 576px) {
+  .wrap-sidebar {
+    position: fixed;
+    direction: unset;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    width: 300px;
+    height: 100vh;
+    overflow-y: unset;
+    z-index: 111;
+  }
+  .wrap-sidebar::-webkit-scrollbar {
+    width: 2px;
+  }
+}
+
+@media (min-width: 992px) {
+  .wrap-sidebar {
+    position: relative;
+    transform: none;
+    top: unset;
+    left: unset;
+  }
+  .wrap-sidebar::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .sidebar-active {
+    .wrap-sidebar {
+      width: 80px;
+    }
+  }
+}

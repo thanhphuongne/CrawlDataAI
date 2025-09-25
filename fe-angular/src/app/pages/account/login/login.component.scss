@@ -1,0 +1,72 @@
+.login-page {
+  min-height: 100vh;
+  height: 100%;
+  background-image: url("../../../../assets/images/img_bg_login.png");
+  background-size: 100% 100%;
+
+  .wrap-login-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    .app-card {
+      width: 450px;
+      height: 600px;
+      background-image: url("../../../../assets/images/img_login_form.png");
+      background-size: 100% 100%;
+      position: relative;
+
+      .login-form {
+        position: absolute;
+        top: 38%;
+        width: 315px; // 70%
+        left: 67.5px; // (450 - 315) / 2
+
+        label {
+          color: #f3cc3c;
+        }
+
+        input {
+          margin-top: 4px;
+          color: white;
+        }
+
+        .container-username {
+          margin-bottom: 10px;
+
+          .ic-user {
+            svg {
+              color: #f3cc3c;
+            }
+          }
+        }
+
+        .container-password {
+          margin-bottom: 50px;
+        }
+      }
+    }
+  }
+}
+.site-slogan {
+  letter-spacing: 0.15em;
+}
+
+.cdx-left-image {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+::ng-deep {
+  .ic-user {
+    color: white;
+  }
+
+  .input-btn-clear-text > svg  {
+    stroke: #d01110;
+    fill:#d01110;
+    stroke-width: 0.1;
+  }
+}

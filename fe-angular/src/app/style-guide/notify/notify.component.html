@@ -1,0 +1,39 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="typo" class="mg-b-8">
+    <h1>Notify</h1>
+    <hr />
+    <div class="w-full">
+      <h3>Overview</h3>
+      <p>
+        Notify follow standard <b>ngx-toast</b> with some customs template and
+        style.
+      </p>
+      <hr />
+      <h3>General setting</h3>
+      <p>Code demo</p>
+      <pre class="br-1 border-1 border-gray-4 color-red-5 pd-y-2 pd-x-3"
+        >{{ codeDemo }}
+      </pre>
+      <p>
+        Type of notify: <code>info</code>, <code>success</code>,
+        <code>error</code>, <code>warning</code>
+      </p>
+      <hr />
+    </div>
+    <div class="flex flex-column gap-2 align-items-start">
+      <button app-button (click)="showInfo()">Click to show Info</button>
+      <button app-button (click)="showSuccess()" [btn-variant]="'success'">
+        Click to show Success
+      </button>
+      <button app-button (click)="showSuccessTitle()" [btn-variant]="'success'">
+        Click to show Success with Title + button
+      </button>
+      <button app-button (click)="showError()" [btn-variant]="'danger'">
+        Click to show Error
+      </button>
+      <button app-button (click)="showWarning()" [btn-variant]="'warning'">
+        Click to show Warning
+      </button>
+    </div>
+  </div>
+</div>

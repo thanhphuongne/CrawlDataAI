@@ -1,0 +1,36 @@
+.check-box-container {
+  display: flex;
+  flex-direction: row;
+  column-gap: 8px;
+  align-items: center;
+  justify-content: center;
+  font-family: "Manrope";
+  font-weight: 400;
+  font-size: 14px;
+  color: #18191b;
+  text-align: left;
+  user-select: none;
+  &.check-box-text-disabled {
+    color: #bcc2ca !important;
+  }
+  > .check-box {
+    stroke: #a5abb3;
+    fill: #fff;
+    cursor: pointer;
+
+    &:hover {
+      stroke: #0083fc;
+    }
+
+    &.check-box-checked {
+      stroke: none;
+      fill: #0083fc;
+    }
+
+    &.check-box-disabled {
+      stroke: #a5abb3 !important;
+      fill: #f3f4f6 !important;
+      cursor: not-allowed;
+    }
+  }
+}

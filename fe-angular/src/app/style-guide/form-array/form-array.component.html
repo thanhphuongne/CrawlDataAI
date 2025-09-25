@@ -1,0 +1,153 @@
+<form
+  id="form-info"
+  [formGroup]="arrayForm"
+  (ngSubmit)="createArrayForm()"
+  ngbAutofocus
+  class="mg-t-4 mg-r-4"
+>
+  <div class="modal-body form-modal">
+    <div class="row overflow-y-auto max-h-100 mg-b-4">
+      <div
+        class="col-12 col-lg-12"
+        formArrayName="controlAreas"
+        [animation]="true"
+        ngbAccordion
+      >
+        <div
+          ngbAccordionItem
+          [collapsed]="false"
+          class="pd-2 br-2 border-solid border-gray-4 border-1 mg-b-2"
+          *ngFor="
+            let controlArea of arrayForm.get('controlAreas')['controls'];
+            let i = index
+          "
+        >
+          <div
+            ngbAccordionHeader
+            class="flex justify-between align-items-start"
+          >
+            <app-form-label [required]="true">{{
+              'Control area' | translate
+            }}</app-form-label>
+            <div class="flex justify-end text-center">
+              <button
+                app-button
+                [btn-squake]="true"
+                btn-type="subtle"
+                btn-variant="tertiary"
+                btn-size="sm"
+                class="justify-end"
+                style="width: 20px; height: 20px;"
+                ngbAccordionButton
+              >
+                <app-icon [size]="'12'" [icon]="icons.CarretDown"></app-icon>
+              </button>
+              <span
+                type="button"
+                *ngIf="arrayForm.get('controlAreas')['controls'].length > 1"
+                (click)="
+                  arrayForm.get('controlAreas')['controls'].length > 1 &&
+                    removeControlArea(i)
+                "
+                app-button
+                [btn-variant]="'tertiary'"
+                [btn-type]="'text'"
+                [btn-size]="'sm'"
+                aria-hidden="true"
+                class="justify-end w-5 h-5"
+              >
+                <span
+                  icon-size="12"
+                  [app-icon]="icons.Close"
+                  class="flex align-items-center justify-center"
+                ></span>
+              </span>
+            </div>
+          </div>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                <input
+                  type="text"
+                  class="w-full"
+                  [formControl]="controlArea.get('controlAreaId')"
+                  appInputExtendFeatures
+                  [clearInput]="true"
+                  [placeholder]="'Enter control area name' | translate"
+                />
+                <app-validator-message
+                  *ngIf="
+                    controlArea.get('controlAreaId').touched &&
+                    controlArea.get('controlAreaId').errors
+                  "
+                >
+                  <span
+                    *ngIf="controlArea.get('controlAreaId').errors.required"
+                  >
+                    {{ listError.VALIDATOR.FIELD_REQUIRED | translate }}
+                  </span>
+                </app-validator-message>
+                <div class="mg-t-2">
+                  <app-form-label [required]="true">{{
+                    'Work shift' | translate
+                  }}</app-form-label>
+                  <input
+                    type="text"
+                    class="w-full"
+                    [formControl]="controlArea.get('workShiftId')"
+                    appInputExtendFeatures
+                    [clearInput]="true"
+                    [placeholder]="'Enter work shift' | translate"
+                  />
+                  <app-validator-message
+                    *ngIf="
+                      controlArea.get('workShiftId').touched &&
+                      controlArea.get('workShiftId').errors
+                    "
+                  >
+                    <span
+                      *ngIf="controlArea.get('workShiftId').errors.required"
+                    >
+                      {{ listError.VALIDATOR.FIELD_REQUIRED | translate }}
+                    </span>
+                  </app-validator-message>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="flex align-items-center justify-end">
+          <button
+            type="button"
+            app-button
+            [btn-type]="'text'"
+            (click)="addControlArea()"
+          >
+            <i
+              icon-size="14"
+              class="inline-flex align-items-center"
+              [app-icon]="icons.Plus"
+            ></i>
+            <span class="d-sm-none">{{
+              'Add control area' | translate
+            }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal-footer gap-2 flex justify-end"
+  >
+    <button
+      type="submit"
+      app-button
+      [disabled]="arrayForm.invalid"
+      [ngClass]="{
+        disabled: arrayForm.invalid
+      }"
+    >
+      {{ 'Add' | translate }}
+    </button>
+  </div>
+</form>

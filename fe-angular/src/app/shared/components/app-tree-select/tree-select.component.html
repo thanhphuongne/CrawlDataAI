@@ -1,0 +1,103 @@
+<div
+  class="select_customs"
+  (clickOutside)="onCloseDropdown()"
+  [ngClass]="{
+    readonly: readonly(),
+  }"
+  [ngStyle]="{ opacity: 1 }"
+>
+  <div class="input_select_customs" #divCustoms>
+    <div
+      [ngClass]="
+        multiple()
+          ? 'list_item_select_customs'
+          : 'list_item_select_customs flex align-items-center'
+      "
+      class="pd-r-4"
+      (click)="!readonly() && onDisplaySelect($event)"
+    >
+      <p
+        *ngIf="selectedItems.length === 0"
+        class="item_select_customs_placeHolder"
+        (click)="!readonly() && onDisplaySelect($event)"
+      >
+        {{ 'Choose' | translate }} {{ type | translate }}
+      </p>
+      @if (multiple()) {
+        <ng-container>
+          <p *ngFor="let item of selectedItems" class="item_select_customs">
+            {{ item.name }}
+            <i
+              *ngIf="!readonly()"
+              class="inline-flex align-items-center icon-clear-item"
+              [app-icon]="icons.Close"
+              icon-size="12"
+              (click)="!readonly() && onClearItemSelect(item)"
+            ></i>
+          </p>
+        </ng-container>
+      } @else {
+        <ng-template #singleSelect>
+          <p
+            *ngFor="let item of selectedItems"
+            class="pd-r-3 mg-b-0 flex justify-between align-items-center w-full"
+            (click)="!readonly() && onDisplaySelect($event)"
+          >
+            <span
+              class="inline-block text-ellipsis wp-nowrap max-w-p-12 overflow-hidden"
+              (click)="!readonly() && onDisplaySelect($event)"
+            >
+              {{ item.name }}
+            </span>
+            <i
+              *ngIf="!readonly()"
+              class="inline-flex align-items-center icon-clear-item"
+              [app-icon]="icons.Close"
+              icon-size="12"
+              (click)="!readonly() && onClearItemSelect(item)"
+            ></i>
+          </p>
+        </ng-template>
+      }
+    </div>
+    <i
+      class="inline-flex align-items-center icon-carret absolute select-icon"
+      [app-icon]="displaySelectDepartment() ? icons.CarretUp : icons.CarretDown"
+      icon-size="16"
+    ></i>
+  </div>
+  @if (displaySelectDepartment()) {
+    <div
+      class="dropdown_select_customs pd-b-2"
+      [style.top.px]="heightDivCustoms"
+    >
+      <div class="flex mg-b-2 pd-2 border-b-1 border-solid border-color">
+        <div class="dropdown_select_customs-div-search">
+          <input
+            (input)="changeTextSearch($event)"
+            #inputSearch
+            class="dropdown_select_customs-input-search"
+            [placeholder]="'Search' | translate"
+          />
+          <i
+            class="inline-flex align-items-center dropdown_select_customs-clear-search"
+            [app-icon]="icons.Close"
+            icon-size="12"
+            (click)="inputSearch.value = ''; changeTextSearch(null)"
+            *ngIf="inputSearch.value"
+          ></i>
+        </div>
+      </div>
+      <div class="dropdown_select_customs-list-select">
+        <db-angular-tree-grid
+          [data]="listDataSelects"
+          [configs]="configsSelect"
+          (rowselect)="actionSelect($event)"
+          (rowdeselect)="actionDeselect($event)"
+          (rowselectall)="actionSelectAll()"
+          (rowdeselectall)="actionDeselectAll()"
+        ></db-angular-tree-grid>
+      </div>
+    </div>
+  }
+</div>

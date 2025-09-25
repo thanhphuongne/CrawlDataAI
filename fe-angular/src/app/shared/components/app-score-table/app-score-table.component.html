@@ -1,0 +1,64 @@
+<nz-table
+  class="scoring-table bg-white"
+  #basicTable
+  [nzData]="records()"
+  [nzBordered]="false"
+  [nzSize]="'small'"
+  [nzShowPagination]="false"
+  [nzLoading]="isLoading()"
+  [nzPageSize]="pageSize()"
+>
+  <thead>
+    <tr>
+      @for (column of columns; track column) {
+        @if (!headerCenter.includes(column.field)) {
+          <th class="font-md">
+            <b>{{ column.name }}</b>
+          </th>
+        } @else {
+          <th nzAlign="center" class="font-md">
+            <b>{{ column.name }}</b>
+          </th>
+        }
+      }
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td nzWidth="100" nzAlign="center">
+        @switch (i) {
+          @case (0) {
+            <nz-avatar
+              [nzSize]="30"
+              nzSrc="../../../../assets/icons/ic_win.png"
+            ></nz-avatar>
+          }
+          @case (1) {
+            <nz-avatar
+              [nzSize]="30"
+              nzSrc="../../../../assets/icons/ic_second.png"
+            ></nz-avatar>
+          }
+          @case (2) {
+            <nz-avatar
+              [nzSize]="30"
+              nzSrc="../../../../assets/icons/ic_third.png"
+            ></nz-avatar>
+          }
+          @default {
+            {{ i + 1 }}
+          }
+        }
+      </td>
+      <td nzAlign="left">
+        @if (data?.image) {
+          <nz-avatar [nzSize]="30" nzSrc="{{ data?.image }}" style="margin-right: 5px;"></nz-avatar>
+        } @else {
+          <nz-avatar [nzSize]="30" nzType="user" style="margin-right: 5px;"></nz-avatar>
+        }
+        {{ data?.username }}
+      </td>
+      <td class="font-semi" nzAlign="center">{{ data?.score }}</td>
+    </tr>
+  </tbody>
+</nz-table>

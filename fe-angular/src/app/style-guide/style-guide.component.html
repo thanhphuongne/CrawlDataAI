@@ -1,0 +1,17 @@
+<div class="flex">
+  <div class="w-p-3 pd-y-4 pd-x-3  h-100vh overflow-hidden overflow-y-auto">
+    <h1 class="color-white">Style guide</h1>
+    <hr />
+    <nav class="flex flex-column font-semibold">
+      <a
+        *ngFor="let menu of menuList"
+        routerLink="{{ menu.link }}"
+        class="w-full pd-y-2 mg-b-1"
+        >{{ menu.label }}</a
+      >
+    </nav>
+  </div>
+  <div class="w-p-9 h-100vh overflow-hidden overflow-y-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>

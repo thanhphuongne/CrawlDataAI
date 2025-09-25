@@ -1,0 +1,21 @@
+<ng-template [ngIf]="type() === 'grid-item'">
+  <div *ngFor="let n of numSequence(repeat())" class="wrapper-skeleton-loading flex-col {{customClass()}}">
+    <div class="image-skeleton-loading rounded-2xl w-20 h-20 mb-4"></div>
+    <div class="text-skeleton-loading">
+      <div class="text-line-loading rounded-2xl"></div>
+      <div class="w-[120px]"><div class="text-line-loading rounded-2xl"></div></div>
+    </div>
+  </div>
+</ng-template>
+<ng-template [ngIf]="type() === 'list-item'">
+  <div *ngFor="let n of numSequence(repeat())" class="wrapper-skeleton-loading flex-row {{customClass()}}">
+    <div class="image-skeleton-loading rounded-2xl w-20 h-20 mr-4"></div>
+    <div class="text-skeleton-loading flex flex-col justify-center">
+      <div class="text-line-loading rounded-2xl"></div>
+      <div class="w-[120px]"><div class="text-line-loading rounded-2xl"></div></div>
+    </div>
+  </div>
+</ng-template>
+<ng-template [ngIf]="type() === 'multi-lines'">
+    <div *ngFor="let n of numSequence(repeat())" class="text-line-loading rounded-2xl {{customClass()}}"></div>
+</ng-template>

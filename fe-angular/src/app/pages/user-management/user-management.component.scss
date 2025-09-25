@@ -1,0 +1,368 @@
+.table-container {
+  padding: 16px;
+  height: calc(100% - 26px);
+  position: relative;
+
+  h2 {
+    font-size: 32px;
+  }
+
+  .table-header {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+
+    .filter-bar {
+      border: 0.6px solid #d5d5d5;
+      border-radius: 5px;
+      background-color: #f9f9fb;
+      height: 40px;
+
+      .filter-date {
+        display: flex;
+        justify-items: center;
+        align-items: center;
+      }
+
+      button {
+        background-color: transparent;
+        font-weight: 600;
+      }
+
+      .divider {
+        height: 100%;
+        border-left: 0.3px solid #979797;
+      }
+
+      span {
+        font-weight: 600;
+      }
+    }
+
+    .search {
+      min-width: 30%;
+
+      .ant-input-affix-wrapper {
+        max-width: 60%;
+        border-radius: 20px;
+        background-color: #f5f6fa;
+        margin-right: 9px;
+        height: 42px;
+        align-items: center;
+        min-width: 250px;
+
+        input {
+          border: none;
+          height: 40px;
+          border-radius: 20px;
+          text-indent: 10px;
+          font-size: 15px;
+        }
+      }
+
+      button {
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+      }
+    }
+  }
+
+  @media (max-width: 1400px) {
+    .table-header {
+      gap: 10px;
+    }
+  }
+
+  .result {
+    position: relative;
+    height: auto;
+    z-index: 2;
+    max-width: 38%;
+
+    .picker {
+      position: absolute;
+    }
+
+    .tags {
+      height: auto;
+      padding: 8px;
+      background-color: rgb(154, 205, 50, 0.1);
+      border-radius: 5px;
+      line-height: 2;
+    }
+  }
+
+  .agent-table {
+    margin-top: 13px;
+    border-radius: 14px;
+    border: 0.6px solid #d5d5d5;
+  }
+
+  .pagination-container {
+    position: absolute;
+    bottom: 11px;
+  }
+}
+
+::ng-deep {
+  .ant-pagination {
+    align-self: flex-end;
+  }
+
+  .ant-input-prefix {
+    .anticon {
+      margin-right: 4px;
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .result {
+    .ant-picker {
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      border: none;
+
+      input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+        padding: 0;
+        width: 100%;
+        border: none;
+        color: rgba(0, 0, 0, 0.85);
+      }
+
+      input:not([type="button"]) {
+        &::placeholder {
+          color: rgba(0, 0, 0, 0.85);
+          font-weight: 600;
+        }
+      }
+
+      input {
+        border: none;
+        min-height: auto;
+      }
+
+      .ant-picker-suffix {
+        color: black;
+        margin: 0;
+        border: none;
+      }
+
+      .anticon {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .ant-modal {
+    input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+      color: black;
+      font-weight: 500;
+      opacity: 1;
+    }
+
+    input:not([type="button"]):not([type="checkbox"]):not(
+        [type="radio"]
+      ):disabled {
+      background-color: #d5d5d5;
+    }
+
+    .template-header {
+      display: flex;
+      flex-direction: column;
+
+      .title-header-template {
+        font-size: 18px;
+        font-weight: 600;
+        color: black;
+        margin-top: 12px;
+        margin-bottom: 4px;
+      }
+
+      .desc-header-template {
+        font-size: 14px;
+        color: #535862;
+      }
+    }
+
+    input:read-only {
+      background-color: #d5d5d5 !important;
+    }
+  }
+
+  .ant-modal-body {
+    .job-name-container {
+      display: flex;
+      flex-direction: row;
+
+      a {
+        color: #0080ff;
+        text-decoration: underline;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .ant-modal-footer {
+    button {
+      font-size: 14px;
+      font-weight: 600;
+
+      &.active-text {
+        color: white;
+      }
+    }
+  }
+
+  #input,
+  #output {
+    padding-right: 10px;
+  }
+
+  .gr-container-row {
+    padding-right: 0;
+
+    .gr-col {
+      padding-right: 0;
+    }
+
+    .gr-input {
+      border-radius: 5px;
+      padding: 0;
+
+      #jobName {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        text-indent: 10px;
+      }
+
+      &.read-only {
+        background-color: #d5d5d5;
+
+        #jobName {
+          border-radius: 0;
+        }
+      }
+
+      &.edit-mode {
+        border: 1px solid var(--input-border-color);
+        transition: all 300ms;
+        background-color: var(--input-bg-color);
+        color: var(--input-color);
+
+        #jobName {
+          border-radius: 8;
+        }
+      }
+    }
+  }
+
+  .ant-picker-content {
+    .ant-picker-time-panel-column {
+      flex-direction: column !important;
+    }
+  }
+
+  .time-container {
+    .ant-picker {
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+      min-height: 40px;
+      border-radius: 4px;
+      font-size: 13px;
+
+      input:not([type="button"]):not([type="checkbox"]):not([type="radio"]) {
+        padding: 0;
+        width: 100%;
+        border: none;
+        color: rgba(0, 0, 0, 0.85);
+      }
+
+      input {
+        border: none;
+        min-height: auto;
+      }
+    }
+
+    .ant-picker-disabled {
+      background-color: #d5d5d5 !important;
+    }
+  }
+
+  .sl-agent {
+    .ant-select {
+      border-radius: 4px;
+      width: 100%;
+
+      .ant-select-selector {
+        width: 100%;
+        min-height: 40px;
+        border-radius: 4px;
+      }
+
+      .ant-select-selection-item {
+        font-size: 14px;
+        font-weight: 500;
+        color: black;
+        align-self: center;
+      }
+    }
+
+    .ant-select-disabled {
+      .ant-select-selector {
+        background-color: #d5d5d5 !important;
+      }
+    }
+  }
+
+  .btn-cancel {
+    border: 0.5px solid #d5d5d5;
+  }
+
+  .btn-custom {
+    height: 100%;
+
+    &.filter {
+      &.active {
+        color: rgba(59, 130, 246, 1) !important;
+      }
+
+      &.de-active {
+        color: rgba(59, 130, 246, 0.5) !important;
+      }
+    }
+
+    &.rm-filter {
+      &.active {
+        color: rgba(232, 54, 53, 1) !important;
+      }
+
+      &.de-active {
+        color: rgba(232, 54, 53, 0.5) !important;
+      }
+    }
+  }
+  .btn-popup {
+    &.active {
+      background-color: rgba(59, 130, 246, 1) !important;
+    }
+
+    &.de-active {
+      background-color: rgba(59, 130, 246, 0.5) !important;
+    }
+  }
+
+  .add {
+    &.ant-btn > span + .anticon {
+      margin-left: 0;
+    }
+  }
+}

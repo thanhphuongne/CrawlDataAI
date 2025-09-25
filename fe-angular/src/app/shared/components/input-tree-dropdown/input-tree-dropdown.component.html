@@ -1,0 +1,92 @@
+<div tabindex="0" class="dropdown open show" [off-click]="clickedOutside">
+  <!-- Control display -->
+  <div [class.disabled]="disabled">
+    <span
+      tabindex="-1"
+      class="dropdown-select"
+      [ngClass]="{ 'open-select': isOpen, disabled: disabled }"
+      [class.selected-container-text]="!multiple"
+      [class.selected-container-item]="multiple"
+      (click)="toggle($event)"
+    >
+      <span *ngIf="selection.length <= 0" class="ui-select-placeholder">{{
+        placeholder
+      }}</span>
+      <span *ngFor="let itm of selection; let idx = index">
+        <div
+          *ngIf="
+            moreLoaded || maxVisibleItemCount == 0 || idx < maxVisibleItemCount
+          "
+          class="pull-left"
+          [class.selected-item-text]="!multiple"
+          [class.selected-item-item]="multiple"
+        >
+          {{ itm.fullText }}
+          <a
+            *ngIf="multiple && !disabled"
+            class="close"
+            (click)="removeItem($event, itm)"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M9.64 2.36a.375.375 0 0 1 0 .53L2.89 9.64a.375.375 0 0 1-.53-.53l6.75-6.75a.375.375 0 0 1 .53 0Z"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M2.36 2.36a.375.375 0 0 1 .53 0l6.75 6.75a.375.375 0 0 1-.53.53L2.36 2.89a.375.375 0 0 1 0-.53Z"
+              />
+            </svg>
+          </a>
+        </div>
+      </span>
+      <i class="select-caret fa fa-caret-down"></i>
+    </span>
+  </div>
+  <div class="enabled">
+    <span
+      class="pull-right more-items-icon"
+      (click)="loadMore($event)"
+      *ngIf="showMoreLink"
+      >(...)</span
+    >
+  </div>
+
+  <!-- options template -->
+  <div
+    class="drop-down-container"
+    [ngStyle]="dropBoxStyle"
+    @menuDropDown
+    *ngIf="!disabled && isOpen && internalItems && internalItems.length > 0"
+  >
+    <input
+      name="filterText"
+      *ngIf="allowFilter"
+      type="text"
+      [(ngModel)]="filter"
+      (click)="setInputFocus()"
+      (blur)="setInputFocusOut()"
+      class="search-tree-input input-search-icon"
+      placeholder="{{ filterPlaceholder }}"
+      [ngModelOptions]="{ standalone: true }"
+      autocomplete="off"
+      clearInput
+    />
+
+    <ul class="dropdown-menu" role="menu">
+      <li *ngFor="let o of internalItems | itemPipe: filter" role="menuitem">
+        <input-tree-dropdown-item
+          [item]="o"
+          [onTouchedCallBack]="onTouchedCallback"
+        ></input-tree-dropdown-item>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+.actionWidth {
+  min-width: 100px;
+}
+.departmentWidth {
+  min-width: 220px;
+}
+.areaWidth {
+  min-width: 180px;
+}
+
+@media (min-width: 576px) {
+  .actionWidth {
+    min-width: 120px;
+  }
+  .departmentWidth {
+    min-width: unset;
+  }
+  .areaWidth {
+    min-width: unset;
+  }
+}

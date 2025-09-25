@@ -1,0 +1,225 @@
+
+<div class="list-user mg-b-4">
+  <div class="wrap-table">
+    <table>
+      <thead>
+        <tr>
+          <th class="w-12">{{ 'No.' | translate }}</th>
+          <th class="userNameWidth">{{ 'User name' | translate }}</th>
+          <th class="firstNameWidth">{{ 'First name' | translate }}</th>
+          <th class="lastNameWidth">{{ 'Last name' | translate }}</th>
+          <th>{{ 'Roles' | translate }}</th>
+          <th style="width:160px">
+            {{ 'Customer admin' | translate }}
+          </th>
+          <th
+            class="w-30 min-w-30"
+            *permissions="[permissionList.userUpdate]; allowCustomerAdmin: true"
+          >
+            {{ 'Actions' | translate }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="isLoading(); else dataTemplate">
+          <td colSpan="{{ colSpan }}">
+            <app-skeleton type="multi-lines" [repeat]="12"></app-skeleton>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-pagination
+  [pageIndex]="getUserparams().PageIndex"
+  [collectionSize]="totalUsers()"
+  (pageChange)="changeNumberPage($event)"
+></app-pagination>
+
+<ng-template #dataTemplate>
+  <tr *ngIf="!isLoading() && listUsers().length === 0; else listUserTemplate">
+    <td colSpan="{{ colSpan }}" class="text-center">
+      <app-no-data message="{{ 'No data found!' | translate }}"></app-no-data>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #listUserTemplate>
+  <tr *ngFor="let item of listUsers(); let i = index">
+    <td>
+      {{ getUserparams().PageSize * (getUserparams().PageIndex - 1) + i + 1 }}
+    </td>
+    <td>
+      <b class="text-primary">{{ item.userName }}</b>
+    </td>
+    <td>{{ item.firstName }}</td>
+    <td>{{ item.lastName }}</td>
+    <td>
+      <div class="flex gap-1 flex-wrap">
+        <span [app-tag]="'general'" *ngFor="let role of item?.listRoleInfo">
+          {{ role.name }}
+          <ng-container
+            *permissions="[permissionList.userUpdate]; allowCustomerAdmin: true"
+          >
+            <span
+              class="mg-l-2 w-3 h-3 br-round bg-white flex align-items-center justify-center pointer icon_clear_role"
+            >
+              <i
+                class="inline-flex align-items-center color-red-5"
+                [app-icon]="icons.Close"
+                [icon-size]="'10'"
+                [ngbTooltip]="'Clear role of user' | translate"
+                (click)="onClearRole(item.id, role.roleId, item.userType)"
+              ></i>
+            </span>
+          </ng-container>
+        </span>
+
+        <ng-container
+          *permissions="[permissionList.userUpdate]; allowCustomerAdmin: true"
+        >
+          <a
+            (click)="openRoleModal(setRoleUserModal, item)"
+            ngbTooltip="{{ 'Set role' | translate }}"
+            class="w-6 h-6 flex align-items-center justify-center"
+            ><app-icon [icon]="icons.PlusCircle"></app-icon
+          ></a>
+        </ng-container>
+      </div>
+    </td>
+    <td>
+      <ng-container
+        *permissions="
+          [groupPermision.supperAdmin];
+          isGroup: true;
+          else: statusTemplate
+        "
+      >
+        <div *ngIf="checkPermission(item?.allowUpdate); else statusTemplate">
+          <input
+            type="checkbox"
+            #switchCustomerAdmin
+            [checked]="item.userType === userType.CustomerAdmin"
+            (click)="
+              $event.preventDefault();
+              changeCustomerAdmin(switchCustomerAdmin, item)
+            "
+            [app-switch]="'success'"
+            [enabled-label]="'Enable' | translate"
+            [disabled-label]="'Disable' | translate"
+            [isLoading]="changingCustomerAdmin()?.includes(item.id)"
+          />
+        </div>
+      </ng-container>
+      <ng-template #statusTemplate>
+        <span
+          [app-tag]="
+            item.userType === userType.CustomerAdmin ? 'success' : 'general'
+          "
+          >{{
+            (item.userType === userType.CustomerAdmin ? 'Enable' : 'Disable')
+              | translate
+          }}</span
+        >
+      </ng-template>
+    </td>
+    <td *permissions="[permissionList.userUpdate]; allowCustomerAdmin: true">
+      <a
+        app-button
+        [btn-type]="'subtle'"
+        btn-size="sm"
+        [btn-squake]="true"
+        [ngbTooltip]="'User role data' | translate"
+        [routerLink]="
+          item?.listRoleInfo?.length > 0 ? createAssignRoleUrl(item.id) : null
+        "
+        *ngIf="item.userType !== userType.CustomerAdmin"
+        [ngClass]="{
+          disabled:
+            !item?.listRoleInfo ||
+            item?.listRoleInfo.length === 0 ||
+            item.userType === userType.CustomerAdmin
+        }"
+      >
+        <i
+          class="inline-flex align-items-center"
+          [app-icon]="icons.KeyFill"
+          icon-size="16"
+        ></i>
+      </a>
+    </td>
+  </tr>
+</ng-template>
+
+<ng-template #setRoleUserModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">
+      {{ 'Set role' | translate }}
+    </h5>
+    <span
+      type="button"
+      (click)="!isAddingRole() && closeRoleModal()"
+      app-button
+      [btn-variant]="'tertiary'"
+      [btn-type]="'text'"
+      [btn-size]="'sm'"
+      aria-hidden="true"
+      [ngClass]="{ disabled: isAddingRole() }"
+    >
+      <span
+        [app-icon]="icons.Close"
+        class="flex align-items-center justify-center"
+      ></span>
+    </span>
+  </div>
+  <div class="modal-body form-modal w-full">
+    <app-form-label [required]="true">{{ 'Roles' | translate }}</app-form-label>
+    <ng-select
+      [searchable]="true"
+      [items]="listRole()"
+      [placeholder]="'Select roles' | translate"
+      bindLabel="name"
+      bindValue="id"
+      [multiple]="true"
+      [closeOnSelect]="false"
+      [(ngModel)]="selectedRoles"
+    >
+      <ng-template
+        ng-option-tmp
+        let-item="item"
+        let-item$="item$"
+        let-index="index"
+      >
+        <input
+          id="item-{{ index }}"
+          type="checkbox"
+          [checked]="item$.selected"
+        />
+        {{ item.name }}
+      </ng-template>
+    </ng-select>
+  </div>
+  <div class="modal-footer gap-2 flex justify-end">
+    <button
+      type="button"
+      app-button
+      [btn-type]="'filled'"
+      [btn-variant]="'tertiary'"
+      (click)="closeRoleModal()"
+    >
+      {{ 'Cancel' | translate }}
+    </button>
+    <button
+      type="submit"
+      app-button
+      [disabled]="isAddingRole()"
+      [ngClass]="{
+        disabled: isAddingRole()
+      }"
+      [app-loader]="isAddingRole()"
+      (click)="!isAddingRole() && addRoleForUser(selectedUser()?.id)"
+    >
+      {{ 'Set' | translate }}
+    </button>
+  </div>
+</ng-template>

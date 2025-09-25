@@ -1,0 +1,74 @@
+<div class="w-full h-full flex align-items-center login-page">
+  <div class="container-fluid">
+    <div class="row wrap-login-content">
+      <div class="col-12 col-lg-6 flex flex-column align-items-center">
+        <main [app-card]>
+          <app-validator-message [type]="'block'" *ngIf="error()">{{
+            error() | translate
+          }}</app-validator-message>
+          <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+            <div class="container-username">
+              <label for="username" class="text-sm font-medium text-gray-900"
+                >Username</label
+              >
+              <input
+                type="text"
+                appInputExtendFeatures
+                [icon]="listIcons.User"
+                [icon-size]="22"
+                [icon-class]="'ic-user'"
+                [inputControl]="loginForm.controls.username"
+                formControlName="username"
+                clearInput="true"
+                [placeholder]="'Enter account' | translate"
+              />
+              <div
+                *ngIf="submitted() && loginForm.controls.username.errors"
+                class="text-red-300 font-sm pt-2"
+              >
+                <span *ngIf="loginForm.controls.username.errors.required">
+                  {{ 'Tài khoản là bắt buộc' | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div class="container-password">
+              <label for="password" class="text-sm font-medium text-gray-900"
+                >Password</label
+              >
+              <input
+                type="password"
+                appInputExtendFeatures
+                [icon]="listIcons.Lock"
+                [icon-size]="22"
+                [icon-class]="'ic-user'"
+                [inputControl]="loginForm.controls.password"
+                showPassword="true"
+                clearInput="true"
+                [placeholder]="'Enter password' | translate"
+                formControlName="password"
+              />
+              <div
+                *ngIf="submitted() && loginForm.controls.password.errors"
+                class="color-red-3 font-sm pt-2"
+              >
+                <span *ngIf="loginForm.controls.password.errors.required">
+                  {{ 'Mật khẩu là bắt buộc' | translate }}
+                </span>
+              </div>
+            </div>
+            <button
+              app-button
+              class="w-full justify-center"
+              type="submit"
+              btn-size="lg"
+              style="background-color: #f36c21"
+            >
+              {{ 'Sign in' | translate }}
+            </button>
+          </form>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>

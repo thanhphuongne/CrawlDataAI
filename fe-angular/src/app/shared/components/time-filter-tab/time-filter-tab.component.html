@@ -1,0 +1,17 @@
+<div
+  [app-card]
+  [customSpace]="'pd-1 br-2'"
+  class="wrap-time-filter inline-flex align-items-center justify-end gap-2"
+>
+  @for(item of filterTime; track item){
+  <button
+    class="filter-time-item pd-x-10 pd-y-3 br-2 font-medium"
+    [ngClass]="{
+      active: item.value === currentTypeTime
+    }"
+    (click)="switchFilterTime(item.value)"
+  >
+    {{ item.label | translate }}
+  </button>
+  }
+</div>

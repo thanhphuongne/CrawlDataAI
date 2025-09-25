@@ -1,0 +1,99 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="button">
+    <h1>Tags</h1>
+    <hr />
+    <h3>Properties</h3>
+    <div
+      class="flex justify-start gap-4 border-solid  border-color border-b-1 pd-b-2 font-bold"
+    >
+      <div class="w-p-2">Property</div>
+      <div class="w-p-5">Accept value</div>
+      <div class="w-p-5">Description</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid  border-color border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>app-tag</code></div>
+      <div class="w-p-5">
+        "info" | "general" | "success" | "danger" | "warning" | "late"
+      </div>
+      <div class="w-p-5">Default: "info". Variant color of button.</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid  border-color border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>type</code></div>
+      <div class="w-p-5">
+        "filled" | "outline" | "soft"
+      </div>
+      <div class="w-p-5">Default: "filled". Variant style of button.</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid  border-color border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>size</code></div>
+      <div class="w-p-5">
+        "md" | "lg"
+      </div>
+      <div class="w-p-5">Default: "md". Variant size of button.</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid  border-color border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>allowRemove</code></div>
+      <div class="w-p-5">
+        true | false
+      </div>
+      <div class="w-p-5">Default: "false". Show button clear.</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid  border-color border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>(onRemove)</code></div>
+      <div class="w-p-5">
+        Remove event
+      </div>
+      <div class="w-p-5">Required allowRemove true</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-color border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>tagClass</code></div>
+      <div class="w-p-5">
+        <code>string</code>
+      </div>
+      <div class="w-p-5">Custom class for button.</div>
+    </div>
+    <!--General-->
+    <div id="tags" class="mg-b-6 mg-t-6">
+      <h6>app-tag filled</h6>
+      <div class="flex gap-2 mg-b-5">
+        <span app-tag="general">General</span>
+        <span app-tag="info">info</span>
+        <span app-tag="success">Success</span>
+        <span app-tag="danger">Danger</span>
+        <span app-tag="warning">Warning</span>
+        <span app-tag="late">Late</span>
+        <span app-tag="late" [allow-remove]="true" (onRemove)="onRemove()">Remove</span>
+      </div>
+      <h6>app-tag outline</h6>
+      <div class="flex gap-2 mg-b-5">
+        <span app-tag="general" type="outline">General</span>
+        <span app-tag="info" type="outline">info</span>
+        <span app-tag="success" type="outline">Success</span>
+        <span app-tag="danger" type="outline">Danger</span>
+        <span app-tag="warning" type="outline">Warning</span>
+        <span app-tag="late" type="outline">Late</span>
+      </div>
+      <h6>app-tag soft</h6>
+      <div class="flex gap-2">
+        <span app-tag="general" type="soft">General</span>
+        <span app-tag="info" type="soft">info</span>
+        <span app-tag="success" type="soft">Success</span>
+        <span app-tag="danger" type="soft">Danger</span>
+        <span app-tag="warning" type="soft">Warning</span>
+        <span app-tag="late" type="soft">Late</span>
+      </div>
+    </div>
+  </div>
+</div>

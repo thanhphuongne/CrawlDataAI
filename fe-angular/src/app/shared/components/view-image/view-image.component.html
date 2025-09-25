@@ -1,0 +1,17 @@
+<div class="w-full" width="1600" height="900">
+	<img [src]="urlImage" class="w-full object-fit-cover" alt="image checkin"/>
+	<div *ngIf="listEvidence.length > 1" class="btn-previous-image w-12 h-12 br-round flex align-items-center justify-center pointer" [ngClass]="{'disabled' : indexImg === 0}" (click)="clickPrevious()">
+		<i
+		class="inline-flex align-items-center"
+		[app-icon]="icons.CarretLeft"
+		icon-size="16"
+		></i>
+	</div>
+	<div *ngIf="listEvidence.length > 1" class="btn-next-image w-12 h-12 br-round flex align-items-center justify-center pointer" [ngClass]="{'disabled' : indexImg === ( listEvidence.length -1 )}" (click)="clickNext()">
+		<i
+		class="inline-flex align-items-center"
+		[app-icon]="icons.CarretRight"
+		icon-size="16"
+		></i>
+	</div>
+</div>

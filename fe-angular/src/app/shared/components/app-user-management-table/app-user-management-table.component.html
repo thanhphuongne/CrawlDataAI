@@ -1,0 +1,76 @@
+<nz-table
+  class="agent-table bg-white"
+  #basicTable
+  [nzData]="usersInfo"
+  [nzBordered]="false"
+  [nzSize]="'small'"
+  [nzShowPagination]="false"
+  [nzLoading]="isLoading()"
+>
+  <thead>
+    <tr>
+      @for (column of columns; track column) {
+        @if (!headerCenter.includes(column.field)) {
+          <th>
+            <b>{{ column.name }}</b>
+          </th>
+        } @else {
+          <th nzAlign="center">
+            <b>{{ column.name }}</b>
+          </th>
+        }
+      }
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.id | truncate: 10 }}</td>
+      <td>
+        <a href="javascript:void(0);" (click)="onClickName(data)">{{
+          data.username
+        }}</a>
+      </td>
+      <td>{{ data.full_name }}</td>
+      <td>{{ data.department }}</td>
+      <td nzAlign="center">
+        @switch (data.is_active) {
+          @case (true) {
+            <nz-tag
+              class="border-2 rounded-md px-2 py-1 success"
+              [nzBordered]="false"
+            >
+              Đang hoạt động
+            </nz-tag>
+          }
+          @default {
+            <nz-tag
+              class="border-2 rounded-md px-2 py-1 failed"
+              [nzBordered]="false"
+            >
+              Ngừng hoạt động
+            </nz-tag>
+          }
+        }
+      </td>
+      <td nzAlign="center">
+        <button
+          nz-button
+          nzType="link"
+          (click)="onEdit(data)"
+          *permissions="['ADMIN']"
+        >
+          <i nz-icon nzType="edit"></i>
+        </button>
+        <button
+          nz-button
+          nzType="link"
+          nzDanger
+          (click)="onDelete(data)"
+          *permissions="['ADMIN']"
+        >
+          <i nz-icon nzType="delete"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

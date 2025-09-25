@@ -1,0 +1,295 @@
+<div class="mb-6">
+  <a class="font-semibold font-sm" [routerLink]="listRoleUrl">{{
+    'Back to roles' | translate
+  }}</a>
+</div>
+<div class="row role-detail">
+  <div class="basis-full lg:basis-1/3 mb-6 left-side">
+    <div [app-card]>
+      <div class="h-[42px] mb-3 border-b-gray-200 border-opacity-20">
+        <h2 class="title mb-3">{{ 'List permissions' | translate }}</h2>
+      </div>
+      <div class="left-side-child">
+        <div
+          class=" group-permission mb-6"
+          *ngFor="
+            let groupPermission of listSitePermission();
+            let groupIndex = index
+          "
+        >
+          <div class="flex px-1 justify-between items-center mb-2">
+            <h3 class="title mb-3">
+              {{ groupPermission.groupName | translate }}
+              <i
+                class="inline-flex items-center"
+                [app-icon]="icons.Info"
+                [icon-size]="'16'"
+                [ngbTooltip]="groupPermission.description | translate"
+              ></i>
+            </h3>
+            <button
+              app-button
+              [btn-squake]="true"
+              btn-type="subtle"
+              btn-variant="secondary"
+              btn-size="sm"
+              class="smlBtn"
+              [disabled]="checkGroupPermissionSettedAll(groupIndex)"
+              [ngClass]="{
+                disabled: checkGroupPermissionSettedAll(groupIndex)
+              }"
+              (click)="addRemoveRole(groupIndex, -1)"
+              [ngbTooltip]="'Add all' | translate"
+            >
+              <app-icon [icon]="icons.Plus"></app-icon>
+            </button>
+          </div>
+          <div class="list-permissions flex flex-column gap-2">
+            <app-skeleton
+              *ngIf="!listSitePermission()"
+              type="multi-lines"
+              [repeat]="5"
+            ></app-skeleton>
+            <div
+              *ngFor="
+                let permission of groupPermission.listFunctionGroup;
+                let i = index
+              "
+              class=" p-1 border-gray-300 border-[1px] border-opacity-20 border-solid br-2 flex items-center pd-1 justify-between pointer"
+              [ngClass]="{
+              disabled: permission.activatedRole,
+              'order-99': permission.activatedRole,
+            }"
+              (click)="
+                !permission.activatedRole && addRemoveRole(groupIndex, i)
+              "
+            >
+              <div
+                class="px-2 py-1 text-primary"
+                app-text-ellipsis
+                [ngbTooltip]="permission.groupName | translate"
+              >
+                {{ permission.groupName | translate }}
+              </div>
+              <button
+                app-button
+                [btn-squake]="true"
+                btn-type="subtle"
+                btn-variant="secondary"
+                btn-size="sm"
+                class="smlBtn"
+                [ngClass]="{
+                  disabled: permission.activatedRole
+                }"
+                [ngbTooltip]="'Add to role' | translate"
+              >
+                <app-icon [icon]="icons.Plus"></app-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="h-[42px]"></div>
+    </div>
+  </div>
+  <div class="basis-full lg:basis-2/3 mb-6 relative">
+    <div [app-card]>
+      <div class="pb-3 border-b-[1px] border-solid border-gray-200 border-opacity-20">
+        <div class="row items-center">
+          <div class="flex justify-between basis-full md:basis-3/4 mb-2">
+            <h2 class="title mb-0">
+              {{ ('Role:' | translate) + ' ' + (roleData()?.name || '') }}
+            </h2>
+          </div>
+          <div class="basis-full md:basis-1/4 text-right mb-2">
+            <button
+              app-button
+              [btn-squake]="true"
+              btn-type="filled"
+              btn-variant="secondary"
+              class="min-w-30"
+              btn-size="sm"
+              [disabled]="checkShowNoPermissionSetted()"
+              [ngClass]="{
+                disabled: checkShowNoPermissionSetted()
+              }"
+              (click)="expandAll()"
+            >
+              {{ (isCollapsed() ? 'Expand all' : 'Collapse all') | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <app-skeleton
+        *ngIf="!listPermissionIdGranted()"
+        type="multi-lines"
+        [repeat]="5"
+      ></app-skeleton>
+      <div
+        *ngIf="checkShowNoPermissionSetted()"
+        class="px-4 pb-6 text-center"
+      >
+        <app-icon
+          [icon]="icons.Info"
+          size="60"
+          customClass="justify-center mg-b-4 color-gray-6"
+        ></app-icon>
+        <h3 class="mb-1 font-bold">
+          {{ 'This role does not have any permission yet' | translate }}
+        </h3>
+        <p>{{ 'Please select and add from left side' | translate }}</p>
+      </div>
+      <div
+        *ngIf="listSitePermission()"
+        class="my-4 list-permissions flex flex-column right-side"
+        [ngClass]="{
+          no_permission: listPermissionIdGranted().length === 0
+        }"
+      >
+        <div
+          class="group-user-permission flex flex-column gap-2"
+          *ngFor="
+            let groupPermission of listSitePermission();
+            let groupIndex = index
+          "
+        >
+          <div
+            class="flex justify-between items-center"
+            *ngIf="groupPermission.setted"
+          >
+            <h3 class="mb-1 mt-7 title">
+              {{ groupPermission.groupName | translate }}
+            </h3>
+            <div class="pt-5 pb-1">
+              <button
+                app-button
+                [btn-squake]="true"
+                btn-type="subtle"
+                btn-variant="secondary"
+                btn-size="sm"
+                [ngbTooltip]="'Remove this group role' | translate"
+                (click)="addRemoveRole(groupIndex, -1, false)"
+              >
+                <app-icon [icon]="icons.Minus"></app-icon>
+              </button>
+            </div>
+          </div>
+
+          <ng-container
+            *ngFor="
+              let permission of groupPermission.listFunctionGroup;
+              let i = index
+            "
+            [closeOthers]="true"
+            [animation]="true"
+            ngbAccordion
+            #accordion="ngbAccordion"
+          >
+            <div
+              class="border-[1px] border-solid border-gray-300 border-opacity-20 br-2 "
+              *ngIf="permission.activatedRole"
+              ngbAccordionItem
+              [collapsed]="
+                isCollapsed() && checkLatestPermission(permission.listFunctionApp)
+              "
+            >
+              <div
+                ngbAccordionHeader
+                class="flex items-center pd-1 justify-between"
+              >
+                <div class="mobileLayout">
+                  <div
+                    class="px-2 py-1 color-white font-semibold"
+                    app-text-ellipsis
+                    [ngbTooltip]="permission.groupName | translate"
+                  >
+                    {{ permission.groupName | translate }}
+                  </div>
+
+                  <span [app-tag]>{{
+                    countPermissionsGranted(permission) +
+                      ' ' +
+                      ('permission(s) granted' | translate)
+                  }}</span>
+                </div>
+
+                <button
+                  app-button
+                  [btn-squake]="true"
+                  btn-type="subtle"
+                  btn-variant="tertiary"
+                  btn-size="sm"
+                  ngbAccordionButton
+                >
+                  <app-icon [icon]="icons.CarretDown"></app-icon>
+                </button>
+              </div>
+              <div ngbAccordionCollapse>
+                <div ngbAccordionBody>
+                  <ng-template>
+                    <div
+                      class="py-2 px-2 flex flex-wrap overflow-hidden overflow-y-auto max-h-6"
+                    >
+                      <div
+                        class="w-full md:w-1/2 mb-2 px-1"
+                        *ngFor="let item of permission.listFunctionApp"
+                      >
+                        <input
+                          type="checkbox"
+                          id="{{ item.functionId }}"
+                          name="{{ item.functionId }}"
+                          [checked]="item.activatedRole"
+                          [value]="item.functionId"
+                          (click)="
+                            changePermission($event, item, groupIndex, i)
+                          "
+                        /><label for="{{ item.functionId }}">{{
+                          item.functionId | translate
+                        }}</label>
+                      </div>
+                    </div>
+                    <div class="w-full mb-2 px-3">
+                      <button
+                        (click)="grantAll(groupIndex, i)"
+                        app-button
+                        btn-type="text"
+                        [style.color]="permission.checkedAll ? '#F6232E' : ''"
+                      >
+                        {{
+                          (permission.checkedAll ? 'Ungrant all' : 'Grant all')
+                            | translate
+                        }}
+                      </button>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="flex justify-end footer-block-detail">
+        <a
+          app-button
+          [btn-type]="'filled'"
+          [btn-variant]="'tertiary'"
+          [routerLink]="listRoleUrl"
+          class="mr-3"
+        >
+          {{ 'Cancel' | translate }}
+        </a>
+        <button
+          app-button
+          [app-loader]="savingChanges()"
+          [disabled]="savingChanges()"
+          [ngClass]="{
+            disabled: savingChanges()
+          }"
+          (click)="updatePermissionsOfRole()"
+        >
+          {{ 'Save changes' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

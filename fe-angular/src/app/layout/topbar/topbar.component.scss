@@ -1,0 +1,112 @@
+.display-name {
+  text-overflow: ellipsis;
+}
+
+.top-sidebar {
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: transparent;
+  backdrop-filter: blur(3px);
+  min-height: 55px;
+  justify-content: flex-end;
+  margin: 0 20px;
+
+  .icon-notify {
+    width: 25px;
+    height: 25px;
+  }
+
+  .multi-lang {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 25px;
+    margin-right: 25px;
+
+    img {
+      width: 40px;
+      height: 27px;
+      object-fit: contain;
+    }
+  }
+
+  .profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .dropdown {
+      display: flex;
+      flex-direction: row;
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 8px;
+        margin-right: 12px;
+        color: black;
+        text-align: center;
+        font-size: 12px;
+
+        .username {
+          font-size: 14px;
+          font-weight: 600;
+          color: white;
+        }
+
+        .username:first-letter {
+          text-transform: uppercase;
+      }
+      }
+
+      svg {
+        color: white;
+      }
+    }
+  }
+
+  .ant-btn {
+    height: 35px;
+    border-radius: 5px;
+    font-weight: 600;
+  }
+
+   .user-role {
+    font-weight: 600;
+    color: white;
+   }
+}
+
+::ng-deep {
+  .ant-select {
+    .ant-select-selection-item {
+      font-weight: 600;
+    }
+
+    svg {
+      color: black;
+    }
+  }
+
+  .ant-dropdown-trigger {
+    display: flex;
+    flex-direction: row;
+
+    svg {
+      color: white;
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .btn-scoring {
+    margin-right: 10px;
+  }
+
+  .ant-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+  }
+}

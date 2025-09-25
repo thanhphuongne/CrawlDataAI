@@ -1,0 +1,151 @@
+<div class="mg-b-6">
+  <a
+    class="font-semibold font-sm"
+    [routerLink]="listUserUrl"
+    [queryParams]="listUserParam"
+    >{{ 'Back to list user' | translate }}</a
+  >
+  <h1 class="mg-b-0">
+    {{ 'List role data' | translate }}:
+    <span class="color-blue-6">{{ displayName }}</span>
+  </h1>
+</div>
+<div class="list-user mg-b-4">
+  <div class="wrap-table">
+    <table>
+      <thead>
+        <tr>
+          <th class="w-12">{{ 'No.' | translate }}</th>
+          <th>{{ 'Role' | translate }}</th>
+          <th class="departmentWidth">{{ 'Department' | translate }}</th>
+          <th class="areaWidth">{{ 'Area' | translate }}</th>
+          <th class="w-25 min-w-25">{{ 'Actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="isLoading; else dataTemplate">
+          <td colspan="5">
+            <app-skeleton type="multi-lines" [repeat]="12"></app-skeleton>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #dataTemplate>
+  <tr *ngIf="!isLoading && listRoleData.length === 0; else listRoleTemplate">
+    <td colspan="5" class="text-center">{{ 'No data found!' | translate }}</td>
+  </tr>
+</ng-template>
+<ng-template #listRoleTemplate>
+  <tr *ngFor="let item of listRoleData; let i = index">
+    <td>
+      {{ i + 1 }}
+    </td>
+    <td>
+      <b class="text-primary">{{ item.name }}</b>
+    </td>
+    <td>
+      <ng-container
+        *ngIf="
+          !item.listDepartment || item.listDepartment.length === 0;
+          then trueConditionDer;
+          else falseConditionDer
+        "
+      ></ng-container>
+
+      <ng-template #trueConditionDer>
+        <span>{{ 'Not set' | translate }}</span>
+      </ng-template>
+
+      <ng-template #falseConditionDer>
+        <ng-container
+          *ngIf="
+            item.listDepartment.length === 1 &&
+              item.listDepartment[0]?.id === -1;
+            else falseConditionDer2
+          "
+        >
+          <span [app-tag]="'general'">{{ 'All departments' | translate }}</span>
+        </ng-container>
+      </ng-template>
+
+      <ng-template #falseConditionDer2>
+        <span
+          class="mg-1 mg-sm-1"
+          [app-tag]="'general'"
+          *ngFor="let dep of item.listDepartment"
+          >{{ dep.name }}</span
+        >
+      </ng-template>
+    </td>
+    <td>
+      <ng-container
+        *ngIf="
+          !item.listArea || item.listArea.length === 0;
+          then trueConditionArea;
+          else falseConditionArea
+        "
+      ></ng-container>
+
+      <ng-template #trueConditionArea>
+        <span>{{ 'Not set' | translate }}</span>
+      </ng-template>
+
+      <ng-template #falseConditionArea>
+        <ng-container
+          *ngIf="
+            item.listArea.length === 1 && item.listArea[0]?.id === -1;
+            else falseConditionArea2
+          "
+        >
+          <span [app-tag]="'general'">{{ 'All areas' | translate }}</span>
+        </ng-container>
+      </ng-template>
+
+      <ng-template #falseConditionArea2>
+        <span
+          class="mg-1 mg-sm-1"
+          [app-tag]="'general'"
+          *ngFor="let area of item.listArea"
+          >{{ area.name }}</span
+        >
+      </ng-template>
+    </td>
+    <td>
+      <button
+        app-button
+        [btn-variant]="'success'"
+        [btn-type]="'subtle'"
+        btn-size="sm"
+        [btn-squake]="true"
+        [ngbTooltip]="'Edit' | translate"
+        (click)="handleNavigateUserRoleDetail(item)"
+      >
+        <i
+          class="inline-flex align-items-center"
+          [app-icon]="icons.PencilSimpleLine"
+          icon-size="16"
+        ></i>
+      </button>
+      <button
+        app-button
+        [btn-variant]="'danger'"
+        [btn-type]="'subtle'"
+        btn-size="sm"
+        [btn-squake]="true"
+        [ngbTooltip]="'Delete role data' | translate"
+        [app-loader]="isDeleting?.includes(item.roleId)"
+        [disabled]="isDeleting?.includes(item.roleId)"
+        [ngClass]="{ disabled: isDeleting?.includes(item.roleId) }"
+        (click)="!isDeleting?.includes(item.roleId) && deleteRoleData(item)"
+      >
+        <i
+          class="inline-flex align-items-center"
+          [app-icon]="icons.Delete"
+          icon-size="16"
+        ></i>
+      </button>
+    </td>
+  </tr>
+</ng-template>

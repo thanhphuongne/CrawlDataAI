@@ -1,0 +1,59 @@
+.file-name {
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.preview-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+::ng-deep ngx-dropzone-label {
+  width: 100%;
+}
+.box-upload-zone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.wrap-img {
+  height: 120px;
+}
+
+.remove-image {
+  top: 0;
+  right: 12px;
+  z-index: 1;
+  background-color: rgb(var(--red-3), 0.5);
+  transition: background 300ms;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(var(--red-1));
+  }
+}
+
+.icon_clear_role:hover {
+  background-color: rgb(var(--red-5));
+  i {
+    color: rgb(var(--white));
+  }
+}
+
+.separteLine {
+  width: 2px;
+}
+
+.userNameWidth,
+.lastNameWidth,
+.firstNameWidth {
+  min-width: 90px;
+}
+@media (min-width: 576px) {
+  .userNameWidth,
+  .lastNameWidth,
+  .firstNameWidth {
+    min-width: unset;
+  }
+}

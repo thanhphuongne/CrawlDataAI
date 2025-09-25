@@ -1,0 +1,217 @@
+<div class="flex items-center	justify-end mb-6">
+  <button
+    *permissions="
+      [listSystemPermissions.role.roleAdd];
+      allowCustomerAdmin: true
+    "
+    app-button
+    btn-size="md"
+    class="h-full"
+    (click)="openModalCreateRole(createRole)"
+  >
+    <i
+      class="inline-flex items-center"
+      [app-icon]="icons.PlusCircle"
+      icon-size="18"
+    ></i>
+    <span class="d-md-none">{{ 'Add' | translate }}</span>
+  </button>
+</div>
+<div class="list-user mb-4">
+  <div class="wrap-table">
+    <table>
+      <thead>
+        <tr>
+          <th class="w-12">{{ 'No.' | translate }}</th>
+          <th class="min-w-50 w-50">{{ 'Role' | translate }}</th>
+          <th>{{ 'Description' | translate }}</th>
+          <th class="w-35 min-w-35">{{ 'Actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="isLoading(); else dataTemplate">
+          <td colspan="4">
+            <app-skeleton type="multi-lines" [repeat]="12"></app-skeleton>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #dataTemplate>
+  <tr *ngIf="!isLoading() && listRoles().length === 0; else listRoleTemplate">
+    <td colspan="4" class="text-center">
+      <app-no-data message="{{ 'No data found!' | translate }}"></app-no-data>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #listRoleTemplate>
+  <tr *ngFor="let item of listRoles(); let i = index">
+    <td>
+      {{ i + 1 }}
+    </td>
+    <td>
+      <a
+        [routerLink]="item.id + ''"
+        ngbTooltip="{{ item.name }}"
+        [title]="item.name"
+        class="font-semibold"
+        >{{ item.name }}</a
+      >
+    </td>
+    <td>
+      {{ item.description }}
+    </td>
+    <td>
+      <a
+        app-button
+        [btn-variant]="'secondary'"
+        [btn-type]="'subtle'"
+        btn-size="sm"
+        [btn-squake]="true"
+        [ngbTooltip]="'Set permission' | translate"
+        [routerLink]="item.id + ''"
+      >
+        <i
+          class="inline-flex items-center"
+          [app-icon]="icons.Gear"
+          icon-size="16"
+        ></i>
+      </a>
+      <button
+        app-button
+        [btn-variant]="'success'"
+        [btn-type]="'subtle'"
+        btn-size="sm"
+        [btn-squake]="true"
+        [ngbTooltip]="'Edit' | translate"
+        (click)="openModalCreateRole(createRole, item)"
+        *permissions="
+          [
+            listSystemPermissions.role.roleAdd,
+            listSystemPermissions.role.roleUpdate
+          ];
+          operation: 'OR';
+          allowCustomerAdmin: true
+        "
+      >
+        <i
+          class="inline-flex items-center"
+          [app-icon]="icons.PencilSimpleLine"
+          icon-size="16"
+        ></i>
+      </button>
+      <button
+        app-button
+        [btn-variant]="'danger'"
+        [btn-type]="'subtle'"
+        btn-size="sm"
+        [btn-squake]="true"
+        [ngbTooltip]="'Delete' | translate"
+        (click)="deleteRole(item)"
+        *permissions="
+          [listSystemPermissions.role.roleDelete];
+          allowCustomerAdmin: true
+        "
+      >
+        <i
+          class="inline-flex items-center"
+          [app-icon]="icons.Delete"
+          icon-size="16"
+        ></i>
+      </button>
+    </td>
+  </tr>
+</ng-template>
+<ng-template #createRole let-modal>
+  <form
+    id="form-info"
+    [formGroup]="roleForm"
+    (ngSubmit)="addRole()"
+    ngbAutofocus
+  >
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">
+        {{ (selectedRole() ? 'Update role' : 'Add role') | translate }}
+      </h5>
+      <span
+        type="button"
+        (click)="!addingRole() && closeModal()"
+        app-button
+        [btn-variant]="'tertiary'"
+        [btn-type]="'text'"
+        [btn-size]="'sm'"
+        aria-hidden="true"
+        [ngClass]="{
+          disabled: addingRole()
+        }"
+      >
+        <app-icon [icon]="icons.Close"></app-icon>
+      </span>
+    </div>
+    <div class="modal-body form-modal w-full">
+      <app-validator-message type="block" *ngIf="addRoleError()">{{
+        addRoleError()
+      }}</app-validator-message>
+      <div class="w-full mb-2">
+        <app-form-label [required]="true">{{
+          'Title' | translate
+        }}</app-form-label>
+        <input
+          type="text"
+          class="w-full"
+          autocomplete="off"
+          formControlName="name"
+          [inputControl]="roleForm.controls.name"
+          appInputExtendFeatures
+          [clearInput]="true"
+          [placeholder]="'Enter role title' | translate"
+        />
+        <app-validator-message
+          *ngIf="
+            roleForm.controls.name.touched && roleForm.controls.name.errors
+          "
+        >
+          <span *ngIf="roleForm.controls.name.errors.required">
+            {{ listErrors.VALIDATOR.FIELD_REQUIRED | translate }}
+          </span>
+        </app-validator-message>
+      </div>
+      <div class="w-full mb-2">
+        <app-form-label>{{ 'Description' | translate }}</app-form-label>
+        <textarea
+          class="w-full"
+          autocomplete="off"
+          formControlName="description"
+          [placeholder]="'Enter role desciption' | translate"
+        ></textarea>
+      </div>
+    </div>
+    <div class="modal-footer gap-2 flex justify-end">
+      <button
+        type="button"
+        app-button
+        [btn-type]="'filled'"
+        [btn-variant]="'tertiary'"
+        (click)="closeModal()"
+        [disabled]="addingRole()"
+        [ngClass]="{
+          disabled: addingRole()
+        }"
+      >
+        {{ 'Cancel' | translate }}
+      </button>
+      <button
+        type="submit"
+        app-button
+        [disabled]="addingRole() || roleForm.invalid"
+        [ngClass]="{
+          disabled: addingRole() || roleForm.invalid
+        }"
+        [app-loader]="addingRole()"
+      >
+        {{ (selectedRole() ? 'Update' : 'Add') | translate }}
+      </button>
+    </div>
+  </form>
+</ng-template>

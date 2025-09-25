@@ -1,0 +1,746 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="button">
+    <h1>Buttons</h1>
+    <hr />
+    <p>Directive <code>app-button</code></p>
+    <h3>Properties</h3>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+    >
+      <div class="w-p-2">Property</div>
+      <div class="w-p-5">Accept value</div>
+      <div class="w-p-5">Description</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>btn-type</code></div>
+      <div class="w-p-5">"filled" | "outline" | "subtle" | "text"</div>
+      <div class="w-p-5">Default: "filled". Type style of button</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>btn-variant</code></div>
+      <div class="w-p-5">
+        "primary" | "secondary" | "tertiary" | "success" | "danger" | "warning"
+      </div>
+      <div class="w-p-5">Default: "primary". Variant color of button.</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>btn-size</code></div>
+      <div class="w-p-5">
+        'sm' | 'md' | 'lg'
+      </div>
+      <div class="w-p-5">Default: "md". Size of button.</div>
+    </div>
+    <div
+      class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+    >
+      <div class="w-p-2"><code>btn-quake</code></div>
+      <div class="w-p-5">
+        boolean
+      </div>
+      <div class="w-p-5">Default: false.</div>
+    </div>
+    <!--Primary-->
+    <div id="primary" class="mg-b-6 mg-t-6">
+      <h4 class="mg-b-4">Primary</h4>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+      >
+        <div class="w-p-2">Type</div>
+        <div class="w-p-3">Button</div>
+        <div class="w-p-3">Disabled</div>
+        <div class="w-p-4">Description</div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Filled</div>
+        <div class="w-p-3">
+          <a app-button>Button</a>
+          <a app-button [btn-squake]="true">B</a>
+        </div>
+        <div class="w-p-3">
+          <a app-button class="disabled">Button</a>
+        </div>
+        <div class="w-p-4">
+          <code>&lt;a app-button &gt;Button&lt;/a&gt;</code>
+          <pre>&lt;a app-button class="disabled" &gt;Button&lt;/a&gt;</pre>
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Outline</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'outline'">Button</a>
+        </div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'outline'" class="disabled">Button</a>
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'outline'" &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'outline'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Subtle</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'subtle'">Button</a>
+        </div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'subtle'" class="disabled">Button</a>
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'subtle'" &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'subtle'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Text</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'text'">Button</a>
+        </div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'text'" class="disabled">Button</a>
+        </div>
+        <div class="w-p-4">
+          <code>&lt;a app-button [btn-type]="'text'" &gt;Button&lt;/a&gt;</code>
+          <pre>
+&lt;a app-button [btn-type]="'text'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+    </div>
+    <!--Secondary-->
+    <div id="secondary" class="mg-b-6">
+      <h4 class="mg-b-4">Secondary</h4>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+      >
+        <div class="w-p-2">Type</div>
+        <div class="w-p-3">Button</div>
+        <div class="w-p-3">Disabled</div>
+        <div class="w-p-4">Description</div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Filled</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'filled'" [btn-variant]="'secondary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'filled'"
+            [btn-variant]="'secondary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'filled'" [btn-variant]="'secondary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'filled'"  [btn-variant]="'secondary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Outline</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'outline'" [btn-variant]="'secondary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'outline'"
+            [btn-variant]="'secondary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'outline'" [btn-variant]="'secondary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'outline'"  [btn-variant]="'secondary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Subtle</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'subtle'" [btn-variant]="'secondary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'subtle'"
+            [btn-variant]="'secondary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'subtle'" [btn-variant]="'secondary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'subtle'"  [btn-variant]="'secondary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Text</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'text'" [btn-variant]="'secondary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'text'"
+            [btn-variant]="'secondary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'text'" [btn-variant]="'secondary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'text'"  [btn-variant]="'secondary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+    </div>
+    <!--Tertiary-->
+    <div id="tertiary" class="mg-b-6">
+      <h4 class="mg-b-4">Tertiary</h4>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+      >
+        <div class="w-p-2">Type</div>
+        <div class="w-p-3">Button</div>
+        <div class="w-p-3">Disabled</div>
+        <div class="w-p-4">Description</div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Filled</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'filled'" [btn-variant]="'tertiary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'filled'"
+            [btn-variant]="'tertiary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'text'" [btn-variant]="'tertiary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'text'"  [btn-variant]="'tertiary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Outline</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'outline'" [btn-variant]="'tertiary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'outline'"
+            [btn-variant]="'tertiary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'outline'" [btn-variant]="'tertiary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'outline'"  [btn-variant]="'tertiary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Subtle</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'subtle'" [btn-variant]="'tertiary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'subtle'"
+            [btn-variant]="'tertiary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'subtle'" [btn-variant]="'tertiary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'subtle'"  [btn-variant]="'tertiary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Text</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'text'" [btn-variant]="'tertiary'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'text'"
+            [btn-variant]="'tertiary'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'text'" [btn-variant]="'tertiary'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'text'"  [btn-variant]="'tertiary'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+    </div>
+    <!--Success-->
+    <div id="success" class="mg-b-6">
+      <h4 class="mg-b-4">Success</h4>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+      >
+        <div class="w-p-2">Type</div>
+        <div class="w-p-3">Button</div>
+        <div class="w-p-3">Disabled</div>
+        <div class="w-p-4">Description</div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Filled</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'filled'" [btn-variant]="'success'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'filled'"
+            [btn-variant]="'success'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'filled'" [btn-variant]="'success'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'filled'"  [btn-variant]="'success'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Outline</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'outline'" [btn-variant]="'success'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'outline'"
+            [btn-variant]="'success'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'outline'" [btn-variant]="'success'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'outline'"  [btn-variant]="'success'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Subtle</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'subtle'" [btn-variant]="'success'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'subtle'"
+            [btn-variant]="'success'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'subtle'" [btn-variant]="'success'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'subtle'"  [btn-variant]="'success'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Text</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'text'" [btn-variant]="'success'">Button</a>
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'text'"
+            [btn-variant]="'success'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'text'" [btn-variant]="'success'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'text'"  [btn-variant]="'success'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+    </div>
+    <!--Danger-->
+    <div id="danger" class="mg-b-6">
+      <h4 class="mg-b-4">Danger</h4>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+      >
+        <div class="w-p-2">Type</div>
+        <div class="w-p-3">Button</div>
+        <div class="w-p-3">Disabled</div>
+        <div class="w-p-4">Description</div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Filled</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'filled'" [btn-variant]="'danger'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'filled'"
+            [btn-variant]="'danger'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'filled'" [btn-variant]="'danger'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'filled'"  [btn-variant]="'danger'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Outline</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'outline'" [btn-variant]="'danger'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'outline'"
+            [btn-variant]="'danger'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'outline'" [btn-variant]="'danger'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'outline'"  [btn-variant]="'danger'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Subtle</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'subtle'" [btn-variant]="'danger'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'subtle'"
+            [btn-variant]="'danger'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'subtle'" [btn-variant]="'danger'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'subtle'"  [btn-variant]="'danger'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Text</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'text'" [btn-variant]="'danger'">Button</a>
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'text'"
+            [btn-variant]="'danger'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'text'" [btn-variant]="'danger'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'text'"  [btn-variant]="'danger'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+    </div>
+    <!--Warning-->
+    <div id="warning" class="mg-b-6">
+      <h4 class="mg-b-4">Warning</h4>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 font-bold"
+      >
+        <div class="w-p-2">Type</div>
+        <div class="w-p-3">Button</div>
+        <div class="w-p-3">Disabled</div>
+        <div class="w-p-4">Description</div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Filled</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'filled'" [btn-variant]="'warning'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'filled'"
+            [btn-variant]="'warning'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'filled'" [btn-variant]="'warning'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'filled'"  [btn-variant]="'warning'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Outline</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'outline'" [btn-variant]="'warning'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'outline'"
+            [btn-variant]="'warning'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'outline'" [btn-variant]="'warning'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'outline'"  [btn-variant]="'warning'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Subtle</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'subtle'" [btn-variant]="'warning'"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'subtle'"
+            [btn-variant]="'warning'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'subtle'" [btn-variant]="'warning'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'subtle'"  [btn-variant]="'warning'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+      <div
+        class="flex justify-start gap-4 border-solid border-gray-5 border-b-1 pd-b-2 pd-t-2"
+      >
+        <div class="w-p-2">Text</div>
+        <div class="w-p-3">
+          <a app-button [btn-type]="'text'" [btn-variant]="'warning'">Button</a>
+        </div>
+        <div class="w-p-3">
+          <a
+            app-button
+            [btn-type]="'text'"
+            [btn-variant]="'warning'"
+            class="disabled"
+            >Button</a
+          >
+        </div>
+        <div class="w-p-4">
+          <code
+            >&lt;a app-button [btn-type]="'text'" [btn-variant]="'warning'"
+            &gt;Button&lt;/a&gt;</code
+          >
+          <pre>
+&lt;a app-button [btn-type]="'text'"  [btn-variant]="'warning'" class="disabled" &gt;Button&lt;/a&gt;</pre
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

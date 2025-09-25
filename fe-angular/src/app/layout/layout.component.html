@@ -1,0 +1,25 @@
+<div
+  class="app-main-body w-100vw h-100vh flex overflow-hidden"
+>
+  <main class="main-content h-100vh flex flex-col">
+    <div class="nav-bar">
+      <app-top-bar [badgeNumber]="newMessNumb" (openMenu)="toogleLayout()">
+      </app-top-bar>
+    </div>
+    <div class="wrap-main-content overflow-auto transition">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+  </main>
+</div>
+
+
+
+<!-- Popup -->
+<!-- <app-popup
+  [type]="popupContent?.type"
+  [title]="popupContent?.title"
+  [content]="popupContent?.content"
+  [(isVisible)]="isShowPopup"
+  (okOnChange)="confirmActions($event)"
+>
+</app-popup> -->

@@ -1,0 +1,128 @@
+:root {
+  --body-color: rgba(var(--gray-5), var(--opacity));
+  --link-color: rgba(var(--gray-4), var(--opacity));
+  --link-hover-color: rgba(var(--white), var(--opacity));
+  --heading-color: rgba(var(--black), var(--opacity));
+  --heading-table-color: rgba(var(--white), var(--opacity));
+  --primary-text-color: rgba(var(--white), var(--opacity));
+  --secondary-text-color: rgba(var(--gray-6), var(--opacity));
+
+  // background
+  --main-bg: rgba(var(--white), var(--opacity-bg));
+  --table-border-color: rgba(var(--white), 0.1);
+  --table-bg: rgba(var(--white));
+  --heading-table-bg-color: rgba(var(--white), 0.1);
+  --table-row-hover-bg-color: rgba(var(--white), 0.5);
+  --border-color: rgba(var(--white), 0.1);
+  --active-bg: rgba(var(--active-color), var(--opacity)) 
+
+
+  /*box-shadow*/
+  --box-shadow-color: rgba(var(--gray-4), var(--opacity));
+
+  // pagination
+  --pagination-bg: transparent;
+  --pagination-color: rgba(var(--gray-4), var(--opacity));
+  --pagination-color-active: rgba(var(--white), var(--opacity));
+  --pagination-item-bg: transparent;
+  --pagination-item-bg-active: rgba(var(--white), 0.1);
+  --pagination-item-border: transparent;
+  --pagination-item-border-active: rgba(var(--white), 0.1);
+  // ng-select container
+  --ng-select-container-bg: var(--input-bg-color);
+  --ng-select-container-color: rgba(var(--white), var(--opacity));
+  --ng-select-container-border: rgba(var(--white), 0.1);
+  // ng-select dropdown
+  --ng-select-bg: rgba(36, 41, 57, 1);
+  --ng-select-bg-disable: rgba(var(--gray-1), 0.3);
+  --ng-select-color: rgba(var(--white), var(--opacity));
+  --ng-select-color-active: rgba(var(--white), var(--opacity));
+  --ng-select-item-bg: transparent;
+  --ng-select-item-bg-active: rgba(var(--white), 0.1);
+  // app switch
+  --activated-color: rgb(var(--green-7));
+  --box-shadow: rgba(var(--white), 0.1);
+  --box-shadow-secondary: rgba(var(--white), 0.3);
+  --box-shadow-tertiary: rgba(var(--white), 0.3);
+  // side bar
+  --bg-weap-main-active: rgb(var(--accent-color));
+  --color-nav-item: rgb(var(--gray-4));
+  --color-nav-item-active: rgb(var(--white));
+  --bg-nav-item-active: rgba(var(--white), 0.1);
+  --color-icon-child-nav: rgb(var(--gray-5));
+  --color-icon-child-nav-active: rgb(var(--accent-color));
+  // app card
+  --bg-card: rgba(var(--black), 0.1);
+
+  --input-color: rgb(var(--black));
+  // --input-placeholder-color: #bfbfbf;
+  --input-border-color: rgb(var(--black), 0.1);
+  --input-bg-color: rgb(var(--white), 0.1);
+  --input-box-shadow-color: rgb(var(--white), 0.48);
+  // app tree select
+  --app-tree-bg: rgba(var(--white), 0.1);
+  --app-tree-bg-disable: transparent;
+  --app-tree-border: rgba(var(--white), 0.1);
+  --app-tree-dropdown-bg: rgba(36, 41, 57, 1);
+  --app-tree-item-bg-active: rgba(var(--white), 0.1);
+  --app-tree-item-header-color: inherit;
+  --app-tree-item-header-bg: unset;
+  // Chart
+  --chart-tooltip-bg: rgb(var(--blue-8));
+  --chart-tooltip-color: rgb(var(--white));
+  // Notification
+  --notify-dropdow-bg: rgb(var(--gray-9));
+  --notify-dropdow-tab-color: rgb(var(--gray-5));
+  --notify-dropdow-tab-color-active: rgba(var(--white), 1);
+  --notify-dropdow-item-bg-active: rgba(var(--white), 0.1);
+
+  --tg-disabled-color: rgb(var(--gray-6));
+  --btn-clear-select-color: rgb(var(--red-5));
+  --btn-clear-select-bg: rgb(var(--white));
+  --btn-clear-select-hover-color: rgb(var(--white));
+  --btn-clear-select-hover-bg: rgb(var(--red-5));
+  --ng-selected-item-bg: rgba(var(--white), 0.1);
+  --ng-selected-item-color: rgba(var(--white), 1);
+  --app-tree-color: rgb(var(--white));
+  --app-tree-selected-item-bg: rgba(var(--white), 0.1);
+  --app-tree-selected-item-color: rgba(var(--white), 1);
+
+  // Box view
+  --box-view-color: rgb(var(--white));
+  --box-view-active-color: rgb(var(--blue-6));
+  --box-view-active-bg: rgb(var(--white));
+  --box-view-disable-color: rgb(var(--gray-6));
+
+  --bg-language-switcher: rgb(var(--gray-9));
+}
+// app switch
+.app-switch {
+  &.success {
+    --activated-color: rgb(var(--green-7));
+    --box-shadow: rgba(var(--green-7), 0.3);
+  }
+  &.secondary {
+    --activated-color: rgb(var(--blue-3));
+    --box-shadow: rgba(var(--blue-3), 0.3);
+  }
+  &.tertiary {
+    --activated-color: rgb(var(--gray-7));
+    --box-shadow: rgba(var(--gray-7), 0.3);
+  }
+  &.danger {
+    --activated-color: rgb(var(--red-4));
+    --box-shadow: rgba(var(--red-4), 0.3);
+  }
+  &.warning {
+    --activated-color: rgb(var(--yellow-4));
+    --box-shadow: rgba(var(--yellow-4), 0.3);
+  }
+}
+
+.modal-content {
+  --bs-modal-bg: rgb(var(--gray-9));
+}
+
+@import "./button.scss";
+@import "./tags.scss";
+@import "./date-picker.scss";

@@ -1,0 +1,31 @@
+/* scrollbar */
+@import 'simplebar-react/dist/simplebar.min.css';
+/* Barlow */
+@font-face {
+    font-family: 'Barlow';
+    font-weight: 400;
+    src: url('/fonts/Barlow-Regular.woff2') format('woff2'),
+         url('/fonts/Barlow-Regular.woff') format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Barlow';
+    font-weight: 700;
+    src: url('/fonts/Barlow-Bold.woff2') format('woff2'),
+         url('/fonts/Barlow-Bold.woff') format('woff');
+  }
+  
+  /* Public Sans */
+  @font-face {
+    font-family: 'Public Sans';
+    font-weight: 400;
+    src: url('/fonts/PublicSans-Regular.woff2') format('woff2'),
+         url('/fonts/PublicSans-Regular.woff') format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Public Sans';
+    font-weight: 700;
+    src: url('/fonts/PublicSans-Bold.woff2') format('woff2'),
+         url('/fonts/PublicSans-Bold.woff') format('woff');
+  }

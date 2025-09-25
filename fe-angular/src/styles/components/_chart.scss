@@ -1,0 +1,8 @@
+.apexcharts-tooltip.akacam-chart-tooltip {
+  background-color: var(--chart-tooltip-bg);
+  padding: var(--base-space) calc(2 * var(--base-space));
+  font-weight: 500;
+  color: var(--chart-tooltip-color);
+  font-size: var(--font-sm);
+  box-shadow: none;
+}

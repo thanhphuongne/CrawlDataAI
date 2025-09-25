@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "bootstrap/bootstrap.scss";
+@import "../../node_modules/animate.css/animate.min.css";
+
+@import "common/common.scss";
+@import "components/site_nav";
+@import "components/buttons";
+@import "components/loading";
+@import "components/ng-select";
+@import "components/modal";
+@import "components/skeleton";
+@import "components/sweatalert2";
+@import "components/switch";
+@import "components/tree-grid";
+@import "components/tags";
+@import "components/input";
+@import "components/chart";
+@import "components/custom";
+@import "preset/default/color";
+@import "../../node_modules/ng-zorro-antd/ng-zorro-antd.min.css";

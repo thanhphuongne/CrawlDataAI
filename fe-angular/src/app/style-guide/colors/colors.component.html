@@ -1,0 +1,108 @@
+<div class="pd-x-3 pd-t-9 pd-b-9">
+  <div id="colors" class="mg-b-8">
+    <h1>Color</h1>
+    <div>
+      <hr />
+      <p>Text color class start with: <code>.color-[color]</code></p>
+      <p>Background color class start with: <code>.bg-[color]</code></p>
+      <p>Border color class start with: <code>.border-[color]</code></p>
+      <p>
+        Color opacity, using <code>--opacity</code> for change opacity of color.
+        Default:<code>--opacity:1</code>
+      </p>
+      <hr />
+      <h4 class="mg-b-4">Main color</h4>
+      <div class="flex justify-start gap-4 mg-b-5">
+        <div class="inline-flex flex-column gap-2 align-items-center">
+          <span class="h-12 w-12 bg-accent block"></span>
+          <span class="color-accent p-2 bg-gray">accent</span>
+        </div>
+        <div class="inline-flex flex-column gap-2 align-items-center">
+          <span class="h-12 w-12 bg-orange block"></span>
+          <span class="color-orange p-2 bg-gray">orange</span>
+        </div>
+        <div class="inline-flex flex-column gap-2 align-items-center">
+          <span class="h-12 w-12 bg-green block"></span>
+          <span class="color-green p-2 bg-gray">green</span>
+        </div>
+        <div class="inline-flex flex-column gap-2 align-items-center">
+          <span class="h-12 w-12 bg-green-neon block"></span>
+          <span
+            class="color-green-neon pd-l-2 pd-r-2 pd-t-1 pd-b-1 bg-gray-6 br-1"
+            >green-neon</span
+          >
+        </div>
+        <div class="inline-flex flex-column gap-2 align-items-center">
+          <span class="h-12 w-12 bg-black block"></span>
+          <span class="color-black pd-l-2 pd-r-2 pd-t-1 pd-b-1 br-1">black</span>
+        </div>
+        <div class="inline-flex flex-column gap-2 align-items-center">
+          <span class="h-12 w-12 bg-white block bd-gray-7 border"></span>
+          <span class="color-white pd-l-2 pd-r-2 pd-t-1 pd-b-1 br-1 bg-gray-6"
+            >white</span
+          >
+        </div>
+      </div>
+      <h4 class="mg-b-4">Blue color</h4>
+      <div class="flex justify-start gap-4 mg-b-5">
+        <div
+          *ngFor="let item of [].constructor(10); let i = index"
+          class="inline-flex flex-column gap-2 align-items-center"
+        >
+          <span class="h-12 w-12 bg-blue-{{ i + 1 }} block"></span>
+          <span class="color-blue-{{ i + 1 }} pd-2 br-1 bg-gray-4"
+            >blue-{{ i + 1 }}</span
+          >
+        </div>
+      </div>
+      <h4 class="mg-b-4">Gray color</h4>
+      <div class="flex justify-start gap-4 mg-b-5">
+        <div
+          *ngFor="let item of [].constructor(10); let i = index"
+          class="inline-flex flex-column gap-2 align-items-center"
+        >
+          <span class="h-12 w-12 bg-gray-{{ i + 1 }} block"></span>
+          <span class="color-gray-{{ i + 1 }} pd-2 br-1 bg-blue-4"
+            >gray-{{ i + 1 }}</span
+          >
+        </div>
+      </div>
+      <h4 class="mg-b-4">Red color</h4>
+      <div class="flex justify-start gap-4 mg-b-5">
+        <div
+          *ngFor="let item of [].constructor(9); let i = index"
+          class="inline-flex flex-column gap-2 align-items-center"
+        >
+          <span class="h-12 w-12 bg-red-{{ i + 1 }} block"></span>
+          <span class="color-red-{{ i + 1 }} pd-2 br-1 bg-gray-4"
+            >red-{{ i + 1 }}</span
+          >
+        </div>
+      </div>
+      <h4 class="mg-b-4">Green color</h4>
+      <div class="flex justify-start gap-4 mg-b-5">
+        <div
+          *ngFor="let item of [].constructor(10); let i = index"
+          class="inline-flex flex-column gap-2 align-items-center"
+        >
+          <span class="h-12 w-12 bg-green-{{ i + 1 }} block"></span>
+          <span class="color-green-{{ i + 1 }} pd-2 br-1  bg-gray-4"
+            >green-{{ i + 1 }}</span
+          >
+        </div>
+      </div>
+      <h4 class="mg-b-4">Yellow color</h4>
+      <div class="flex justify-start gap-4 mg-b-5">
+        <div
+          *ngFor="let item of [].constructor(9); let i = index"
+          class="inline-flex flex-column gap-2 align-items-center"
+        >
+          <span class="h-12 w-12 bg-yellow-{{ i + 1 }} block"></span>
+          <span class="color-yellow-{{ i + 1 }} pd-2 br-1  bg-gray-4"
+            >yellow-{{ i + 1 }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

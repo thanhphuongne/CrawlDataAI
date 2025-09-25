@@ -1,0 +1,44 @@
+<ng-select
+  #selectBox
+  bindLabel="label"
+  bindValue="value"
+  (focus)="onTouched && onTouched()"
+  [ariaDisabled]="disabled"
+  [closeOnSelect]="!multiple"
+  [multiple]="multiple"
+  [items]="listData"
+  [readonly]="readonly"
+  [(ngModel)]="selectedId"
+  [searchable]="false"
+  (ngModelChange)="changeValue()"
+  [placeholder]="placeholder || 'Choose package' | translate"
+>
+  <ng-template ng-header-tmp>
+    <div class="h-12 pd-1">
+      <input
+        type="text"
+        class="w-full"
+        autocomplete="off"
+        [(ngModel)]="textSearch"
+        (ngModelChange)="onSearch()"
+        appInputExtendFeatures
+        [clearInput]="false"
+        [placeholder]="'Search' | translate"
+      />
+    </div>
+  </ng-template>
+  <ng-template
+    ng-option-tmp
+    let-item="item"
+    let-search="searchTerm"
+    let-item$="item$"
+    let-index="index"
+    ><input
+      *ngIf="multiple"
+      id="item-{{ index }}"
+      type="checkbox"
+      [checked]="item$.selected"
+    />
+    <span>{{ item.label }}</span>
+  </ng-template>
+</ng-select>

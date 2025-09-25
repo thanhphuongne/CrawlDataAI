@@ -1,0 +1,22 @@
+.file-name {
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.preview-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+::ng-deep ngx-dropzone-label {
+  width: 100%;
+}
+.remove-image {
+  background-color: rgb(var(--red-3));
+  transition: background 300ms;
+  &:hover {
+    background-color: rgb(var(--red-1));
+  }
+}
+

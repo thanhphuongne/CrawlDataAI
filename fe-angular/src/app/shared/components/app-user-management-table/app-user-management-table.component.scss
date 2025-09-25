@@ -1,0 +1,51 @@
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+::ng-deep {
+  .ant-table-tbody > tr > td {
+    padding: 10px 8px !important;
+  }
+
+  .ant-table-cell {
+    font-weight: 500;
+   
+    .ant-tag {
+      margin: 0;
+      align-self: center;
+      text-align: center;
+      font-weight: 600;
+      min-width: 95px;
+
+
+      &.failed {
+        color: #ef3826;
+        background-color: rgba(239, 56, 38, 0.2) !important;
+      }
+      &.success {
+        color: #00b69b;
+        background-color: rgba(0, 182, 155, 0.2) !important;
+      }
+    }
+
+    
+
+    .ant-btn {
+      padding: 0;
+
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+
+    &.font-semi {
+      font-weight: 600;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+.toast-top-right {
+  top: 12px;
+  right: 12px;
+}
+.ngx-toastr {
+  pointer-events: auto;
+}
+.toast {
+  &.showing {
+    opacity: 0;
+  }
+
+  &:not(.show) {
+    display: none;
+  }
+}
+
+.toast-container {
+  position: fixed;
+  z-index: 99;
+  max-width: calc(100vw - 40px);
+  pointer-events: none;
+  width: 360px;
+  > :not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.toast-header {
+  display: flex;
+  align-items: center;
+  background-clip: padding-box;
+
+  .btn-close {
+    // margin-right: calc(-.5 * var(--#{$prefix}toast-padding-x)); // stylelint-disable-line function-disallowed-list
+    // margin-left: var(--#{$prefix}toast-padding-x);
+  }
+}
+
+.toast-body {
+  // padding: var(--#{$prefix}toast-padding-x);
+  word-wrap: break-word;
+}

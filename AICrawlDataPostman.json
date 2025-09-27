@@ -1,10 +1,24 @@
 {
 	"info": {
 		"_postman_id": "bfc548df-62e1-4ed3-9c8d-3813e2bf1122",
-		"name": "FScoring",
+		"name": "AI Chat Website API",
+		"description": "API collection for AI Chat Website with PostgreSQL and MongoDB integration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "36341217"
 	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3001",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string",
+			"description": "JWT token obtained from login/register"
+		}
+	],
 	"item": [
 		{
 			"name": "Register",
@@ -553,6 +567,368 @@
 						"v1",
 						"categories",
 						"type-categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Create Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 1,\n    \"requirement\": \"Crawl AI news from nytimes.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/ai-requests",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"ai-requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Get Requests by User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/v1/ai-requests/user/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"ai-requests",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Update Request Status",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"completed\",\n    \"export_path\": \"/exports/1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/v1/ai-requests/1/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"v1",
+						"ai-requests",
+						"1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Create Crawled Data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"request_id\": 1,\n    \"url\": \"https://nytimes.com\",\n    \"data\": [{\"title\": \"AI News\", \"date\": \"2023-01-01\"}],\n    \"validated\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/ai-crawled-data",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"ai-crawled-data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Get Crawled Data by Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/v1/ai-crawled-data/request/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"v1",
+						"ai-crawled-data",
+						"request",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Update Data Validation",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"validated\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/v1/ai-crawled-data/507f1f77bcf86cd799439011/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"v1",
+						"ai-crawled-data",
+						"507f1f77bcf86cd799439011",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Create Dialog",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 1,\n    \"request_id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v1/ai-dialogs",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v1",
+						"ai-dialogs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Get Dialogs by User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/v1/ai-dialogs/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"v1",
+						"ai-dialogs",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Add Message to Dialog",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"role\": \"user\",\n    \"content\": \"Hello AI, please crawl some data\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/v1/ai-dialogs/507f1f77bcf86cd799439011/message",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"v1",
+						"ai-dialogs",
+						"507f1f77bcf86cd799439011",
+						"message"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AI Get Dialog by User and Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/v1/ai-dialogs/user/1/request/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"v1",
+						"ai-dialogs",
+						"user",
+						"1",
+						"request",
+						"1"
 					]
 				}
 			},

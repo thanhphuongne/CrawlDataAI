@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as RequestController from './request.controller';
+import { isAIAuthorized } from './aiAuth.middleware';
 
 const router = new Router();
 
@@ -30,7 +31,7 @@ const router = new Router();
  *         description: Request created
  */
 router.route('/')
-  .post(RequestController.createRequest);
+  .post(isAIAuthorized(), RequestController.createRequest);
 
 /**
  * @swagger
@@ -68,7 +69,7 @@ router.route('/:id')
  *         description: List of requests
  */
 router.route('/user/:user_id')
-  .get(RequestController.getRequestsByUser);
+  .get(isAIAuthorized(), RequestController.getRequestsByUser);
 
 /**
  * @swagger
@@ -97,6 +98,6 @@ router.route('/user/:user_id')
  *         description: Status updated
  */
 router.route('/:id/status')
-  .put(RequestController.updateRequestStatus);
+  .put(isAIAuthorized(), RequestController.updateRequestStatus);
 
 export default router;

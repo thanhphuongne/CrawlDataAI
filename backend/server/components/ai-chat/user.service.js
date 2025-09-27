@@ -1,16 +1,55 @@
+import { Op } from 'sequelize';
+import bcrypt from 'bcryptjs';
 import AIUser from './user.model';
+import {
+  BCRYPT_SALT_ROUNDS,
+} from '../../constants';
 
 /**
- * Create a new AI user
+ * Register a new AI user
  * @param {string} email
+ * @param {string} password
  * @returns {Promise<AIUser>}
  */
-export async function createUser(email) {
+export async function register(email, password) {
   try {
-    const user = await AIUser.create({ email });
+    const existingUser = await AIUser.findOne({ where: { email: email.toLowerCase() } });
+    if (existingUser) {
+      throw new Error('Email already registered');
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
+    const user = await AIUser.create({
+      email: email.toLowerCase(),
+      password: hashedPassword,
+    });
     return user;
   } catch (error) {
-    throw new Error(`Error creating user: ${error.message}`);
+    throw new Error(`Error registering user: ${error.message}`);
+  }
+}
+
+/**
+ * Login user
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<{user: AIUser, token: string}>}
+ */
+export async function login(email, password) {
+  try {
+    const user = await AIUser.findOne({ where: { email: email.toLowerCase() } });
+    if (!user) {
+      throw new Error('Invalid email or password');
+    }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new Error('Invalid email or password');
+    }
+
+    const token = user.signJWT();
+    return { user, token };
+  } catch (error) {
+    throw new Error(`Error logging in: ${error.message}`);
   }
 }
 
@@ -21,7 +60,7 @@ export async function createUser(email) {
  */
 export async function getUserByEmail(email) {
   try {
-    const user = await AIUser.findOne({ where: { email } });
+    const user = await AIUser.findOne({ where: { email: email.toLowerCase() } });
     return user;
   } catch (error) {
     throw new Error(`Error getting user: ${error.message}`);

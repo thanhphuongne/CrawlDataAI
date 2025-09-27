@@ -12,6 +12,12 @@ import categoryRoute from '../../components/category/category.route';
 // import workflowRoute from '../../components/workflow/workflow.route';
 // import assetRoute from '../../components/asset/asset.route';
 
+// AI Chat routes
+import aiUserRoute from '../../components/ai-chat/user.route';
+import aiRequestRoute from '../../components/ai-chat/request.route';
+import aiCrawledDataRoute from '../../components/ai-chat/crawledData.route';
+import aiDialogRoute from '../../components/ai-chat/dialog.route';
+
 const router = new Router();
 
 // router.use('/assets', [assetRoute]);
@@ -23,6 +29,12 @@ router.use('/submit-request', [submitRequest]);
 
 // router.use('/locations', [locationRoute]);
 router.use('/categories', [categoryRoute]);
+
+// AI Chat routes
+router.use('/ai-users', [aiUserRoute]);
+router.use('/ai-requests', [aiRequestRoute]);
+router.use('/ai-crawled-data', [aiCrawledDataRoute]);
+router.use('/ai-dialogs', [aiDialogRoute]);
 
 // Docs
 if (NODE_ENV === 'development' || NODE_ENV === 'staging') {

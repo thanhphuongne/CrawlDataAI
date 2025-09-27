@@ -10,10 +10,16 @@ import {
 import logger from './util/logger';
 
 import { sequelize, authenticateDatabase } from './db/connection';
+import { connectMongoDB } from './db/mongoConnection';
 import CategorySchema from './components/category/category.model';
 import SubmitRequest from './components/submit-request/submitRequest.model';
 import HistoryComments from './components/submit-request/HistoryComments.model';
 import User from './components/user/user.model';
+import AIUser from './components/ai-chat/user.model';
+import Request from './components/ai-chat/request.model';
+// Import Mongoose models to register them
+import './components/ai-chat/crawledData.model';
+import './components/ai-chat/dialog.model';
 // Define relationships
 CategorySchema.hasMany(SubmitRequest, { foreignKey: 'categoryId', as: 'submitRequests' });
 SubmitRequest.belongsTo(CategorySchema, { foreignKey: 'categoryId', as: 'category' });
@@ -22,14 +28,14 @@ SubmitRequest.belongsTo(User, { foreignKey: 'createBy',  as: 'userCreate'});
 HistoryComments.belongsTo(User, { foreignKey: 'commentBy', as: 'commenter' });
 User.hasMany(HistoryComments, { foreignKey: 'commentBy', as: 'comments' });
 
-authenticateDatabase()
+Promise.all([authenticateDatabase(), connectMongoDB()])
   .then(() => {
     sequelize.sync({ force: false })
       .then(() => {
-        console.log('table created successfully');
+        console.log('PostgreSQL tables created successfully');
       })
       .catch(err => {
-        console.error('Error creating User table:', err);
+        console.error('Error creating PostgreSQL tables:', err);
       });
 
     if (USE_EXPRESS_HOST_STATIC_FILE === true) {
@@ -37,7 +43,7 @@ authenticateDatabase()
       app.use('/flow-data', Express.static(path.resolve(__dirname, '../flow-data')));
       app.use('/cache', Express.static(path.resolve(__dirname, '../cache')));
       app.use(Express.static(path.join(__dirname, 'public')));
-      
+
     }
   })
   .catch((error) => {

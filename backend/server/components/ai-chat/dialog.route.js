@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as DialogController from './dialog.controller';
-import { isAIAuthorized } from './aiAuth.middleware';
+import { isAuthorized } from '../../api/auth.middleware';
 
 const router = new Router();
 
@@ -31,7 +31,7 @@ const router = new Router();
  *         description: Dialog created
  */
 router.route('/')
-  .post(isAIAuthorized(), DialogController.createDialog);
+  .post(isAuthorized(), DialogController.createDialog);
 
 /**
  * @swagger
@@ -50,7 +50,7 @@ router.route('/')
  *         description: Dialog data
  */
 router.route('/:id')
-  .get(isAIAuthorized(), DialogController.getDialog);
+  .get(isAuthorized(), DialogController.getDialog);
 
 /**
  * @swagger
@@ -69,7 +69,7 @@ router.route('/:id')
  *         description: List of dialogs
  */
 router.route('/user/:user_id')
-  .get(isAIAuthorized(), DialogController.getDialogsByUser);
+  .get(isAuthorized(), DialogController.getDialogsByUser);
 
 /**
  * @swagger
@@ -101,7 +101,7 @@ router.route('/user/:user_id')
  *         description: Message added
  */
 router.route('/:id/message')
-  .post(isAIAuthorized(), DialogController.addMessage);
+  .post(isAuthorized(), DialogController.addMessage);
 
 /**
  * @swagger
@@ -124,6 +124,6 @@ router.route('/:id/message')
  *         description: Dialog data
  */
 router.route('/user/:user_id/request/:request_id')
-  .get(isAIAuthorized(), DialogController.getDialogByUserAndRequest);
+  .get(isAuthorized(), DialogController.getDialogByUserAndRequest);
 
 export default router;

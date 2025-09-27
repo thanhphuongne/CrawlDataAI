@@ -15,7 +15,6 @@ import CategorySchema from './components/category/category.model';
 import SubmitRequest from './components/submit-request/submitRequest.model';
 import HistoryComments from './components/submit-request/HistoryComments.model';
 import User from './components/user/user.model';
-import AIUser from './components/ai-chat/user.model';
 import Request from './components/ai-chat/request.model';
 // Import Mongoose models to register them
 import './components/ai-chat/crawledData.model';

@@ -13,7 +13,6 @@ import categoryRoute from '../../components/category/category.route';
 // import assetRoute from '../../components/asset/asset.route';
 
 // AI Chat routes
-import aiUserRoute from '../../components/ai-chat/user.route';
 import aiRequestRoute from '../../components/ai-chat/request.route';
 import aiCrawledDataRoute from '../../components/ai-chat/crawledData.route';
 import aiDialogRoute from '../../components/ai-chat/dialog.route';
@@ -31,7 +30,6 @@ router.use('/submit-request', [submitRequest]);
 router.use('/categories', [categoryRoute]);
 
 // AI Chat routes
-router.use('/ai-users', [aiUserRoute]);
 router.use('/ai-requests', [aiRequestRoute]);
 router.use('/ai-crawled-data', [aiCrawledDataRoute]);
 router.use('/ai-dialogs', [aiDialogRoute]);

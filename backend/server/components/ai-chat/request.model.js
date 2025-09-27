@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../../db/connection';
-import AIUser from './user.model';
+import User from '../user/user.model';
 
 class Request extends Model {}
 
@@ -14,7 +14,7 @@ Request.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: AIUser,
+      model: User,
       key: 'id',
     },
     onDelete: 'CASCADE',
@@ -46,7 +46,7 @@ Request.init({
   timestamps: false,
 });
 
-AIUser.hasMany(Request, { foreignKey: 'user_id' });
-Request.belongsTo(AIUser, { foreignKey: 'user_id' });
+User.hasMany(Request, { foreignKey: 'user_id' });
+Request.belongsTo(User, { foreignKey: 'user_id' });
 
 export default Request;

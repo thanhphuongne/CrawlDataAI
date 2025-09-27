@@ -2,31 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Create ai_users table
-    await queryInterface.createTable('ai_users', {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      created_at: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      },
-    });
-
-    // Create requests table
+    // Create requests table (users table already exists)
     await queryInterface.createTable('requests', {
       id: {
         type: Sequelize.INTEGER,
@@ -38,7 +14,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'ai_users',
+          model: 'users', // Reference existing users table
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -71,6 +47,5 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('requests');
-    await queryInterface.dropTable('ai_users');
   },
 };

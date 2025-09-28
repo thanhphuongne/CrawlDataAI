@@ -49,6 +49,7 @@
     "randomstring": "^1.2.2",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
+    "socket.io": "^4.8.1",
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^3.3.0",
     "swagger-ui-express": "^4.0.7",

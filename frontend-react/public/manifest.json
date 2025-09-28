@@ -1,6 +1,6 @@
 {
-  "name": "Q-Scoring",
-  "short_name": "Q-Scoring",
+  "name": "AICrawlData",
+  "short_name": "AICrawlData",
   "display": "standalone",
   "start_url": "/",
   "theme_color": "#000000",

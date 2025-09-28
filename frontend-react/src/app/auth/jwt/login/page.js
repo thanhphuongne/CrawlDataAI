@@ -3,7 +3,7 @@ import { JwtLoginView } from 'src/sections/auth/jwt';
 // ----------------------------------------------------------------------
 
 export const metadata = {
-  title: 'Sign in to continue to Q-Scoring',
+  title: 'Sign in to continue to AICrawlData',
 };
 
 export default function LoginPage() {

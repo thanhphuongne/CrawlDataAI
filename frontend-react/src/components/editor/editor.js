@@ -30,7 +30,7 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 // ----------------------------------------------------------------------
 
 export default function Editor({
-  id = 'Q-Scoring-quill',
+  id = 'AICrawlData-quill',
   error,
   simple = false,
   helperText,

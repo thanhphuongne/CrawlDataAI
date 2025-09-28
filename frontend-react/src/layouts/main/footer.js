@@ -12,7 +12,7 @@ import Logo from 'src/components/logo';
 
 const LINKS = [
   {
-    headline: 'Q-Scoring',
+    headline: 'AICrawlData',
     children: [
       { name: 'About us', href: paths.about },
       { name: 'Contact us', href: paths.contact },

@@ -2,8 +2,8 @@
 import { HomeListView } from 'src/sections/home/view';
 // ----------------------------------------------------------------------
 
-const TITLE = 'Q-Scoring'
-const DESCRIPTION = 'QAI Scoring ranking'
+const TITLE = 'AICrawlData'
+const DESCRIPTION = 'AI Crawl Data'
 const IMG_URL = 'https://quynhon.ai/quynhonAI.png'
 
 export const metadata = {

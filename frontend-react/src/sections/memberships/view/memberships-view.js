@@ -266,7 +266,7 @@ export function DashboardView({ packageData, pointsReceived, user }) {
               spacing={2}
             >
               <Typography variant="p" sx={{ mt: 0.5 }}>
-                Welcome to Your Q-Scoring Dashboard! Here, you can effortlessly monitor your membership status, track your rewards, and view your Q-Scoring performance. Stay updated and make the most out of your Q-Scoring experience!
+                Welcome to Your AICrawlData Dashboard! Here, you can effortlessly monitor your membership status, track your rewards, and view your AICrawlData performance. Stay updated and make the most out of your AICrawlData experience!
               </Typography>
             </Stack>
           </Paper>
@@ -471,7 +471,7 @@ export function DashboardView({ packageData, pointsReceived, user }) {
                 spacing={2}
               >
                 <Typography variant="p" fontWeight={600} fontSize={13} textAlign='left'>
-                  Q-Scoring
+                  AICrawlData
                 </Typography>
                 <Tooltip sx={{ backgroundColor: 'unset', mt: '2px' }} title='This number represents the quantity of XO in your xOfferID, not the XO balance in your wallet.'>
                   <Iconify icon="memory:tooltip-above-alert" />

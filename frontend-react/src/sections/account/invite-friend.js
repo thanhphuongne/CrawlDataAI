@@ -103,7 +103,7 @@ export default function InviteFriend() {
     { component: LinkedinShareButton, icon: 'ri:linkedin-fill' }
   ]
 
-  const slogan = "💸 Start Earning Money Online Today with me and Q-Scoring! 💸"
+  const slogan = "💸 Start Earning Money Online Today with me and AICrawlData! 💸"
 
   const SocialShareButtons = () => (
     <>

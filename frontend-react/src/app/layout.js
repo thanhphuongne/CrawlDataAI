@@ -37,10 +37,10 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: 'Q-Scoring',
+  title: 'AICrawlData',
   description:
-    'Q-Scoring - Launch Your Web3 Affiliate Campaign In Minutes',
-  keywords: 'Q-Scoring,web3,affiliate,marketing',
+    'AICrawlData - AI-powered data crawling and analysis platform',
+  keywords: 'AICrawlData,AI,data,crawling,analysis',
   manifest: '/manifest.json',
   icons: [
     { rel: 'icon', url: '/favicon/favicon.ico' },

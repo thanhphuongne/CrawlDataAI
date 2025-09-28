@@ -37,11 +37,14 @@ export async function getDialogById(id) {
 /**
  * Get dialogs by user ID
  * @param {number} userId
+ * @param {number} requestId
  * @returns {Promise<Dialog[]>}
  */
-export async function getDialogsByUserId(userId) {
+export async function getDialogsByUserId(userId, requestId = null) {
   try {
-    const dialogs = await Dialog.find({ user_id: userId }).sort({ created_at: -1 });
+    const query = { user_id: userId };
+    if (requestId) query.request_id = requestId;
+    const dialogs = await Dialog.find(query).sort({ created_at: -1 });
     return dialogs;
   } catch (error) {
     throw new Error(`Error getting dialogs: ${error.message}`);
@@ -84,5 +87,26 @@ export async function getDialogByUserAndRequest(userId, requestId) {
     return dialog;
   } catch (error) {
     throw new Error(`Error getting dialog: ${error.message}`);
+  }
+}
+
+/**
+ * Send message (create dialog if needed)
+ * @param {number} userId
+ * @param {number} requestId
+ * @param {string} content
+ * @returns {Promise<Dialog>}
+ */
+export async function sendMessage(userId, requestId, content) {
+  try {
+    let dialog = await Dialog.findOne({ user_id: userId, request_id: requestId });
+    if (!dialog) {
+      dialog = await createDialog(userId, requestId);
+    }
+    await addMessageToDialog(dialog._id, 'user', content);
+    // TODO: Trigger AI response
+    return dialog;
+  } catch (error) {
+    throw new Error(`Error sending message: ${error.message}`);
   }
 }

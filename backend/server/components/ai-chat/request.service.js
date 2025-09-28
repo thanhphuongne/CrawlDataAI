@@ -37,12 +37,15 @@ export async function getRequestById(id) {
 /**
  * Get requests by user ID
  * @param {number} userId
+ * @param {string} status
  * @returns {Promise<Request[]>}
  */
-export async function getRequestsByUserId(userId) {
+export async function getRequestsByUserId(userId, status = null) {
   try {
+    const where = { user_id: userId };
+    if (status) where.status = status;
     const requests = await Request.findAll({
-      where: { user_id: userId },
+      where,
       order: [['created_at', 'DESC']],
     });
     return requests;
@@ -69,5 +72,19 @@ export async function updateRequestStatus(id, status, exportPath = null) {
     return affectedRows > 0;
   } catch (error) {
     throw new Error(`Error updating request: ${error.message}`);
+  }
+}
+
+/**
+ * Delete request
+ * @param {number} id
+ * @returns {Promise<boolean>}
+ */
+export async function deleteRequest(id) {
+  try {
+    const affectedRows = await Request.destroy({ where: { id } });
+    return affectedRows > 0;
+  } catch (error) {
+    throw new Error(`Error deleting request: ${error.message}`);
   }
 }

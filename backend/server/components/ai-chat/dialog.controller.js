@@ -37,12 +37,10 @@ export async function getDialog(req, res, next) {
  */
 export async function getDialogsByUser(req, res, next) {
   try {
-    const { user_id } = req.params;
-    const dialogs = await DialogService.getDialogsByUserId(user_id);
-    return res.json({
-      success: true,
-      data: dialogs,
-    });
+    const user_id = req.auth.id;
+    const request_id = req.query.request_id;
+    const dialogs = await DialogService.getDialogsByUserId(user_id, request_id);
+    return res.json(dialogs);
   } catch (error) {
     return next(error);
   }
@@ -75,6 +73,22 @@ export async function getDialogByUserAndRequest(req, res, next) {
     return res.json({
       success: true,
       data: dialog,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+/**
+ * Send message (create dialog if needed and add message)
+ */
+export async function sendMessage(req, res, next) {
+  try {
+    const { request_id, content } = req.body;
+    const user_id = req.auth.id;
+    const message = await DialogService.sendMessage(user_id, request_id, content);
+    return res.json({
+      message: "Message sent",
     });
   } catch (error) {
     return next(error);

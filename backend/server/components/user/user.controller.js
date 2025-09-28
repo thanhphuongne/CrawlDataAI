@@ -71,6 +71,44 @@ export async function login(req, res, next) {
   }
 }
 
+export async function emailRegister(req, res, next) {
+  try {
+    const {
+      email,
+      password,
+    } = req.body;
+    const user = await UserService.emailRegistry({
+      email,
+      password,
+    });
+
+    const loginData = await UserService.emailLogin(email, password);
+    return res.json({
+      user_id: user.id,
+      message: "User registered",
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+export async function emailLogin(req, res, next) {
+  try {
+    const {
+      email,
+      password,
+    } = req.body;
+    const user = await UserService.emailLogin(email, password);
+    return res.json({
+      token: user.token,
+      user_id: user.id,
+    });
+
+  } catch (error) {
+    return next(error);
+  }
+}
+
 export async function getUser(req, res, next) {
   try {
     const {
@@ -128,6 +166,20 @@ export async function updateUserProfile(req, res, next) {
       info[bodyKey] = body[bodyKey];
     });
     await UserService.updateUserProfile(auth, info);
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+export async function updateUserProfileById(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { email } = req.body;
+    // Simple update for email
+    await UserService.updateUserProfileById(id, { email });
     return res.json({
       success: true,
     });

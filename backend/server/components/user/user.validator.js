@@ -37,6 +37,18 @@ export const login = [
   validatorErrorHandler,
 ];
 
+export const emailRegistry = [
+  body('email').isEmail().withMessage('Email is invalid'),
+  body('password').isLength({ min: USER_MIN_PASSWORD_LENGTH }).withMessage(`Password must be at least ${USER_MIN_PASSWORD_LENGTH} chars long`),
+  validatorErrorHandler,
+];
+
+export const emailLogin = [
+  body('email').isEmail().withMessage('Email is invalid'),
+  body('password').isLength({ min: USER_MIN_PASSWORD_LENGTH }).withMessage(`Password must be at least ${USER_MIN_PASSWORD_LENGTH} chars long`),
+  validatorErrorHandler,
+];
+
 export const updateUserProfile = [
   body('fullName').optional(),
   body('email').optional().isEmail().withMessage('Email is invalid'),

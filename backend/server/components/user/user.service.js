@@ -125,6 +125,44 @@ export async function login(accountName, password) {
   }
 }
 
+export async function emailRegistry(params) {
+  try {
+    const existedUser = await User.findOne({ where: { email: params.email } });
+    if (existedUser) {
+      throw new APIError(500, 'Email already used, please try to login instead');
+    }
+    const userInfo = {
+      email: params.email,
+      password: bcrypt.hashSync(params.password, BCRYPT_SALT_ROUNDS),
+    };
+    const user = await User.create(userInfo);
+    return user;
+  } catch (error) {
+    logger.error('User email registry create new user error:', error);
+    throw new APIError(500, error);
+  }
+}
+
+export async function emailLogin(email, password) {
+  try {
+    let user = await User.findOne({ where: { email: email } });
+    if (!user) {
+      throw new APIError(403, 'Email or Password is not correct');
+    }
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new APIError(403, 'Email or Password is not correct');
+    }
+    const token = user.signJWT();
+    user = user.toJSON();
+    user.token = token;
+
+    return user;
+  } catch (error) {
+    logger.error(`User email login error: ${error}`);
+    throw new APIError(500, error);
+  }
+}
+
 /**
  * Get user by user _id
  * @param {objectId} _id The user _id
@@ -436,6 +474,26 @@ export async function verifyForgotPasswordCode(verifyCode, email) {
 
   } catch (error) {
     logger.error(`User updateUserPassword error: ${error}`);
+    throw error;
+  }
+}
+
+export async function updateUserProfileById(id, data) {
+  try {
+    const updateFields = {};
+    const updateSetFields = ['email'];
+    updateSetFields.forEach((setField) => {
+      if (data[setField]) {
+        updateFields[setField] = data[setField];
+      }
+    });
+    if (Object.keys(updateFields).length > 0) {
+      await User.update(updateFields, { where: { id } });
+      return true;
+    }
+    throw new APIError(304, 'Not Modified');
+  } catch (error) {
+    logger.error(`User updateUserProfileById error: ${error}`);
     throw error;
   }
 }

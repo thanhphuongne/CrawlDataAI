@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import { CORS_OPTIONS } from '../config';
 import errorHandler from './errorHandler';
 import routeV1 from './v1';
+import routeApi from './api';
 import { DEFAULT_LANGUAGE } from '../constants';
 
 const app = new Express();
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/v1', routeV1);
+app.use('/api', routeApi);
 
 app.use(errorHandler);
 

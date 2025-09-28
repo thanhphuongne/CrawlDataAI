@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "bfc548df-62e1-4ed3-9c8d-3813e2bf1122",
-		"name": "AI Chat Website API",
-		"description": "API collection for AI Chat Website with PostgreSQL and MongoDB integration",
+		"name": "AI Crawl Data API",
+		"description": "API collection for AI Crawl Data with PostgreSQL and MongoDB integration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "36341217"
 	},
@@ -16,7 +16,7 @@
 			"key": "auth_token",
 			"value": "",
 			"type": "string",
-			"description": "JWT token obtained from login/register"
+			"description": "JWT token obtained from login"
 		}
 	],
 	"item": [
@@ -27,7 +27,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"firstName\":\"admin\",\n    \"lastName\": \"admin\",\n    \"email\":\"admin@fpt.com\",\n    \"password\":\"admin123456\"\n}",
+					"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -35,467 +35,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3001/v1/users/registry",
-					"protocol": "http",
+					"raw": "{{base_url}}/api/auth/register",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
-						"v1",
-						"users",
-						"registry"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateCategory",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTczOTMyMjY4MCwiZXhwIjoxNzQwMTg2NjgwfQ.oI6yhJhkSelz_-sQ31va8aYjipKnNv37KahbdsELQA8",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\":\"Tham gia tạo Proposal dự án >2M\",\n    \"type\": \"BIZDEV\",\n    \"description\": \"Tham gia tạo Proposal dự án >2M\",\n    \"score\":400\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/categories",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"categories"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-category",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTczOTM1MzE0NiwiZXhwIjoxNzQwMjE3MTQ2fQ.5FMZyjfWdSyuRqKwViiZaBfXB0K6_t5B2q4LrNMapXE",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\":\"Tham gia tạo Proposal dự án >2M\",\n    \"type\": \"BIZDEV\",\n    \"description\": \"Tham gia tạo Proposal dự án >2M\",\n    \"score\":400\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/categories",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"categories"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-comments",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTc0MTQ3NDg1OCwiZXhwIjoxNzQyMzM4ODU4fQ.JnJne80YnIL7O-ZGa9cCmxt18ptIa7wm__Z6A2T9-HA",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\":\"Tham gia tạo Proposal dự án >2M\",\n    \"type\": \"BIZDEV\",\n    \"description\": \"Tham gia tạo Proposal dự án >2M\",\n    \"score\":400\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/submit-request/comment?submitId=12",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"submit-request",
-						"comment"
-					],
-					"query": [
-						{
-							"key": "submitId",
-							"value": "12"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-sumary",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTc0MTQ3NDg1OCwiZXhwIjoxNzQyMzM4ODU4fQ.JnJne80YnIL7O-ZGa9cCmxt18ptIa7wm__Z6A2T9-HA",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\":\"Tham gia tạo Proposal dự án >2M\",\n    \"type\": \"BIZDEV\",\n    \"description\": \"Tham gia tạo Proposal dự án >2M\",\n    \"score\":400\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/submit-request/sumary",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"submit-request",
-						"sumary"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CreateSummit",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTc0MTQ3NDg1OCwiZXhwIjoxNzQyMzM4ODU4fQ.JnJne80YnIL7O-ZGa9cCmxt18ptIa7wm__Z6A2T9-HA",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"accountName\": \"tienpm3\",\n      \"descriptions\": \"Hoàn thanh tool nội bộ Q-scoring\",\n      \"supervisor\": 1,\n      \"approver\":\"tienpm3\",\n      \"category\": 1,\n      \"hasNotifyMail\":true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/submit-request",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"submit-request"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "UpdateSubmmit",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTczNjkwMzI5NSwiZXhwIjoxNzM3NzY3Mjk1fQ.TtX97BHOrJeSbqsWKaJ0LKbPgTr5ow3xv-I6q5osn8c",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\":1,\n    \"accountName\": \"tienpm3\",\n      \"descriptions\": \"params.descriptions\",\n      \"suppervisor\": 1,\n      \"category\": 1,\n      \"hasNotifyMail\":true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/submit-request",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"submit-request"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetListSubmit",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var template = `",
-							"<style type=\"text/css\">",
-							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
-							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
-							"    .tftable tr {background-color:#ffffff;}",
-							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
-							"    .tftable tr:hover {background-color:#e0ffff;}",
-							"</style>",
-							"",
-							"<table class=\"tftable\" border=\"1\">",
-							"    <tr>",
-							"        <th>ID</th>",
-							"        <th>Account Name</th>",
-							"        <th>Description</th>",
-							"        <th>Supervisor</th>",
-							"        <th>Category ID</th>",
-							"        <th>Notify Mail</th>",
-							"        <th>Supervisor Approved</th>",
-							"        <th>Admin Approved</th>",
-							"        <th>Status</th>",
-							"        <th>Created By</th>",
-							"    </tr>",
-							"    ",
-							"    {{#each response.data}}",
-							"        <tr id=row_{{@key}}>",
-							"            <td>{{id}}</td>",
-							"            <td>{{accountName}}</td>",
-							"            <td>{{descriptions}}</td>",
-							"            <td>{{suppervisor}}</td>",
-							"            <td>{{categoryId}}</td>",
-							"            <td>{{#if hasNotifyMail}}Yes{{else}}No{{/if}}</td>",
-							"            <td>{{#if suppervisorApproved}}Yes{{else}}No{{/if}}</td>",
-							"            <td>{{#if adminApproved}}Yes{{else}}No{{/if}}</td>",
-							"            <td>{{status}}</td>",
-							"            <td>{{createBy}}</td>",
-							"        </tr>",
-							"    {{/each}}",
-							"</table>",
-							"`;",
-							"",
-							"function constructVisualizerPayload() {",
-							"    return {response: pm.response.json()}",
-							"}",
-							"",
-							"pm.visualizer.set(template, constructVisualizerPayload());"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTczNzYyNTMxMiwiZXhwIjoxNzM4NDg5MzEyfQ.7Xl7Ys6gyGGiTOa9Oh6sPWTf92uDiKN_ttua1NRzcfM",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"accountName\": \"tienpm3\",\n      \"descriptions\": \"params.descriptions\",\n      \"suppervisor\": 1,\n      \"category\": 1,\n      \"hasNotifyMail\":true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/submit-request/list",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"submit-request",
-						"list"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetListRanking",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTczNjkwMzI5NSwiZXhwIjoxNzM3NzY3Mjk1fQ.TtX97BHOrJeSbqsWKaJ0LKbPgTr5ow3xv-I6q5osn8c",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"accountName\": \"tienpm3\",\n      \"descriptions\": \"params.descriptions\",\n      \"suppervisor\": 1,\n      \"category\": 1,\n      \"hasNotifyMail\":true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/submit-request/ranking?pagenumber=1&pagesize=6&startdate=2025-01-01&enddate=2025-01-30",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"submit-request",
-						"ranking"
-					],
-					"query": [
-						{
-							"key": "pagenumber",
-							"value": "1"
-						},
-						{
-							"key": "pagesize",
-							"value": "6"
-						},
-						{
-							"key": "startdate",
-							"value": "2025-01-01"
-						},
-						{
-							"key": "enddate",
-							"value": "2025-01-30"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Supervisor approve",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTczODgwMzU0OSwiZXhwIjoxNzM5NjY3NTQ5fQ.zc6F5JuZSiQxEtqwr2dcUXn1LyTfWuwjojhWgsrUW3M",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n       \"id\": 1,\n      \"approve\": true,\n      \"descriptions\": \"ok chấp nhận \"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/submit-request/supervisor-approve",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"submit-request",
-						"supervisor-approve"
+						"api",
+						"auth",
+						"register"
 					]
 				}
 			},
@@ -508,7 +55,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"accountName\":\"tienpm3\",\n    \"password\":\"admin123456\"\n}",
+					"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -516,16 +63,13 @@
 					}
 				},
 				"url": {
-					"raw": "https://q-scoring-api.qai.solutions/v1/users/login",
-					"protocol": "https",
+					"raw": "{{base_url}}/api/auth/login",
 					"host": [
-						"q-scoring-api",
-						"qai",
-						"solutions"
+						"{{base_url}}"
 					],
 					"path": [
-						"v1",
-						"users",
+						"api",
+						"auth",
 						"login"
 					]
 				}
@@ -533,47 +77,7 @@
 			"response": []
 		},
 		{
-			"name": "create-type-category",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEsImlhdCI6MTczOTMyMjY4MCwiZXhwIjoxNzQwMTg2NjgwfQ.oI6yhJhkSelz_-sQ31va8aYjipKnNv37KahbdsELQA8",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"approver\":\"tienpm3\",\n    \"type\": \"BIZDEV\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/categories/type-categories",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"categories",
-						"type-categories"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AI Create Request",
+			"name": "Create Crawl Request",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -589,7 +93,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": 1,\n    \"requirement\": \"Crawl AI news from nytimes.com\"\n}",
+					"raw": "{\n    \"requirement\": \"Crawl AI news from nytimes.com, extract titles, dates\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -597,20 +101,20 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/v1/ai-requests",
+					"raw": "{{base_url}}/api/requests",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"v1",
-						"ai-requests"
+						"api",
+						"requests"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "AI Get Requests by User",
+			"name": "Get Request by ID",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -625,14 +129,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/v1/ai-requests/user/1",
+					"raw": "{{base_url}}/api/requests/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"v1",
-						"ai-requests",
-						"user",
+						"api",
+						"requests",
 						"1"
 					]
 				}
@@ -640,7 +143,7 @@
 			"response": []
 		},
 		{
-			"name": "AI Update Request Status",
+			"name": "Get All Requests",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -652,11 +155,45 @@
 						}
 					]
 				},
-				"method": "PUT",
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/requests?status=completed",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"requests"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "completed"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Dialog Message",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"status\": \"completed\",\n    \"export_path\": \"/exports/1\"\n}",
+					"raw": "{\n    \"request_id\": 1,\n    \"content\": \"Hello AI, please crawl some data\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -664,24 +201,114 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3001/v1/ai-requests/1/status",
-					"protocol": "http",
+					"raw": "{{base_url}}/api/dialogs",
 					"host": [
-						"localhost"
+						"{{base_url}}"
 					],
-					"port": "3001",
 					"path": [
-						"v1",
-						"ai-requests",
+						"api",
+						"dialogs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Dialogs by User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/dialogs/1?request_id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dialogs",
+						"1"
+					],
+					"query": [
+						{
+							"key": "request_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Crawled Data by Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/data/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"data",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Download Exported Data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/exports/1/json",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"exports",
 						"1",
-						"status"
+						"json"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "AI Create Crawled Data",
+			"name": "Delete Request",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -693,56 +320,16 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"request_id\": 1,\n    \"url\": \"https://nytimes.com\",\n    \"data\": [{\"title\": \"AI News\", \"date\": \"2023-01-01\"}],\n    \"validated\": false\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{base_url}}/v1/ai-crawled-data",
+					"raw": "{{base_url}}/api/requests/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"v1",
-						"ai-crawled-data"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AI Get Crawled Data by Request",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{auth_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/v1/ai-crawled-data/request/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"ai-crawled-data",
-						"request",
+						"api",
+						"requests",
 						"1"
 					]
 				}
@@ -750,48 +337,7 @@
 			"response": []
 		},
 		{
-			"name": "AI Update Data Validation",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{auth_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"validated\": true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/ai-crawled-data/507f1f77bcf86cd799439011/validate",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"ai-crawled-data",
-						"507f1f77bcf86cd799439011",
-						"validate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AI Create Dialog",
+			"name": "Update User Profile",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -807,7 +353,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": 1,\n    \"request_id\": 1\n}",
+					"raw": "{\n    \"email\": \"newemail@example.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -815,119 +361,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/v1/ai-dialogs",
+					"raw": "{{base_url}}/api/users/1",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
-						"v1",
-						"ai-dialogs"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AI Get Dialogs by User",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{auth_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/v1/ai-dialogs/user/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"ai-dialogs",
-						"user",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AI Add Message to Dialog",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{auth_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"role\": \"user\",\n    \"content\": \"Hello AI, please crawl some data\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/v1/ai-dialogs/507f1f77bcf86cd799439011/message",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"ai-dialogs",
-						"507f1f77bcf86cd799439011",
-						"message"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AI Get Dialog by User and Request",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{auth_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3001/v1/ai-dialogs/user/1/request/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"v1",
-						"ai-dialogs",
-						"user",
-						"1",
-						"request",
+						"api",
+						"users",
 						"1"
 					]
 				}

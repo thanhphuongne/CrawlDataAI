@@ -55,11 +55,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={primaryFont.className}>
       <body style={{
-        backgroundImage: "url(" + urlBackground + ")", backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-        // minHeight: "100vh", // Ensures the element fills the viewport height
-        //  width: "100vw" ,
+        background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
+        minHeight: '100vh',
         backgroundAttachment: 'fixed'
       }}>
         <AuthProvider>
@@ -71,7 +68,7 @@ export default function RootLayout({ children }) {
                 themeDirection: 'ltr', //  'rtl' | 'ltr'
                 themeContrast: 'default', // 'default' | 'bold'
                 themeLayout: 'horizontal', // 'vertical' | 'horizontal' | 'mini'
-                themeColorPresets: 'purple', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+                themeColorPresets: 'cyan', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
                 themeStretch: false,
               }}
             >

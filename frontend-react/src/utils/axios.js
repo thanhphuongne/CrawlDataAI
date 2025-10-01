@@ -140,4 +140,17 @@ export const endpoints = {
     rewardEarneds: '{id}/reward-earneds/13',
     networkRef: 'affiliates/{id}/networks?skip={skip}&limit={limit}',
   },
+  crawl: {
+    register: '/api/auth/register',
+    login: '/api/auth/login',
+    createRequest: '/api/requests',
+    getRequestById: (id) => `/api/requests/${id}`,
+    getAllRequests: '/api/requests',
+    sendDialog: '/api/dialogs',
+    getDialogsByUser: (userId) => `/api/dialogs/${userId}`,
+    getDataByRequest: (requestId) => `/api/data/${requestId}`,
+    downloadExport: (id, format = 'json') => `/api/exports/${id}/${format}`,
+    deleteRequest: (id) => `/api/requests/${id}`,
+    updateUser: (id) => `/api/users/${id}`,
+  },
 };

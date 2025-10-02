@@ -21,8 +21,8 @@ import User from './components/user/user.model';
 import Request from './components/ai-chat/request.model';
 // Import Mongoose models to register them
 import './components/ai-chat/crawledData.model';
-import './components/ai-chat/dialog.model';
-import * as DialogService from './components/ai-chat/dialog.service';
+import './components/ai-chat/conversation.model';
+import * as ConversationService from './components/ai-chat/conversation.service';
 // Define relationships
 CategorySchema.hasMany(SubmitRequest, { foreignKey: 'categoryId', as: 'submitRequests' });
 SubmitRequest.belongsTo(CategorySchema, { foreignKey: 'categoryId', as: 'category' });
@@ -83,7 +83,7 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
         if (!socket.user) return;
 
         // Save message
-        await DialogService.sendMessage(socket.user.id, request_id, content);
+        await ConversationService.sendMessage(socket.user.id, request_id, content);
 
         // Echo back
         socket.emit('chat_response', { message: 'Message received', request_id });

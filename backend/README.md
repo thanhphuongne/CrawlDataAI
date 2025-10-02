@@ -7,7 +7,7 @@ This backend provides APIs for user authentication, AI-powered data crawling req
 - **Framework**: Express.js with Babel
 - **Databases**:
   - PostgreSQL (users, requests via Sequelize)
-  - MongoDB (dialogs, crawled data via Mongoose)
+  - MongoDB (conversations, crawled data via Mongoose)
 - **Authentication**: JWT tokens
 - **Real-time**: Socket.IO for WebSocket chat
 
@@ -115,10 +115,10 @@ Get specific request by ID.
 #### DELETE /api/requests/:id
 Delete request and associated data.
 
-### Dialog/Chat
+### Conversation/Chat
 
-#### POST /api/dialogs
-Send message (creates dialog if needed).
+#### POST /api/conversations
+Send message (creates conversation if needed).
 
 **Request:**
 ```json
@@ -128,8 +128,8 @@ Send message (creates dialog if needed).
 }
 ```
 
-#### GET /api/dialogs/:user_id
-Get user dialogs (optional request_id filter).
+#### GET /api/conversations/:user_id
+Get user conversations (optional request_id filter).
 
 ### Data Management
 
@@ -193,7 +193,7 @@ Connect to `ws://localhost:3001?token=<jwt>`
 1. User connects to WebSocket with JWT
 2. Verify token on connection
 3. On chat_message:
-   - Save message to MongoDB Dialog
+   - Save message to MongoDB Conversation
    - TODO: Call AI API for response
    - Send chat_response
 
@@ -209,7 +209,7 @@ Connect to `ws://localhost:3001?token=<jwt>`
 - **Request**: id, user_id, requirement, status, export_path, created_at
 
 ### MongoDB (Mongoose)
-- **Dialog**: user_id, request_id, messages[{role, content, timestamp}]
+- **Conversation**: user_id, request_id, messages[{role, content, timestamp}]
 - **CrawledData**: request_id, url, data[], validated
 
 ## TODOs

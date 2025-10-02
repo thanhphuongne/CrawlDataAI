@@ -15,7 +15,7 @@ import categoryRoute from '../../components/category/category.route';
 // AI Chat routes
 import aiRequestRoute from '../../components/ai-chat/request.route';
 import aiCrawledDataRoute from '../../components/ai-chat/crawledData.route';
-import aiDialogRoute from '../../components/ai-chat/dialog.route';
+import aiConversationRoute from '../../components/ai-chat/conversation.route';
 
 const router = new Router();
 
@@ -32,7 +32,7 @@ router.use('/categories', [categoryRoute]);
 // AI Chat routes
 router.use('/ai-requests', [aiRequestRoute]);
 router.use('/ai-crawled-data', [aiCrawledDataRoute]);
-router.use('/ai-dialogs', [aiDialogRoute]);
+router.use('/ai-conversations', [aiConversationRoute]);
 
 // Docs
 if (NODE_ENV === 'development' || NODE_ENV === 'staging') {

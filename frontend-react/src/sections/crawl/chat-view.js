@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -11,20 +12,18 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
 import Fab from '@mui/material/Fab';
-import { alpha } from '@mui/material/styles';
 
-import { useSnackbar } from 'src/components/snackbar';
 import Iconify from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
 import Markdown from 'src/components/markdown';
 
-import { getCrawlDialogsByUser, sendCrawlDialog } from 'src/api/crawl-api';
+import { sendCrawlDialog, getCrawlDialogsByUser } from 'src/api/crawl-api';
 
 // ----------------------------------------------------------------------
 
 export default function CrawlChatView() {
   const { enqueueSnackbar } = useSnackbar();
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -379,7 +378,7 @@ export default function CrawlChatView() {
                 maxRows={4}
                 placeholder="Ask me anything..."
                 {...register('content')}
-                disabled={loading || isTyping}
+                disabled={isTyping}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 3,
@@ -404,7 +403,7 @@ export default function CrawlChatView() {
               />
               <IconButton
                 type="submit"
-                disabled={isSubmitting || loading || isTyping || !content?.trim()}
+                disabled={isSubmitting || isTyping || !content?.trim()}
                 sx={{
                   bgcolor: content?.trim() ? 'primary.main' : 'grey.600',
                   color: 'white',
@@ -447,18 +446,20 @@ export default function CrawlChatView() {
       </Fab>
 
       {/* Typing Animation Styles */}
-      <style jsx global>{`
-        @keyframes typing {
-          0%, 60%, 100% {
-            transform: translateY(0);
-            opacity: 0.4;
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes typing {
+            0%, 60%, 100% {
+              transform: translateY(0);
+              opacity: 0.4;
+            }
+            30% {
+              transform: translateY(-10px);
+              opacity: 1;
+            }
           }
-          30% {
-            transform: translateY(-10px);
-            opacity: 1;
-          }
-        }
-      `}</style>
+        `
+      }} />
     </Box>
   );
 }

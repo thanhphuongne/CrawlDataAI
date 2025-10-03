@@ -23,6 +23,8 @@ import Request from './components/ai-chat/request.model';
 import './components/ai-chat/crawledData.model';
 import './components/ai-chat/conversation.model';
 import * as ConversationService from './components/ai-chat/conversation.service';
+import * as RequestService from './components/ai-chat/request.service';
+import { processUserMessage, generateResponse } from './util/aiService';
 // Define relationships
 CategorySchema.hasMany(SubmitRequest, { foreignKey: 'categoryId', as: 'submitRequests' });
 SubmitRequest.belongsTo(CategorySchema, { foreignKey: 'categoryId', as: 'category' });
@@ -82,13 +84,67 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
         const { content, request_id } = data;
         if (!socket.user) return;
 
-        // Save message
+        // Save user message
         await ConversationService.sendMessage(socket.user.id, request_id, content);
 
-        // Echo back
-        socket.emit('chat_response', { message: 'Message received', request_id });
+        try {
+          // Process message with AI
+          const aiResult = await processUserMessage(content);
 
-        // TODO: Trigger AI response or crawl updates
+          if (aiResult.isDataRequest) {
+            // Send formatted requirement for approval
+            socket.emit('data_request_proposal', {
+              requirement: aiResult.formattedRequirement,
+              explanation: aiResult.explanation,
+              message_id: Date.now() // Simple ID for tracking
+            });
+          } else {
+            // Generate normal AI response
+            const aiResponse = await generateResponse(content);
+            await ConversationService.addMessageToConversation(
+              (await ConversationService.getConversationByUserAndRequest(socket.user.id, request_id))._id,
+              'assistant',
+              aiResponse
+            );
+            socket.emit('chat_response', { message: aiResponse, request_id });
+          }
+        } catch (error) {
+          console.error('Error processing chat message:', error);
+          socket.emit('chat_response', { message: 'Sorry, I encountered an error. Please try again.', request_id });
+        }
+      });
+
+      // Handle approval of data request
+      socket.on('approve_data_request', async (data) => {
+        const { requirement, message_id } = data;
+        if (!socket.user) return;
+
+        try {
+          // Create a new crawl request
+          const request = await RequestService.createRequest(socket.user.id, requirement);
+
+          // Send confirmation
+          socket.emit('data_request_approved', {
+            request_id: request.id,
+            status: request.status,
+            message: 'Data crawling request has been created and will start processing.'
+          });
+
+          // TODO: Trigger actual crawling process
+        } catch (error) {
+          console.error('Error creating data request:', error);
+          socket.emit('data_request_error', { message: 'Failed to create data request. Please try again.' });
+        }
+      });
+
+      // Handle rejection of data request
+      socket.on('reject_data_request', async (data) => {
+        const { message_id } = data;
+        if (!socket.user) return;
+
+        socket.emit('data_request_rejected', {
+          message: 'Data request cancelled. You can try rephrasing your request.'
+        });
       });
 
       socket.on('disconnect', () => {

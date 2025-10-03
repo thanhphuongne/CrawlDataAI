@@ -110,3 +110,38 @@ export async function sendMessage(userId, requestId, content) {
     throw new Error(`Error sending message: ${error.message}`);
   }
 }
+
+/**
+ * Get or create a general conversation for a user (not tied to specific requests)
+ * @param {number} userId
+ * @returns {Promise<Conversation>}
+ */
+export async function getOrCreateGeneralConversation(userId) {
+  try {
+    // Look for a conversation with null request_id (general conversation)
+    let conversation = await Conversation.findOne({ user_id: userId, request_id: null });
+    if (!conversation) {
+      conversation = await createConversation(userId, null);
+    }
+    return conversation;
+  } catch (error) {
+    throw new Error(`Error getting general conversation: ${error.message}`);
+  }
+}
+
+/**
+ * Send message to general conversation
+ * @param {number} userId
+ * @param {string} content
+ * @param {string} role - 'user' or 'assistant'
+ * @returns {Promise<Conversation>}
+ */
+export async function sendMessageToGeneralConversation(userId, content, role = 'user') {
+  try {
+    let conversation = await getOrCreateGeneralConversation(userId);
+    await addMessageToConversation(conversation._id, role, content);
+    return conversation;
+  } catch (error) {
+    throw new Error(`Error sending message to general conversation: ${error.message}`);
+  }
+}

@@ -124,6 +124,25 @@ router.route('/:id/message')
  *         description: Conversation data
  */
 router.route('/user/:user_id/request/:request_id')
-  .get(isAuthorized(), ConversationController.getConversationByUserAndRequest);
+   .get(isAuthorized(), ConversationController.getConversationByUserAndRequest);
+
+/**
+ * @swagger
+ * /ai-conversations/user/{user_id}/general:
+ *   get:
+ *     summary: Get general conversation for user (persistent chat history)
+ *     tags:
+ *       - AI Conversations
+ *     parameters:
+ *       - name: user_id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: General conversation data
+ */
+router.route('/user/:user_id/general')
+   .get(isAuthorized(), ConversationController.getGeneralConversation);
 
 export default router;

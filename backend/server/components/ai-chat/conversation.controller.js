@@ -94,3 +94,19 @@ export async function sendMessage(req, res, next) {
     return next(error);
   }
 }
+
+/**
+ * Get general conversation for user (persistent chat history)
+ */
+export async function getGeneralConversation(req, res, next) {
+  try {
+    const { user_id } = req.params;
+    const conversation = await ConversationService.getOrCreateGeneralConversation(user_id);
+    return res.json({
+      success: true,
+      data: conversation,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}

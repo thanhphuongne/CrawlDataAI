@@ -71,6 +71,18 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
           const jwt = require('jsonwebtoken');
           const decoded = jwt.verify(token, USER_JWT_SECRET_KEY);
           socket.user = { id: decoded._id || decoded.id };
+
+          // Send conversation history on connection
+          ConversationService.getOrCreateGeneralConversation(socket.user.id)
+            .then(conversation => {
+              socket.emit('conversation_history', {
+                messages: conversation.messages || [],
+                conversation_id: conversation._id
+              });
+            })
+            .catch(error => {
+              console.error('Error loading conversation history:', error);
+            });
         } catch (err) {
           socket.disconnect();
           return;
@@ -84,10 +96,10 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
         const { content, request_id } = data;
         if (!socket.user) return;
 
-        // Save user message
-        await ConversationService.sendMessage(socket.user.id, request_id, content);
-
         try {
+          // Save user message to general conversation
+          await ConversationService.sendMessageToGeneralConversation(socket.user.id, content, 'user');
+
           // Process message with AI
           const aiResult = await processUserMessage(content);
 
@@ -101,11 +113,10 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
           } else {
             // Generate normal AI response
             const aiResponse = await generateResponse(content);
-            await ConversationService.addMessageToConversation(
-              (await ConversationService.getConversationByUserAndRequest(socket.user.id, request_id))._id,
-              'assistant',
-              aiResponse
-            );
+
+            // Save AI response to general conversation
+            await ConversationService.sendMessageToGeneralConversation(socket.user.id, aiResponse, 'assistant');
+
             socket.emit('chat_response', { message: aiResponse, request_id });
           }
         } catch (error) {

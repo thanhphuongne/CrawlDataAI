@@ -127,7 +127,9 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
           socket.emit('data_request_approved', {
             request_id: request.id,
             status: request.status,
-            message: 'Data crawling request has been created and will start processing.'
+            message: 'Data crawling request has been created and will start processing.',
+            export_formats: ['json', 'xlsx'],
+            export_url: `/api/data/${request.id}/`
           });
 
           // TODO: Trigger actual crawling process

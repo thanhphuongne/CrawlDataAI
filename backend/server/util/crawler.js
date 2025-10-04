@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import * as CrawledDataService from '../components/ai-chat/crawledData.service';
-import * as RequestService from '../components/ai-chat/request.service';
+import * as CrawledDataService from '../components/ai-chat/crawledData.service.js';
+import * as RequestService from '../components/ai-chat/request.service.js';
 
 /**
  * Extract data from HTML based on common patterns

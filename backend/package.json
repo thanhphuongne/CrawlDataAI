@@ -10,7 +10,11 @@
     "api": "pm2 start server.js --name fscoring-backend",
     "runflow": "node cmd/runflow.js",
     "prod": "npm run api",
+    "prod:yarn": "yarn run api",
     "slate": "rimraf node_modules && npm install",
+    "slate:yarn": "rimraf node_modules && yarn install",
+    "install:npm": "npm install",
+    "install:yarn": "yarn install",
     "lint": "eslint server"
   },
   "dependencies": {

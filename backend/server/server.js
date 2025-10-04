@@ -25,6 +25,7 @@ import './components/ai-chat/conversation.model';
 import * as ConversationService from './components/ai-chat/conversation.service';
 import * as RequestService from './components/ai-chat/request.service';
 import { processUserMessage, generateResponse } from './util/aiService';
+import { executeCrawling } from './util/crawler';
 // Define relationships
 CategorySchema.hasMany(SubmitRequest, { foreignKey: 'categoryId', as: 'submitRequests' });
 SubmitRequest.belongsTo(CategorySchema, { foreignKey: 'categoryId', as: 'category' });
@@ -143,7 +144,22 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
             export_url: `/api/data/${request.id}/`
           });
 
-          // TODO: Trigger actual crawling process
+          // Trigger actual crawling process
+          executeCrawling(request.id, requirement)
+            .then(() => {
+              console.log(`Crawling completed for request ${request.id}`);
+              socket.emit('crawling_completed', {
+                request_id: request.id,
+                message: 'Data crawling has been completed successfully.'
+              });
+            })
+            .catch((error) => {
+              console.error(`Crawling failed for request ${request.id}:`, error);
+              socket.emit('crawling_failed', {
+                request_id: request.id,
+                message: 'Data crawling failed. Please try again.'
+              });
+            });
         } catch (error) {
           console.error('Error creating data request:', error);
           socket.emit('data_request_error', { message: 'Failed to create data request. Please try again.' });

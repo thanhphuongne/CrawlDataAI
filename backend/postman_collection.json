@@ -116,21 +116,46 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/users/1",
+              "raw": "{{base_url}}/api/users/{{created_user_id}}",
               "host": ["{{base_url}}"],
-              "path": ["api", "users", "1"]
-            }
+              "path": ["api", "users", "{{created_user_id}}"]
+            },
+            "description": "Retrieve details of a specific user by ID. Uses the ID from the created user."
           }
         },
         {
           "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response has user data', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response).to.have.property('id');",
+                  "    pm.expect(response).to.have.property('account_name');",
+                  "    pm.expect(response).to.have.property('email');",
+                  "    pm.expect(response).to.have.property('role');",
+                  "});",
+                  "",
+                  "pm.test('User ID is stored', function () {",
+                  "    const response = pm.response.json();",
+                  "    if (response.id) {",
+                  "        pm.collectionVariables.set('created_user_id', response.id);",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
               {
                 "key": "Content-Type",
                 "value": "application/json"
@@ -138,13 +163,14 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"account_name\": \"jane_doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"USER\"\n}"
+              "raw": "{\n  \"account_name\": \"jane_doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"securepassword123\",\n  \"role\": \"USER\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/api/users",
               "host": ["{{base_url}}"],
               "path": ["api", "users"]
-            }
+            },
+            "description": "Create a new user account (admin only). Requires Bearer token authentication."
           }
         },
         {
@@ -166,10 +192,11 @@
               "raw": "{\n  \"account_name\": \"jane_smith\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/api/users/2",
+              "raw": "{{base_url}}/api/users/{{created_user_id}}",
               "host": ["{{base_url}}"],
-              "path": ["api", "users", "2"]
-            }
+              "path": ["api", "users", "{{created_user_id}}"]
+            },
+            "description": "Update user information. Uses the ID from the created user."
           }
         },
         {
@@ -183,10 +210,11 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/users/2",
+              "raw": "{{base_url}}/api/users/{{created_user_id}}",
               "host": ["{{base_url}}"],
-              "path": ["api", "users", "2"]
-            }
+              "path": ["api", "users", "{{created_user_id}}"]
+            },
+            "description": "Delete a user account (admin only). Uses the ID from the created user."
           }
         }
       ]
@@ -532,6 +560,11 @@
     },
     {
       "key": "request_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "created_user_id",
       "value": "",
       "type": "string"
     }

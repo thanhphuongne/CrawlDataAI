@@ -37,7 +37,8 @@ User message: "{message}"
             temperature=0.3,
         )
 
-        result = eval(response.choices[0].message.content.strip())  # Note: In production, use json.loads with proper error handling
+        import json
+        result = json.loads(response.choices[0].message.content.strip())
         return result
     except Exception as e:
         print(f"Error processing message with AI: {e}")

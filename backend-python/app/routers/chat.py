@@ -121,21 +121,9 @@ async def websocket_endpoint(
                     "export_url": f"/api/data/{new_request.id}/"
                 }))
 
-                # Trigger actual crawling process
-                try:
-                    await execute_crawling(new_request.id, requirement, db)
-                    await websocket.send_text(json.dumps({
-                        "type": "crawling_completed",
-                        "request_id": new_request.id,
-                        "message": "Data crawling has been completed successfully."
-                    }))
-                except Exception as e:
-                    print(f"Crawling failed for request {new_request.id}: {e}")
-                    await websocket.send_text(json.dumps({
-                        "type": "crawling_failed",
-                        "request_id": new_request.id,
-                        "message": "Data crawling failed. Please try again."
-                    }))
+                # Trigger actual crawling process asynchronously
+                import asyncio
+                asyncio.create_task(run_crawling_async(new_request.id, requirement, db, websocket))
 
             elif message_data.get("type") == "reject_data_request":
                 await websocket.send_text(json.dumps({
@@ -146,3 +134,20 @@ async def websocket_endpoint(
     except WebSocketDisconnect:
         manager.disconnect(user_id)
         print(f"User {user_id} disconnected")
+
+async def run_crawling_async(request_id: int, requirement: str, db, websocket: WebSocket):
+    """Run crawling asynchronously and send completion events"""
+    try:
+        await execute_crawling(request_id, requirement, db)
+        await websocket.send_text(json.dumps({
+            "type": "crawling_completed",
+            "request_id": request_id,
+            "message": "Data crawling has been completed successfully."
+        }))
+    except Exception as e:
+        print(f"Crawling failed for request {request_id}: {e}")
+        await websocket.send_text(json.dumps({
+            "type": "crawling_failed",
+            "request_id": request_id,
+            "message": "Data crawling failed. Please try again."
+        }))

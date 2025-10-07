@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Enum, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from ..database import Base
 import enum
@@ -24,6 +25,9 @@ class User(Base):
     verify_code = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    # Relationships
+    requests = relationship("Request", back_populates="user")
 
     def to_dict(self):
         return {

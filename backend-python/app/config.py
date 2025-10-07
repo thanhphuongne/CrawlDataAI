@@ -4,6 +4,7 @@ from typing import Optional
 class Settings(BaseSettings):
     # Database
     database_url: str = "postgresql://user:password@localhost/dbname"
+    mongodb_url: str = "mongodb://localhost:27017/crawl_data_ai"
 
     # JWT
     secret_key: str = "your-secret-key"
@@ -25,6 +26,9 @@ class Settings(BaseSettings):
     # Other
     bcrypt_rounds: int = 12
     default_language: str = "vi"
+
+    # AI
+    openai_api_key: Optional[str] = None
 
     class Config:
         env_file = ".env"

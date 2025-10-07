@@ -1,9 +1,10 @@
 {
   "info": {
     "name": "AI Crawl Data Backend API",
-    "description": "Complete API collection for the AI-powered data crawling backend with real-time chat",
+    "description": "Complete API collection for the AI-powered data crawling backend with real-time chat. Includes authentication, user management, data crawling, and WebSocket chat functionality.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "backend-api"
+    "_exporter_id": "backend-api",
+    "_postman_id": "ai-crawl-data-backend"
   },
   "item": [
     {
@@ -37,11 +38,29 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "if (pm.response.code === 200) {",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has required fields', function () {",
                   "    const response = pm.response.json();",
-                  "    pm.collectionVariables.set('token', response.access_token);",
-                  "}"
-                ]
+                  "    pm.expect(response).to.have.property('access_token');",
+                  "    pm.expect(response).to.have.property('token_type');",
+                  "    pm.expect(response).to.have.property('user');",
+                  "    pm.expect(response.user).to.have.property('id');",
+                  "    pm.expect(response.user).to.have.property('email');",
+                  "});",
+                  "",
+                  "pm.test('Token is stored in collection variable', function () {",
+                  "    const response = pm.response.json();",
+                  "    if (response.access_token) {",
+                  "        pm.collectionVariables.set('token', response.access_token);",
+                  "        pm.collectionVariables.set('user_id', response.user.id);",
+                  "        console.log('JWT Token stored successfully');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -387,10 +406,112 @@
                 }
               ]
             },
-            "description": "WebSocket endpoint for real-time chat. Use a WebSocket client to connect to this URL with the token parameter."
+            "description": "WebSocket endpoint for real-time chat. Use a WebSocket client to connect to this URL with the token parameter.\n\nWebSocket Message Format:\n- Send: {\"type\": \"chat_message\", \"content\": \"your message\", \"request_id\": null}\n- Receive: {\"type\": \"chat_response\", \"message\": \"AI response\"} or {\"type\": \"data_request_proposal\", \"requirement\": \"formatted requirement\"}"
           }
         }
       ]
+    },
+    {
+      "name": "Complete Data Crawling Flow",
+      "item": [
+        {
+          "name": "1. Simulate Data Crawling via WebSocket",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/chat/ws?token={{token}}",
+              "host": ["{{base_url}}"],
+              "path": ["chat", "ws"],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "description": "WebSocket endpoint for real-time chat and data crawling.\n\nTo test data crawling:\n1. Connect to this WebSocket URL\n2. Send: {\"type\": \"chat_message\", \"content\": \"I need data about AI news\", \"request_id\": null}\n3. AI will respond with a data request proposal\n4. Send: {\"type\": \"approve_data_request\", \"requirement\": \"Crawl AI news from tech sites\", \"message_id\": 123}\n5. System will create crawling request and start processing\n\nUse a WebSocket client like Postman, WebSocket King, or browser console to test."
+          }
+        },
+        {
+          "name": "2. Check Request Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/data/{{request_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "data", "{{request_id}}"]
+            },
+            "description": "Check the status of a crawling request. Run this after creating a request to monitor progress."
+          }
+        },
+        {
+          "name": "3. Get Crawled Data (when complete)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/data/{{request_id}}/export?format=json",
+              "host": ["{{base_url}}"],
+              "path": ["api", "data", "{{request_id}}", "export"],
+              "query": [
+                {
+                  "key": "format",
+                  "value": "json",
+                  "description": "Export format: json, csv, or xlsx"
+                }
+              ]
+            },
+            "description": "Download the crawled data once the request is completed. This endpoint returns the extracted data from crawled websites."
+          }
+        }
+      ],
+      "description": "Complete workflow for testing data crawling functionality"
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "API Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Check if the API server is running and responding"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-add Authorization header for requests that need it",
+          "if (pm.request.headers.has('Authorization')) {",
+          "    // Remove existing Authorization header",
+          "    pm.request.headers.remove('Authorization');",
+          "}",
+          "",
+          "// Add Bearer token if available",
+          "const token = pm.collectionVariables.get('token');",
+          "if (token && pm.request.url.path.some(segment => {",
+          "    return ['api', 'chat'].includes(segment);",
+          "})) {",
+          "    pm.request.headers.add({",
+          "        key: 'Authorization',",
+          "        value: `Bearer ${token}`",
+          "    });",
+          "}"
+        ]
+      }
     }
   ],
   "variable": [
@@ -401,6 +522,16 @@
     },
     {
       "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "request_id",
       "value": "",
       "type": "string"
     }

@@ -1,9 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "doramask",
+  "newProjectRoot": "crawldataai-angular",
   "projects": {
-    "aka-cam-platform": {
+    "crawldataai-angular": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -170,21 +170,21 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "buildTarget": "aka-cam-platform:build"
+            "buildTarget": "crawldataai-angular:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "aka-cam-platform:build:production"
+              "buildTarget": "crawldataai-angular:build:production"
             },
             "devfe": {
-              "buildTarget": "aka-cam-platform:build:devfe"
+              "buildTarget": "crawldataai-angular:build:devfe"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "aka-cam-platform:build"
+            "buildTarget": "crawldataai-angular:build"
           }
         },
         "test": {
@@ -211,7 +211,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "aka-cam-platform:serve"
+            "devServerTarget": "crawldataai-angular:serve"
           }
         }
       }

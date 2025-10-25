@@ -1,1 +1,1 @@
-CREATE DATABASE fscoring;
+CREATE DATABASE CrawlDataAI;

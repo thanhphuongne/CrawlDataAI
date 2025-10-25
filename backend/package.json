@@ -1,5 +1,5 @@
 {
-  "name": "dss-backend",
+  "name": "crawldataai-backend",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -7,7 +7,7 @@
   "scripts": {
     "debug": "nodemon --inspect-brk=0.0.0.0:9339 server.js",
     "dev": "nodemon server.js",
-    "api": "pm2 start server.js --name fscoring-backend",
+    "api": "pm2 start server.js --name crawldataai-backend",
     "runflow": "node cmd/runflow.js",
     "prod": "npm run api",
     "prod:yarn": "yarn run api",

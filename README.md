@@ -7,6 +7,7 @@ An AI-powered data crawling and scoring system that allows users to submit crawl
 
 ## Table of Contents
 
+
 - [Features](#features)
 - [Architecture](#architecture)
 - [Getting Started](#getting-started)

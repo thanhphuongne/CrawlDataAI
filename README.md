@@ -1,6 +1,5 @@
 # CrawlDataAI
 
-[![Build Status](https://gitlab.com/Tienpm3/crawldataai/badges/main/pipeline.svg)](https://gitlab.com/Tienpm3/crawldataai/-/commits/main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 An AI-powered data crawling and scoring system that allows users to submit crawl requests, engage in real-time AI chat, and manage crawled data.

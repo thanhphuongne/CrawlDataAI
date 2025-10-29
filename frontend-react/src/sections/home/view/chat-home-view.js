@@ -22,7 +22,7 @@ import { useSettingsContext } from 'src/components/settings';
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark'
+  background: theme.palette.mode === 'dark'
     ? theme.palette.background.default
     : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   minHeight: '100vh',

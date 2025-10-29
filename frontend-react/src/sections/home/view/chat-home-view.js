@@ -10,21 +10,21 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
+import Fab from '@mui/material/Fab';
 import { alpha, styled, useTheme } from '@mui/material/styles';
 
 import { bgGradient, textGradient } from 'src/theme/css';
 
 import Iconify from 'src/components/iconify';
 import MainLayout from 'src/layouts/main';
+import { useSettingsContext } from 'src/components/settings';
 
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
-  ...bgGradient({
-    direction: '135deg',
-    startColor: alpha(theme.palette.primary.main, 0.1),
-    endColor: alpha(theme.palette.secondary.main, 0.1),
-  }),
+  backgroundColor: theme.palette.mode === 'dark'
+    ? theme.palette.background.default
+    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'center',
@@ -38,7 +38,9 @@ const StyledRoot = styled('div')(({ theme }) => ({
     left: 0,
     right: 0,
     bottom: 0,
-    background: `radial-gradient(circle at 20% 80%, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${alpha(theme.palette.secondary.main, 0.1)} 0%, transparent 50%)`,
+    background: theme.palette.mode === 'dark'
+      ? `radial-gradient(circle at 20% 80%, ${alpha(theme.palette.primary.main, 0.05)} 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${alpha(theme.palette.secondary.main, 0.05)} 0%, transparent 50%)`
+      : `radial-gradient(circle at 20% 80%, ${alpha('#667eea', 0.3)} 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${alpha('#764ba2', 0.3)} 0%, transparent 50%)`,
     pointerEvents: 'none',
   },
 }));
@@ -54,10 +56,12 @@ const StyledHero = styled('div')(({ theme }) => ({
 const StyledChatInput = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: 24,
-  border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
-  backgroundColor: alpha(theme.palette.background.paper, 0.8),
-  backdropFilter: 'blur(10px)',
-  boxShadow: theme.shadows[8],
+  border: `1px solid ${alpha(theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black, 0.1)}`,
+  backgroundColor: alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.9 : 0.95),
+  backdropFilter: 'blur(20px)',
+  boxShadow: theme.palette.mode === 'dark'
+    ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+    : '0 8px 32px rgba(0, 0, 0, 0.1)',
   marginTop: theme.spacing(4),
   display: 'flex',
   alignItems: 'center',
@@ -79,16 +83,18 @@ const StyledExamplePrompts = styled('div')(({ theme }) => ({
 const StyledPromptCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: 12,
-  border: `1px solid ${alpha(theme.palette.common.white, 0.1)}`,
-  backgroundColor: alpha(theme.palette.background.paper, 0.6),
-  backdropFilter: 'blur(10px)',
+  border: `1px solid ${alpha(theme.palette.mode === 'dark' ? theme.palette.common.white : theme.palette.common.black, 0.08)}`,
+  backgroundColor: alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.7 : 0.8),
+  backdropFilter: 'blur(15px)',
   cursor: 'pointer',
   transition: theme.transitions.create(['transform', 'box-shadow'], {
     duration: theme.transitions.duration.short,
   }),
   '&:hover': {
     transform: 'translateY(-4px)',
-    boxShadow: theme.shadows[6],
+    boxShadow: theme.palette.mode === 'dark'
+      ? '0 12px 24px rgba(0, 0, 0, 0.3)'
+      : '0 12px 24px rgba(0, 0, 0, 0.15)',
   },
 }));
 
@@ -117,6 +123,7 @@ const examplePrompts = [
 
 export default function ChatHomeView() {
   const theme = useTheme();
+  const settings = useSettingsContext();
   const [message, setMessage] = useState('');
 
   const handleSendMessage = () => {
@@ -147,9 +154,12 @@ export default function ChatHomeView() {
               <Typography
                 variant="h1"
                 sx={{
-                  ...textGradient(
-                    `300deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 50%, ${theme.palette.primary.main} 100%`
-                  ),
+                  background: theme.palette.mode === 'dark'
+                    ? `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`
+                    : `linear-gradient(135deg, #6366F1, #8B5CF6)`,
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
                   fontSize: { xs: '2.5rem', md: '4rem' },
                   fontWeight: 700,
                   mb: 2,
@@ -168,7 +178,7 @@ export default function ChatHomeView() {
               <Typography
                 variant="h5"
                 sx={{
-                  color: 'text.secondary',
+                  color: theme.palette.mode === 'dark' ? 'grey.300' : 'grey.600',
                   mb: 4,
                   fontWeight: 400,
                   maxWidth: 600,
@@ -236,7 +246,7 @@ export default function ChatHomeView() {
                         <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                           {prompt.title}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        <Typography variant="body2" sx={{ color: theme.palette.mode === 'dark' ? 'grey.400' : 'text.secondary' }}>
                           {prompt.description}
                         </Typography>
                       </Box>
@@ -247,6 +257,27 @@ export default function ChatHomeView() {
             </m.div>
           </StyledHero>
         </Container>
+
+        {/* Theme Toggle Button */}
+        <Fab
+          color="primary"
+          size="small"
+          onClick={() => settings.onUpdate('themeMode', settings.themeMode === 'light' ? 'dark' : 'light')}
+          sx={{
+            position: 'fixed',
+            top: 24,
+            right: 24,
+            zIndex: 1000,
+            backgroundColor: theme.palette.mode === 'dark' ? '#1F2937' : '#FFFFFF',
+            color: theme.palette.mode === 'dark' ? '#FFFFFF' : '#1F2937',
+            border: `1px solid ${alpha(theme.palette.mode === 'dark' ? '#FFFFFF' : '#000000', 0.1)}`,
+            '&:hover': {
+              backgroundColor: theme.palette.mode === 'dark' ? '#374151' : '#F9FAFB',
+            },
+          }}
+        >
+          <Iconify icon={settings.themeMode === 'light' ? 'solar:moon-bold' : 'solar:sun-bold'} width={20} />
+        </Fab>
       </StyledRoot>
     </MainLayout>
   );

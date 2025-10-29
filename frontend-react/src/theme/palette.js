@@ -18,20 +18,20 @@ export const grey = {
 };
 
 export const primary = {
-  lighter: '#C8FAD6',
-  light: '#5BE49B',
-  main: '#00A76F',
-  dark: '#007867',
-  darker: '#004B50',
+  lighter: '#7C3AED',
+  light: '#8B5CF6',
+  main: '#6366F1',
+  dark: '#4F46E5',
+  darker: '#3730A3',
   contrastText: '#FFFFFF',
 };
 
 export const secondary = {
-  lighter: '#EFD6FF',
-  light: '#C684FF',
-  main: '#8E33FF',
-  dark: '#5119B7',
-  darker: '#27097A',
+  lighter: '#F59E0B',
+  light: '#FCD34D',
+  main: '#F59E0B',
+  dark: '#D97706',
+  darker: '#92400E',
   contrastText: '#FFFFFF',
 };
 
@@ -106,19 +106,19 @@ export function palette(mode) {
     ...base,
     mode: 'light',
     text: {
-      primary: grey[800],
-      secondary: grey[600],
-      disabled: grey[500],
+      primary: '#1F2937',
+      secondary: '#6B7280',
+      disabled: '#9CA3AF',
     },
     background: {
       paper: '#FFFFFF',
-      default: '#FFFFFF',
-      neutral: grey[200],
+      default: '#F9FAFB',
+      neutral: '#F3F4F6',
       imgUrl: 'url(/assets/background/img_bg_main.png)'
     },
     action: {
       ...base.action,
-      active: grey[500],
+      active: grey[600],
     },
   };
 
@@ -126,19 +126,19 @@ export function palette(mode) {
     ...base,
     mode: 'dark',
     text: {
-      primary: '#FFFFFF',
-      secondary: grey[500],
-      disabled: grey[500],
+      primary: '#F9FAFB',
+      secondary: '#D1D5DB',
+      disabled: '#6B7280',
     },
     background: {
-      paper: grey[800],
-      default: grey[500],
-      neutral: alpha(grey[500], 0.12),
-      imgUrl: 'url(/assets/background/img_bg_main.png)' 
+      paper: '#1F2937',
+      default: '#111827',
+      neutral: '#374151',
+      imgUrl: 'url(/assets/background/img_bg_main.png)'
     },
     action: {
       ...base.action,
-      active: grey[500],
+      active: grey[400],
     },
   };
 

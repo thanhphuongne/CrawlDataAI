@@ -1,9 +1,9 @@
 // import { HomeView } from 'src/sections/homebk/view';
-import { HomeListView } from 'src/sections/home/view';
+import { ChatHomeView } from 'src/sections/home/view';
 // ----------------------------------------------------------------------
 
-const TITLE = 'AICrawlData'
-const DESCRIPTION = 'AI Crawl Data'
+const TITLE = 'CrawlDataAI'
+const DESCRIPTION = 'AI-powered data crawling and analysis assistant'
 const IMG_URL = 'https://quynhon.ai/quynhonAI.png'
 
 export const metadata = {
@@ -29,5 +29,5 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  return <HomeListView showBreadcrumbs />;
+  return <ChatHomeView />;
 }

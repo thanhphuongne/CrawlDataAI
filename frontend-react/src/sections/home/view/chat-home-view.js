@@ -44,8 +44,6 @@ const StyledChatContainer = styled('div')(({ theme }) => ({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  maxWidth: 700,
-  margin: '0 auto',
   width: '100%',
   padding: theme.spacing(2),
   position: 'relative',
@@ -93,7 +91,7 @@ const StyledInputContainer = styled('div')(({ theme }) => ({
 }));
 
 const StyledChatInput = styled('div')(({ theme }) => ({
-  maxWidth: 700,
+  maxWidth: 800,
   margin: '0 auto',
   position: 'relative',
 }));
@@ -145,8 +143,8 @@ const StyledSendButton = styled(IconButton)(({ theme }) => ({
 
 const StyledWelcomeMessage = styled('div')(({ theme }) => ({
   textAlign: 'center',
-  padding: theme.spacing(4, 0),
-  maxWidth: 700,
+  padding: theme.spacing(4, 2),
+  maxWidth: 800,
   margin: '0 auto',
 }));
 
@@ -154,7 +152,7 @@ const StyledSuggestions = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
-  maxWidth: 700,
+  maxWidth: 800,
   margin: '0 auto',
   marginTop: theme.spacing(2),
 }));
@@ -397,6 +395,27 @@ export default function ChatHomeView() {
                     </StyledChatItem>
                   ))}
                 </List>
+
+                {/* Theme toggle at bottom of sidebar */}
+                <Box sx={{ p: 2, borderTop: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}`, mt: 'auto' }}>
+                  <IconButton
+                    onClick={() => settings.onUpdate('themeMode', settings.themeMode === 'light' ? 'dark' : 'light')}
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      width: 32,
+                      height: 32,
+                      '&:hover': {
+                        color: theme.palette.text.primary,
+                        backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
+                      },
+                    }}
+                  >
+                    <Iconify
+                      icon={settings.themeMode === 'light' ? 'solar:moon-bold' : 'solar:sun-bold'}
+                      width={18}
+                    />
+                  </IconButton>
+                </Box>
               </Box>
             )}
 
@@ -419,15 +438,7 @@ export default function ChatHomeView() {
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
-            <IconButton
-              onClick={() => settings.onUpdate('themeMode', settings.themeMode === 'light' ? 'dark' : 'light')}
-              sx={{ color: theme.palette.text.secondary }}
-            >
-              <Iconify
-                icon={settings.themeMode === 'light' ? 'solar:moon-bold' : 'solar:sun-bold'}
-                width={20}
-              />
-            </IconButton>
+            {/* Theme toggle moved to sidebar for better UX */}
           </Stack>
         </StyledHeader>
 

@@ -35,7 +35,6 @@ const StyledRoot = styled('div')(({ theme }) => ({
     : '#FFFFFF',
   minHeight: '100vh',
   display: 'flex',
-  flexDirection: 'column',
   position: 'relative',
 }));
 
@@ -46,9 +45,10 @@ const StyledChatContainer = styled('div')(({ theme }) => ({
   maxWidth: 700,
   margin: '0 auto',
   width: '100%',
-  padding: theme.spacing(0, 2),
+  padding: theme.spacing(2),
   position: 'relative',
   zIndex: 1,
+  marginLeft: 280,
 }));
 
 const StyledMessagesContainer = styled('div')(({ theme }) => ({
@@ -143,7 +143,7 @@ const StyledSendButton = styled(IconButton)(({ theme }) => ({
 
 const StyledWelcomeMessage = styled('div')(({ theme }) => ({
   textAlign: 'center',
-  padding: theme.spacing(6, 2),
+  padding: theme.spacing(4, 0),
   maxWidth: 700,
   margin: '0 auto',
 }));
@@ -154,7 +154,7 @@ const StyledSuggestions = styled('div')(({ theme }) => ({
   gap: theme.spacing(1),
   maxWidth: 700,
   margin: '0 auto',
-  marginTop: theme.spacing(4),
+  marginTop: theme.spacing(2),
 }));
 
 const StyledSuggestionCard = styled('div')(({ theme }) => ({
@@ -175,6 +175,8 @@ const StyledSuggestionCard = styled('div')(({ theme }) => ({
 const StyledHeader = styled('div')(({ theme }) => ({
   position: 'sticky',
   top: 0,
+  left: 280,
+  right: 0,
   zIndex: 100,
   backgroundColor: theme.palette.mode === 'dark' ? '#000000' : '#FFFFFF',
   borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}`,
@@ -183,6 +185,7 @@ const StyledHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   minHeight: 64,
+  marginLeft: 280,
 }));
 
 const StyledSidebar = styled('div')(({ theme }) => ({
@@ -308,78 +311,56 @@ export default function ChatHomeView() {
   };
 
   return (
-    <MainLayout>
-      <StyledRoot>
-        {/* Sidebar */}
-        <Drawer
-          variant="temporary"
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            '& .MuiDrawer-paper': {
-              width: 280,
-              boxSizing: 'border-box',
-            },
-          }}
-        >
-          <StyledSidebar>
-            <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}` }}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<Iconify icon="mdi:plus" />}
-                onClick={handleNewChat}
-                sx={{
-                  borderColor: theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0',
-                  color: theme.palette.text.primary,
-                  '&:hover': {
-                    borderColor: theme.palette.mode === 'dark' ? '#4B5563' : '#CBD5E0',
-                    backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
-                  },
-                }}
-              >
-                New Chat
-              </Button>
-            </Box>
+    <StyledRoot>
+        {/* Permanent Sidebar */}
+        <StyledSidebar>
+          <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}` }}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<Iconify icon="mdi:plus" />}
+              onClick={handleNewChat}
+              sx={{
+                borderColor: theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0',
+                color: theme.palette.text.primary,
+                '&:hover': {
+                  borderColor: theme.palette.mode === 'dark' ? '#4B5563' : '#CBD5E0',
+                  backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
+                },
+              }}
+            >
+              New Chat
+            </Button>
+          </Box>
 
-            <List sx={{ flex: 1, overflow: 'auto' }}>
-              {conversations.map((conversation) => (
-                <StyledChatItem
-                  key={conversation.id}
-                  active={conversation.active}
-                  onClick={() => handleSelectConversation(conversation.id)}
-                >
-                  <ListItemText
-                    primary={conversation.title}
-                    secondary={conversation.lastMessage}
-                    primaryTypographyProps={{
-                      variant: 'body2',
-                      fontWeight: conversation.active ? 600 : 400,
-                      sx: { mb: 0.5 }
-                    }}
-                    secondaryTypographyProps={{
-                      variant: 'caption',
-                      noWrap: true,
-                    }}
-                  />
-                </StyledChatItem>
-              ))}
-            </List>
-          </StyledSidebar>
-        </Drawer>
+          <List sx={{ flex: 1, overflow: 'auto' }}>
+            {conversations.map((conversation) => (
+              <StyledChatItem
+                key={conversation.id}
+                active={conversation.active}
+                onClick={() => handleSelectConversation(conversation.id)}
+              >
+                <ListItemText
+                  primary={conversation.title}
+                  secondary={conversation.lastMessage}
+                  primaryTypographyProps={{
+                    variant: 'body2',
+                    fontWeight: conversation.active ? 600 : 400,
+                    sx: { mb: 0.5 }
+                  }}
+                  secondaryTypographyProps={{
+                    variant: 'caption',
+                    noWrap: true,
+                  }}
+                />
+              </StyledChatItem>
+            ))}
+          </List>
+        </StyledSidebar>
 
         {/* Header */}
         <StyledHeader>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <IconButton
-              onClick={() => setSidebarOpen(true)}
-              sx={{ color: theme.palette.text.secondary }}
-            >
-              <Iconify icon="mdi:menu" width={24} />
-            </IconButton>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               CrawlDataAI
             </Typography>
@@ -515,8 +496,6 @@ export default function ChatHomeView() {
             </StyledChatInput>
           </StyledInputContainer>
         </StyledChatContainer>
-
       </StyledRoot>
-    </MainLayout>
   );
 }

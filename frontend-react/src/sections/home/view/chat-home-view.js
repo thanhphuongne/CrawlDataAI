@@ -24,35 +24,22 @@ import { useSettingsContext } from 'src/components/settings';
 
 const StyledRoot = styled('div')(({ theme }) => ({
   background: theme.palette.mode === 'dark'
-    ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
-    : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    ? '#000000'
+    : '#FFFFFF',
   minHeight: '100vh',
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
-  overflow: 'hidden',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: theme.palette.mode === 'dark'
-      ? `radial-gradient(circle at 20% 80%, ${alpha('#00d4ff', 0.1)} 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${alpha('#090979', 0.1)} 0%, transparent 50%)`
-      : `radial-gradient(circle at 20% 80%, ${alpha('#667eea', 0.2)} 0%, transparent 50%), radial-gradient(circle at 80% 20%, ${alpha('#764ba2', 0.2)} 0%, transparent 50%)`,
-    pointerEvents: 'none',
-  },
 }));
 
 const StyledChatContainer = styled('div')(({ theme }) => ({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  maxWidth: 1200,
+  maxWidth: 700,
   margin: '0 auto',
   width: '100%',
-  padding: theme.spacing(2),
+  padding: theme.spacing(0, 2),
   position: 'relative',
   zIndex: 1,
 }));
@@ -63,75 +50,69 @@ const StyledMessagesContainer = styled('div')(({ theme }) => ({
   padding: theme.spacing(2, 0),
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(3),
+  gap: theme.spacing(2),
   '&::-webkit-scrollbar': {
-    width: '6px',
+    width: '4px',
   },
   '&::-webkit-scrollbar-track': {
     background: 'transparent',
   },
   '&::-webkit-scrollbar-thumb': {
-    background: alpha(theme.palette.common.white, 0.2),
-    borderRadius: '3px',
+    background: alpha(theme.palette.text.secondary, 0.2),
+    borderRadius: '2px',
   },
 }));
 
-const StyledMessage = styled(Paper)(({ theme, isUser }) => ({
-  padding: theme.spacing(2, 3),
-  borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+const StyledMessage = styled('div')(({ theme, isUser }) => ({
+  padding: theme.spacing(1.5, 2),
+  borderRadius: 2,
   backgroundColor: isUser
-    ? (theme.palette.mode === 'dark' ? '#007AFF' : '#007AFF')
-    : (theme.palette.mode === 'dark' ? alpha(theme.palette.background.paper, 0.8) : alpha(theme.palette.background.paper, 0.9)),
-  color: isUser ? '#FFFFFF' : theme.palette.text.primary,
-  maxWidth: '70%',
+    ? (theme.palette.mode === 'dark' ? '#2D3748' : '#F7FAFC')
+    : 'transparent',
+  color: theme.palette.text.primary,
+  maxWidth: '80%',
   alignSelf: isUser ? 'flex-end' : 'flex-start',
-  border: isUser ? 'none' : `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-  backdropFilter: 'blur(10px)',
-  boxShadow: theme.palette.mode === 'dark'
-    ? '0 4px 12px rgba(0, 0, 0, 0.3)'
-    : '0 2px 8px rgba(0, 0, 0, 0.1)',
+  border: isUser ? 'none' : 'none',
+  marginLeft: isUser ? 'auto' : 0,
+  marginRight: isUser ? 0 : 'auto',
+  position: 'relative',
 }));
 
 const StyledInputContainer = styled('div')(({ theme }) => ({
-  position: 'sticky',
-  bottom: 0,
-  background: theme.palette.mode === 'dark'
-    ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
-    : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-  padding: theme.spacing(2),
+  padding: theme.spacing(2, 0),
   borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-  backdropFilter: 'blur(20px)',
 }));
 
 const StyledChatInput = styled('div')(({ theme }) => ({
-  maxWidth: 800,
+  maxWidth: 700,
   margin: '0 auto',
   position: 'relative',
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
-    backgroundColor: alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.8 : 0.9),
-    borderRadius: 25,
-    border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
+    borderRadius: 2,
+    border: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}`,
+    transition: theme.transitions.create(['border-color']),
     '&:hover': {
-      borderColor: alpha(theme.palette.primary.main, 0.5),
+      borderColor: theme.palette.mode === 'dark' ? '#4B5563' : '#CBD5E0',
     },
     '&.Mui-focused': {
-      borderColor: theme.palette.primary.main,
-      boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.2)}`,
+      borderColor: '#10A37F',
+      boxShadow: 'none',
     },
     '& fieldset': {
       border: 'none',
     },
   },
   '& .MuiOutlinedInput-input': {
-    padding: theme.spacing(1.5, 5, 1.5, 2),
+    padding: theme.spacing(1.5, 4, 1.5, 2),
     fontSize: '16px',
+    color: theme.palette.text.primary,
     '&::placeholder': {
       color: theme.palette.text.secondary,
-      opacity: 0.7,
+      opacity: 0.8,
     },
   },
 }));
@@ -141,50 +122,47 @@ const StyledSendButton = styled(IconButton)(({ theme }) => ({
   right: 8,
   top: '50%',
   transform: 'translateY(-50%)',
-  backgroundColor: theme.palette.primary.main,
-  color: '#FFFFFF',
-  width: 40,
-  height: 40,
+  color: theme.palette.text.secondary,
+  width: 32,
+  height: 32,
   '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
+    color: '#10A37F',
+    backgroundColor: 'transparent',
   },
   '&:disabled': {
-    backgroundColor: theme.palette.action.disabledBackground,
     color: theme.palette.action.disabled,
   },
 }));
 
 const StyledWelcomeMessage = styled('div')(({ theme }) => ({
   textAlign: 'center',
-  padding: theme.spacing(4, 2),
+  padding: theme.spacing(6, 2),
+  maxWidth: 700,
+  margin: '0 auto',
 }));
 
 const StyledSuggestions = styled('div')(({ theme }) => ({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: theme.spacing(2),
-  maxWidth: 900,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(1),
+  maxWidth: 700,
   margin: '0 auto',
-  marginTop: theme.spacing(3),
+  marginTop: theme.spacing(4),
 }));
 
-const StyledSuggestionCard = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2.5),
-  borderRadius: 16,
-  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-  backgroundColor: alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.6 : 0.8),
-  backdropFilter: 'blur(15px)',
+const StyledSuggestionCard = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
+  border: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}`,
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#FFFFFF',
   cursor: 'pointer',
-  transition: theme.transitions.create(['transform', 'box-shadow', 'border-color'], {
+  transition: theme.transitions.create(['background-color', 'border-color'], {
     duration: theme.transitions.duration.short,
   }),
   '&:hover': {
-    transform: 'translateY(-2px)',
-    borderColor: alpha(theme.palette.primary.main, 0.3),
-    boxShadow: theme.palette.mode === 'dark'
-      ? '0 8px 25px rgba(0, 0, 0, 0.3)'
-      : '0 8px 25px rgba(0, 0, 0, 0.15)',
+    backgroundColor: theme.palette.mode === 'dark' ? '#2D3748' : '#F7FAFC',
+    borderColor: theme.palette.mode === 'dark' ? '#4B5563' : '#CBD5E0',
   },
+  textAlign: 'left',
 }));
 
 const examplePrompts = [
@@ -276,16 +254,11 @@ export default function ChatHomeView() {
                 transition={{ duration: 0.8 }}
               >
                 <Typography
-                  variant="h2"
+                  variant="h3"
                   sx={{
-                    background: theme.palette.mode === 'dark'
-                      ? `linear-gradient(135deg, #00d4ff, #090979)`
-                      : `linear-gradient(135deg, #667eea, #764ba2)`,
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    fontSize: { xs: '2rem', md: '3rem' },
-                    fontWeight: 700,
+                    color: theme.palette.mode === 'dark' ? '#FFFFFF' : '#000000',
+                    fontSize: { xs: '2rem', md: '2.5rem' },
+                    fontWeight: 600,
                     mb: 2,
                     textAlign: 'center',
                   }}
@@ -294,18 +267,19 @@ export default function ChatHomeView() {
                 </Typography>
 
                 <Typography
-                  variant="h6"
+                  variant="body1"
                   sx={{
                     color: theme.palette.text.secondary,
                     mb: 4,
-                    fontWeight: 400,
+                    fontSize: '1.1rem',
                     maxWidth: 600,
                     mx: 'auto',
                     textAlign: 'center',
+                    lineHeight: 1.6,
                   }}
                 >
-                  Your AI-powered data crawling and analysis assistant.
-                  Extract insights, generate reports, and chat with your data.
+                  You are CrawlDataAI, an AI-powered data crawling and analysis assistant built by xAI.
+                  You can extract insights, generate reports, and chat with your data.
                 </Typography>
               </m.div>
 
@@ -318,29 +292,11 @@ export default function ChatHomeView() {
                   {examplePrompts.map((prompt, index) => (
                     <StyledSuggestionCard
                       key={index}
-                      elevation={0}
                       onClick={() => handleSuggestionClick(prompt.description)}
                     >
-                      <Stack direction="row" alignItems="flex-start" spacing={2}>
-                        <Avatar
-                          sx={{
-                            bgcolor: alpha(theme.palette.primary.main, 0.1),
-                            color: theme.palette.primary.main,
-                            width: 40,
-                            height: 40,
-                          }}
-                        >
-                          <Iconify icon={prompt.icon} width={20} />
-                        </Avatar>
-                        <Box sx={{ flex: 1 }}>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
-                            {prompt.title}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                            {prompt.description}
-                          </Typography>
-                        </Box>
-                      </Stack>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        {prompt.description}
+                      </Typography>
                     </StyledSuggestionCard>
                   ))}
                 </StyledSuggestions>
@@ -356,7 +312,14 @@ export default function ChatHomeView() {
                   transition={{ duration: 0.3 }}
                 >
                   <StyledMessage isUser={msg.isUser}>
-                    <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        lineHeight: 1.6,
+                        fontSize: '15px',
+                        fontWeight: msg.isUser ? 400 : 500,
+                      }}
+                    >
                       {msg.content}
                     </Typography>
                   </StyledMessage>
@@ -369,44 +332,9 @@ export default function ChatHomeView() {
                   transition={{ duration: 0.3 }}
                 >
                   <StyledMessage isUser={false}>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-                        AI is thinking
-                      </Typography>
-                      <Box sx={{ display: 'flex', gap: 0.5 }}>
-                        <Box
-                          sx={{
-                            width: 4,
-                            height: 4,
-                            borderRadius: '50%',
-                            bgcolor: theme.palette.text.secondary,
-                            animation: 'bounce 1.4s ease-in-out infinite both',
-                            '@keyframes bounce': {
-                              '0%, 80%, 100%': { transform: 'scale(0)' },
-                              '40%': { transform: 'scale(1)' },
-                            },
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            width: 4,
-                            height: 4,
-                            borderRadius: '50%',
-                            bgcolor: theme.palette.text.secondary,
-                            animation: 'bounce 1.4s ease-in-out 0.16s infinite both',
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            width: 4,
-                            height: 4,
-                            borderRadius: '50%',
-                            bgcolor: theme.palette.text.secondary,
-                            animation: 'bounce 1.4s ease-in-out 0.32s infinite both',
-                          }}
-                        />
-                      </Box>
-                    </Stack>
+                    <Typography variant="body1" sx={{ color: theme.palette.text.secondary, fontSize: '15px' }}>
+                      CrawlDataAI is thinking...
+                    </Typography>
                   </StyledMessage>
                 </m.div>
               )}
@@ -423,8 +351,6 @@ export default function ChatHomeView() {
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 variant="outlined"
-                multiline
-                maxRows={4}
                 disabled={isTyping}
               />
               <StyledSendButton
@@ -438,33 +364,25 @@ export default function ChatHomeView() {
         </StyledChatContainer>
 
         {/* Theme Toggle Button */}
-        <Fab
-          color="primary"
-          size="medium"
+        <IconButton
           onClick={() => settings.onUpdate('themeMode', settings.themeMode === 'light' ? 'dark' : 'light')}
           sx={{
             position: 'fixed',
-            top: 24,
-            right: 24,
+            top: 16,
+            right: 16,
             zIndex: 1000,
-            backgroundColor: theme.palette.mode === 'dark'
-              ? alpha(theme.palette.background.paper, 0.9)
-              : alpha(theme.palette.common.white, 0.9),
-            color: theme.palette.mode === 'dark' ? '#FFFFFF' : '#000000',
-            border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
-            backdropFilter: 'blur(10px)',
+            color: theme.palette.text.secondary,
             '&:hover': {
-              backgroundColor: theme.palette.mode === 'dark'
-                ? alpha(theme.palette.background.paper, 0.95)
-                : alpha(theme.palette.common.white, 0.95),
+              color: theme.palette.text.primary,
+              backgroundColor: 'transparent',
             },
           }}
         >
           <Iconify
-            icon={settings.themeMode === 'light' ? 'solar:moon-bold-duotone' : 'solar:sun-bold-duotone'}
+            icon={settings.themeMode === 'light' ? 'solar:moon-bold' : 'solar:sun-bold'}
             width={24}
           />
-        </Fab>
+        </IconButton>
       </StyledRoot>
     </MainLayout>
   );

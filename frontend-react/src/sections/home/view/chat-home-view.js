@@ -12,6 +12,13 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Fab from '@mui/material/Fab';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
 import { alpha, styled, useTheme } from '@mui/material/styles';
 
 import { bgGradient, textGradient } from 'src/theme/css';
@@ -165,6 +172,36 @@ const StyledSuggestionCard = styled('div')(({ theme }) => ({
   textAlign: 'left',
 }));
 
+const StyledHeader = styled('div')(({ theme }) => ({
+  position: 'sticky',
+  top: 0,
+  zIndex: 100,
+  backgroundColor: theme.palette.mode === 'dark' ? '#000000' : '#FFFFFF',
+  borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}`,
+  padding: theme.spacing(1, 2),
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  minHeight: 64,
+}));
+
+const StyledSidebar = styled('div')(({ theme }) => ({
+  width: 280,
+  backgroundColor: theme.palette.mode === 'dark' ? '#000000' : '#FFFFFF',
+  borderRight: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}`,
+  display: 'flex',
+  flexDirection: 'column',
+}));
+
+const StyledChatItem = styled(ListItemButton)(({ theme, active }) => ({
+  padding: theme.spacing(1.5, 2),
+  borderRadius: 0,
+  backgroundColor: active ? (theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC') : 'transparent',
+  '&:hover': {
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
+  },
+}));
+
 const examplePrompts = [
   {
     title: 'Analyze Website Content',
@@ -194,6 +231,12 @@ export default function ChatHomeView() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [conversations, setConversations] = useState([
+    { id: 1, title: 'Data crawling discussion', active: true, lastMessage: 'Let me help you with data crawling...' },
+    { id: 2, title: 'AI analysis questions', active: false, lastMessage: 'I can analyze your datasets...' },
+    { id: 3, title: 'Report generation', active: false, lastMessage: 'Generating comprehensive reports...' },
+  ]);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -242,9 +285,119 @@ export default function ChatHomeView() {
     setMessage(suggestion);
   };
 
+  const handleNewChat = () => {
+    const newConversation = {
+      id: Date.now(),
+      title: 'New Chat',
+      active: true,
+      lastMessage: '',
+    };
+    setConversations(prev => prev.map(c => ({ ...c, active: false })).concat(newConversation));
+    setMessages([]);
+    setSidebarOpen(false);
+  };
+
+  const handleSelectConversation = (conversationId) => {
+    setConversations(prev => prev.map(c => ({
+      ...c,
+      active: c.id === conversationId
+    })));
+    setSidebarOpen(false);
+    // In a real app, you'd load the conversation messages here
+    setMessages([]);
+  };
+
   return (
     <MainLayout>
       <StyledRoot>
+        {/* Sidebar */}
+        <Drawer
+          variant="temporary"
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            '& .MuiDrawer-paper': {
+              width: 280,
+              boxSizing: 'border-box',
+            },
+          }}
+        >
+          <StyledSidebar>
+            <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}` }}>
+              <Button
+                fullWidth
+                variant="outlined"
+                startIcon={<Iconify icon="mdi:plus" />}
+                onClick={handleNewChat}
+                sx={{
+                  borderColor: theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0',
+                  color: theme.palette.text.primary,
+                  '&:hover': {
+                    borderColor: theme.palette.mode === 'dark' ? '#4B5563' : '#CBD5E0',
+                    backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
+                  },
+                }}
+              >
+                New Chat
+              </Button>
+            </Box>
+
+            <List sx={{ flex: 1, overflow: 'auto' }}>
+              {conversations.map((conversation) => (
+                <StyledChatItem
+                  key={conversation.id}
+                  active={conversation.active}
+                  onClick={() => handleSelectConversation(conversation.id)}
+                >
+                  <ListItemText
+                    primary={conversation.title}
+                    secondary={conversation.lastMessage}
+                    primaryTypographyProps={{
+                      variant: 'body2',
+                      fontWeight: conversation.active ? 600 : 400,
+                      sx: { mb: 0.5 }
+                    }}
+                    secondaryTypographyProps={{
+                      variant: 'caption',
+                      noWrap: true,
+                    }}
+                  />
+                </StyledChatItem>
+              ))}
+            </List>
+          </StyledSidebar>
+        </Drawer>
+
+        {/* Header */}
+        <StyledHeader>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <IconButton
+              onClick={() => setSidebarOpen(true)}
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              <Iconify icon="mdi:menu" width={24} />
+            </IconButton>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              CrawlDataAI
+            </Typography>
+          </Stack>
+
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <IconButton
+              onClick={() => settings.onUpdate('themeMode', settings.themeMode === 'light' ? 'dark' : 'light')}
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              <Iconify
+                icon={settings.themeMode === 'light' ? 'solar:moon-bold' : 'solar:sun-bold'}
+                width={20}
+              />
+            </IconButton>
+          </Stack>
+        </StyledHeader>
+
         <StyledChatContainer>
           {messages.length === 0 ? (
             <StyledWelcomeMessage>
@@ -363,26 +516,6 @@ export default function ChatHomeView() {
           </StyledInputContainer>
         </StyledChatContainer>
 
-        {/* Theme Toggle Button */}
-        <IconButton
-          onClick={() => settings.onUpdate('themeMode', settings.themeMode === 'light' ? 'dark' : 'light')}
-          sx={{
-            position: 'fixed',
-            top: 16,
-            right: 16,
-            zIndex: 1000,
-            color: theme.palette.text.secondary,
-            '&:hover': {
-              color: theme.palette.text.primary,
-              backgroundColor: 'transparent',
-            },
-          }}
-        >
-          <Iconify
-            icon={settings.themeMode === 'light' ? 'solar:moon-bold' : 'solar:sun-bold'}
-            width={24}
-          />
-        </IconButton>
       </StyledRoot>
     </MainLayout>
   );

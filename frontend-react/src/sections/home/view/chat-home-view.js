@@ -19,6 +19,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import { alpha, styled, useTheme } from '@mui/material/styles';
 
 import { bgGradient, textGradient } from 'src/theme/css';
@@ -196,6 +198,28 @@ const StyledSidebar = styled('div')(({ theme }) => ({
   flexDirection: 'column',
 }));
 
+const StyledTabs = styled(Tabs)(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}`,
+  '& .MuiTabs-indicator': {
+    backgroundColor: '#10A37F',
+  },
+}));
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+  minHeight: 48,
+  textTransform: 'none',
+  fontSize: '14px',
+  fontWeight: 500,
+  color: theme.palette.text.secondary,
+  '&.Mui-selected': {
+    color: '#10A37F',
+    fontWeight: 600,
+  },
+  '&:hover': {
+    color: theme.palette.text.primary,
+  },
+}));
+
 const StyledChatItem = styled(ListItemButton)(({ theme, active }) => ({
   padding: theme.spacing(1.5, 2),
   borderRadius: 0,
@@ -235,6 +259,7 @@ export default function ChatHomeView() {
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
   const [conversations, setConversations] = useState([
     { id: 1, title: 'Data crawling discussion', active: true, lastMessage: 'Let me help you with data crawling...' },
     { id: 2, title: 'AI analysis questions', active: false, lastMessage: 'I can analyze your datasets...' },
@@ -310,52 +335,79 @@ export default function ChatHomeView() {
     setMessages([]);
   };
 
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
+
   return (
     <StyledRoot>
         {/* Permanent Sidebar */}
         <StyledSidebar>
-          <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}` }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<Iconify icon="mdi:plus" />}
-              onClick={handleNewChat}
-              sx={{
-                borderColor: theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0',
-                color: theme.palette.text.primary,
-                '&:hover': {
-                  borderColor: theme.palette.mode === 'dark' ? '#4B5563' : '#CBD5E0',
-                  backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
-                },
-              }}
-            >
-              New Chat
-            </Button>
-          </Box>
+          <StyledTabs
+            value={activeTab}
+            onChange={handleTabChange}
+            variant="fullWidth"
+          >
+            <StyledTab label="Chats" />
+            <StyledTab label="History" />
+          </StyledTabs>
 
-          <List sx={{ flex: 1, overflow: 'auto' }}>
-            {conversations.map((conversation) => (
-              <StyledChatItem
-                key={conversation.id}
-                active={conversation.active}
-                onClick={() => handleSelectConversation(conversation.id)}
-              >
-                <ListItemText
-                  primary={conversation.title}
-                  secondary={conversation.lastMessage}
-                  primaryTypographyProps={{
-                    variant: 'body2',
-                    fontWeight: conversation.active ? 600 : 400,
-                    sx: { mb: 0.5 }
-                  }}
-                  secondaryTypographyProps={{
-                    variant: 'caption',
-                    noWrap: true,
-                  }}
-                />
-              </StyledChatItem>
-            ))}
-          </List>
+          <Box sx={{ flex: 1, overflow: 'auto' }}>
+            {activeTab === 0 && (
+              <Box>
+                <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0'}` }}>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    startIcon={<Iconify icon="mdi:plus" />}
+                    onClick={handleNewChat}
+                    sx={{
+                      borderColor: theme.palette.mode === 'dark' ? '#374151' : '#E2E8F0',
+                      color: theme.palette.text.primary,
+                      '&:hover': {
+                        borderColor: theme.palette.mode === 'dark' ? '#4B5563' : '#CBD5E0',
+                        backgroundColor: theme.palette.mode === 'dark' ? '#1A1A1A' : '#F7FAFC',
+                      },
+                    }}
+                  >
+                    New Chat
+                  </Button>
+                </Box>
+
+                <List>
+                  {conversations.map((conversation) => (
+                    <StyledChatItem
+                      key={conversation.id}
+                      active={conversation.active}
+                      onClick={() => handleSelectConversation(conversation.id)}
+                    >
+                      <ListItemText
+                        primary={conversation.title}
+                        secondary={conversation.lastMessage}
+                        primaryTypographyProps={{
+                          variant: 'body2',
+                          fontWeight: conversation.active ? 600 : 400,
+                          sx: { mb: 0.5 }
+                        }}
+                        secondaryTypographyProps={{
+                          variant: 'caption',
+                          noWrap: true,
+                        }}
+                      />
+                    </StyledChatItem>
+                  ))}
+                </List>
+              </Box>
+            )}
+
+            {activeTab === 1 && (
+              <Box sx={{ p: 2 }}>
+                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, textAlign: 'center' }}>
+                  Chat history will appear here
+                </Typography>
+              </Box>
+            )}
+          </Box>
         </StyledSidebar>
 
         {/* Header */}

@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict } from 'date-fns';
+import { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import { useTheme, alpha } from '@mui/material/styles';
 
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
@@ -16,7 +18,9 @@ import { useGetMessage } from './hooks';
 // ----------------------------------------------------------------------
 
 export default function ChatMessageItem({ message, participants, onOpenLightbox }) {
+  const theme = useTheme();
   const { user } = useMockedUser();
+  const [isHovered, setIsHovered] = useState(false);
 
   const { me, senderDetails, hasImage } = useGetMessage({
     message,
@@ -25,7 +29,6 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
   });
 
   const { firstName, avatarUrl } = senderDetails;
-
   const { body, createdAt } = message;
 
   const renderInfo = (
@@ -33,7 +36,8 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
       noWrap
       variant="caption"
       sx={{
-        mb: 1,
+        mb: 0.5,
+        fontSize: '0.75rem',
         color: 'text.disabled',
         ...(!me && {
           mr: 'auto',
@@ -52,17 +56,32 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
       sx={{
         p: 1.5,
         minWidth: 48,
-        maxWidth: 320,
-        borderRadius: 1,
+        maxWidth: 480,
+        borderRadius: me ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
         typography: 'body2',
-        bgcolor: 'background.neutral',
-        ...(me && {
-          color: 'grey.800',
-          bgcolor: 'primary.lighter',
-        }),
+        fontSize: '0.875rem',
+        lineHeight: 1.4,
+        bgcolor: me
+          ? theme.palette.mode === 'dark'
+            ? 'primary.main'
+            : 'primary.main'
+          : theme.palette.mode === 'dark'
+          ? 'grey.800'
+          : 'grey.100',
+        color: me
+          ? 'primary.contrastText'
+          : theme.palette.mode === 'dark'
+          ? 'grey.100'
+          : 'grey.900',
+        boxShadow: me
+          ? '0 2px 8px rgba(99, 102, 241, 0.15)'
+          : '0 2px 8px rgba(0, 0, 0, 0.08)',
+        transition: 'all 0.2s ease-in-out',
+        transform: isHovered && me ? 'scale(1.02)' : 'scale(1)',
         ...(hasImage && {
           p: 0,
           bgcolor: 'transparent',
+          boxShadow: 'none',
         }),
       }}
     >
@@ -74,15 +93,25 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
           onClick={() => onOpenLightbox(body)}
           sx={{
             minHeight: 220,
-            borderRadius: 1.5,
+            borderRadius: 2,
             cursor: 'pointer',
+            transition: 'transform 0.2s ease-in-out',
             '&:hover': {
-              opacity: 0.9,
+              transform: 'scale(1.02)',
+              opacity: 0.95,
             },
           }}
         />
       ) : (
-        body
+        <Typography
+          variant="body2"
+          sx={{
+            wordWrap: 'break-word',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {body}
+        </Typography>
       )}
     </Stack>
   );
@@ -107,24 +136,49 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
         }),
       }}
     >
-      <IconButton size="small">
+      <IconButton size="small" sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}>
         <Iconify icon="solar:reply-bold" width={16} />
       </IconButton>
-      <IconButton size="small">
+      <IconButton size="small" sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}>
         <Iconify icon="eva:smiling-face-fill" width={16} />
       </IconButton>
-      <IconButton size="small">
+      <IconButton size="small" sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}>
         <Iconify icon="solar:trash-bin-trash-bold" width={16} />
       </IconButton>
     </Stack>
   );
 
   return (
-    <Stack direction="row" justifyContent={me ? 'flex-end' : 'unset'} sx={{ mb: 5 }}>
-      {!me && <Avatar alt={firstName} src={avatarUrl} sx={{ width: 32, height: 32, mr: 2 }} />}
+    <Stack
+      direction="row"
+      justifyContent={me ? 'flex-end' : 'unset'}
+      sx={{
+        mb: 3,
+        px: 2,
+        '&:hover': {
+          bgcolor: alpha(theme.palette.common.white, 0.02),
+        },
+        transition: 'background-color 0.2s ease-in-out',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {!me && (
+        <Avatar
+          alt={firstName}
+          src={avatarUrl}
+          sx={{
+            width: 36,
+            height: 36,
+            mr: 1.5,
+            border: `2px solid ${theme.palette.background.paper}`,
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+          }}
+        />
+      )}
 
-      <Stack alignItems="flex-end">
-        {renderInfo}
+      <Stack alignItems={me ? 'flex-end' : 'flex-start'} sx={{ maxWidth: '70%' }}>
+        {!me && renderInfo}
 
         <Stack
           direction="row"
@@ -141,6 +195,8 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
           {renderBody}
           {renderActions}
         </Stack>
+
+        {me && renderInfo}
       </Stack>
     </Stack>
   );

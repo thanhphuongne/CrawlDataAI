@@ -90,9 +90,15 @@ export default function ChatView() {
         width: 1,
         height: 1,
         overflow: 'hidden',
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark' ? 'grey.900' : 'grey.25',
       }}
     >
-      <ChatMessageList messages={conversation?.messages} participants={participants} />
+      <ChatMessageList
+        messages={conversation?.messages}
+        participants={participants}
+        isTyping={false} // TODO: Add typing state from WebSocket
+      />
 
       <ChatMessageInput
         recipients={recipients}
@@ -115,7 +121,20 @@ export default function ChatView() {
         Chat
       </Typography>
 
-      <Stack component={Card} direction="row" sx={{ height: '72vh' }}>
+      <Stack
+        component={Card}
+        direction="row"
+        sx={{
+          height: '72vh',
+          borderRadius: 3,
+          boxShadow: (theme) =>
+            theme.palette.mode === 'dark'
+              ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+              : '0 8px 32px rgba(0, 0, 0, 0.1)',
+          border: (theme) => `1px solid ${theme.palette.divider}`,
+          overflow: 'hidden',
+        }}
+      >
         {renderNav}
 
         <Stack

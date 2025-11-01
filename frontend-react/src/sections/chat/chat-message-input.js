@@ -108,37 +108,112 @@ export default function ChatMessageInput({
 
   return (
     <>
-      <InputBase
-        value={message}
-        onKeyUp={handleSendMessage}
-        onChange={handleChangeMessage}
-        placeholder="Type a message"
-        disabled={disabled}
-        startAdornment={
-          <IconButton>
-            <Iconify icon="eva:smiling-face-fill" />
-          </IconButton>
-        }
-        endAdornment={
-          <Stack direction="row" sx={{ flexShrink: 0 }}>
-            <IconButton onClick={handleAttach}>
-              <Iconify icon="solar:gallery-add-bold" />
-            </IconButton>
-            <IconButton onClick={handleAttach}>
-              <Iconify icon="eva:attach-2-fill" />
-            </IconButton>
-            <IconButton>
-              <Iconify icon="solar:microphone-bold" />
-            </IconButton>
-          </Stack>
-        }
+      <Stack
+        direction="row"
+        alignItems="center"
         sx={{
-          px: 1,
-          height: 56,
-          flexShrink: 0,
+          px: 2,
+          py: 1.5,
           borderTop: (theme) => `solid 1px ${theme.palette.divider}`,
+          bgcolor: (theme) => theme.palette.background.paper,
         }}
-      />
+      >
+        <InputBase
+          value={message}
+          onKeyUp={handleSendMessage}
+          onChange={handleChangeMessage}
+          placeholder="Ask me anything..."
+          disabled={disabled}
+          multiline
+          maxRows={4}
+          sx={{
+            flex: 1,
+            px: 2,
+            py: 1,
+            borderRadius: 3,
+            bgcolor: (theme) =>
+              theme.palette.mode === 'dark' ? 'grey.800' : 'grey.50',
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+            '&:focus-within': {
+              borderColor: (theme) => theme.palette.primary.main,
+              boxShadow: (theme) => `0 0 0 2px ${theme.palette.primary.main}25`,
+            },
+            '& .MuiInputBase-input': {
+              fontSize: '0.875rem',
+              '&::placeholder': {
+                color: (theme) => theme.palette.text.disabled,
+                opacity: 0.8,
+              },
+            },
+          }}
+        />
+
+        <Stack direction="row" spacing={1} sx={{ ml: 1 }}>
+          <IconButton
+            size="small"
+            onClick={handleAttach}
+            sx={{
+              color: (theme) => theme.palette.text.secondary,
+              '&:hover': {
+                color: (theme) => theme.palette.primary.main,
+                bgcolor: (theme) => theme.palette.primary.main + '10',
+              },
+            }}
+          >
+            <Iconify icon="solar:gallery-add-bold" width={20} />
+          </IconButton>
+
+          <IconButton
+            size="small"
+            onClick={handleAttach}
+            sx={{
+              color: (theme) => theme.palette.text.secondary,
+              '&:hover': {
+                color: (theme) => theme.palette.primary.main,
+                bgcolor: (theme) => theme.palette.primary.main + '10',
+              },
+            }}
+          >
+            <Iconify icon="eva:attach-2-fill" width={20} />
+          </IconButton>
+
+          <IconButton
+            size="small"
+            sx={{
+              color: (theme) => theme.palette.text.secondary,
+              '&:hover': {
+                color: (theme) => theme.palette.primary.main,
+                bgcolor: (theme) => theme.palette.primary.main + '10',
+              },
+            }}
+          >
+            <Iconify icon="solar:microphone-bold" width={20} />
+          </IconButton>
+
+          <IconButton
+            onClick={(e) => handleSendMessage({ key: 'Enter', ...e })}
+            disabled={!message.trim() || disabled}
+            sx={{
+              bgcolor: (theme) => theme.palette.primary.main,
+              color: 'white',
+              width: 40,
+              height: 40,
+              borderRadius: 2,
+              '&:hover': {
+                bgcolor: (theme) => theme.palette.primary.dark,
+                transform: 'scale(1.05)',
+              },
+              '&:disabled': {
+                bgcolor: (theme) => theme.palette.action.disabledBackground,
+                color: (theme) => theme.palette.action.disabled,
+              },
+              transition: 'all 0.2s ease-in-out',
+            }}
+          >
+            <Iconify icon="solar:send-bold" width={20} />
+          </IconButton>
+        </Stack>
+      </Stack>
 
       <input type="file" ref={fileRef} style={{ display: 'none' }} />
     </>

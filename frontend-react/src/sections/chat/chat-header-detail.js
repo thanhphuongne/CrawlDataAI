@@ -40,7 +40,16 @@ export default function ChatHeaderDetail({ participants }) {
         variant={singleParticipant.status}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Avatar src={singleParticipant.avatarUrl} alt={singleParticipant.name} />
+        <Avatar
+          src={singleParticipant.avatarUrl}
+          alt={singleParticipant.name}
+          sx={{
+            width: 48,
+            height: 48,
+            border: (theme) => `3px solid ${theme.palette.background.paper}`,
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          }}
+        />
       </Badge>
 
       <ListItemText
@@ -50,8 +59,21 @@ export default function ChatHeaderDetail({ participants }) {
             ? fToNow(singleParticipant.lastActivity)
             : singleParticipant.status
         }
+        primaryTypographyProps={{
+          variant: 'h6',
+          sx: {
+            fontWeight: 600,
+            fontSize: '1.125rem',
+          },
+        }}
         secondaryTypographyProps={{
           component: 'span',
+          sx: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.5,
+            mt: 0.5,
+          },
           ...(singleParticipant.status !== 'offline' && {
             textTransform: 'capitalize',
           }),
@@ -61,21 +83,56 @@ export default function ChatHeaderDetail({ participants }) {
   );
 
   return (
-    <>
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
+      sx={{
+        p: 2.5,
+        pl: 3,
+        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+        bgcolor: (theme) => theme.palette.background.paper,
+        minHeight: 80,
+      }}
+    >
       {group ? renderGroup : renderSingle}
 
-      <Stack flexGrow={1} />
-
-      <IconButton>
-        <Iconify icon="solar:phone-bold" />
-      </IconButton>
-      <IconButton>
-        <Iconify icon="solar:videocamera-record-bold" />
-      </IconButton>
-      <IconButton>
-        <Iconify icon="eva:more-vertical-fill" />
-      </IconButton>
-    </>
+      <Stack direction="row" spacing={1}>
+        <IconButton
+          sx={{
+            color: (theme) => theme.palette.text.secondary,
+            '&:hover': {
+              color: (theme) => theme.palette.primary.main,
+              bgcolor: (theme) => theme.palette.primary.main + '10',
+            },
+          }}
+        >
+          <Iconify icon="solar:phone-bold" />
+        </IconButton>
+        <IconButton
+          sx={{
+            color: (theme) => theme.palette.text.secondary,
+            '&:hover': {
+              color: (theme) => theme.palette.primary.main,
+              bgcolor: (theme) => theme.palette.primary.main + '10',
+            },
+          }}
+        >
+          <Iconify icon="solar:videocamera-record-bold" />
+        </IconButton>
+        <IconButton
+          sx={{
+            color: (theme) => theme.palette.text.secondary,
+            '&:hover': {
+              color: (theme) => theme.palette.primary.main,
+              bgcolor: (theme) => theme.palette.primary.main + '10',
+            },
+          }}
+        >
+          <Iconify icon="eva:more-vertical-fill" />
+        </IconButton>
+      </Stack>
+    </Stack>
   );
 }
 

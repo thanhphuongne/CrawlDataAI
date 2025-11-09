@@ -37,6 +37,7 @@ export default function ChatView() {
   const selectedConversationId = searchParams.get('id') || '';
 
   const [recipients, setRecipients] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
 
   const { contacts } = useGetContacts();
 
@@ -53,6 +54,17 @@ export default function ChatView() {
       router.push(paths.dashboard.chat);
     }
   }, [conversationError, router, selectedConversationId]);
+
+  // Hide typing indicator when a new non-user message arrives (simulates assistant response)
+  useEffect(() => {
+    const msgs = conversation?.messages || [];
+    if (msgs.length) {
+      const last = msgs[msgs.length - 1];
+      if (last && last.senderId !== `${user.id}`) {
+        setIsTyping(false);
+      }
+    }
+  }, [conversation?.messages, user.id]);
 
   const handleAddRecipients = useCallback((selected) => {
     setRecipients(selected);
@@ -97,12 +109,13 @@ export default function ChatView() {
       <ChatMessageList
         messages={conversation?.messages}
         participants={participants}
-        isTyping={false} // TODO: Add typing state from WebSocket
+        isTyping={isTyping}
       />
 
       <ChatMessageInput
         recipients={recipients}
         onAddRecipients={handleAddRecipients}
+        onSending={setIsTyping}
         //
         selectedConversationId={selectedConversationId}
         disabled={!recipients.length && !selectedConversationId}

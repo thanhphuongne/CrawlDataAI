@@ -22,6 +22,7 @@ import Iconify from 'src/components/iconify';
 export default function ChatMessageInput({
   recipients,
   onAddRecipients,
+  onSending,
   //
   disabled,
   selectedConversationId,
@@ -87,6 +88,10 @@ export default function ChatMessageInput({
       try {
         if (event.key === 'Enter') {
           if (message) {
+            // Notify parent to show typing indicator (ChatGPT-like)
+            if (typeof onSending === 'function') {
+              onSending(true);
+            }
             if (selectedConversationId) {
               await sendMessage(selectedConversationId, messageData);
             } else {
@@ -103,7 +108,7 @@ export default function ChatMessageInput({
         console.error(error);
       }
     },
-    [conversationData, message, messageData, onAddRecipients, router, selectedConversationId]
+    [conversationData, message, messageData, onAddRecipients, onSending, router, selectedConversationId]
   );
 
   return (
@@ -223,6 +228,7 @@ export default function ChatMessageInput({
 ChatMessageInput.propTypes = {
   disabled: PropTypes.bool,
   onAddRecipients: PropTypes.func,
+  onSending: PropTypes.func,
   recipients: PropTypes.array,
   selectedConversationId: PropTypes.string,
 };

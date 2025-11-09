@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict } from 'date-fns';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -12,6 +12,7 @@ import { useTheme, alpha } from '@mui/material/styles';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
 import Iconify from 'src/components/iconify';
+import Markdown from 'src/components/markdown';
 
 import { useGetMessage } from './hooks';
 
@@ -30,6 +31,14 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
 
   const { firstName, avatarUrl } = senderDetails;
   const { body, createdAt } = message;
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(body || '');
+    } catch (e) {
+      // no-op
+    }
+  }, [body]);
 
   const renderInfo = (
     <Typography
@@ -103,15 +112,9 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
           }}
         />
       ) : (
-        <Typography
-          variant="body2"
-          sx={{
-            wordWrap: 'break-word',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
+        <Markdown enableCodeBlockCopy>
           {body}
-        </Typography>
+        </Markdown>
       )}
     </Stack>
   );
@@ -141,6 +144,9 @@ export default function ChatMessageItem({ message, participants, onOpenLightbox 
       </IconButton>
       <IconButton size="small" sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}>
         <Iconify icon="eva:smiling-face-fill" width={16} />
+      </IconButton>
+      <IconButton size="small" onClick={handleCopy} sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}>
+        <Iconify icon="solar:copy-bold" width={16} />
       </IconButton>
       <IconButton size="small" sx={{ opacity: 0.7, '&:hover': { opacity: 1 } }}>
         <Iconify icon="solar:trash-bin-trash-bold" width={16} />

@@ -1,5 +1,5 @@
 // import { HomeView } from 'src/sections/homebk/view';
-import { ChatHomeView } from 'src/sections/home/view';
+import AppFlow from 'src/components/AppFlow';
 // ----------------------------------------------------------------------
 
 const TITLE = 'CrawlDataAI'
@@ -29,5 +29,5 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  return <ChatHomeView />;
+  return <AppFlow />;
 }

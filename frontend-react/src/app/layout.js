@@ -51,43 +51,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const urlBackground  = HOST_DOMAIN + '/assets/background/img_bg_main.png'
   return (
     <html lang="en" className={primaryFont.className}>
-      <body style={{
-        background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
-        minHeight: '100vh',
-        backgroundAttachment: 'fixed'
-      }}>
-        <AuthProvider>
-          {/* <TonProvider> */}
-          <LocalizationProvider>
-            <SettingsProvider
-              defaultSettings={{
-                themeMode: 'dark', // 'light' | 'dark'
-                themeDirection: 'ltr', //  'rtl' | 'ltr'
-                themeContrast: 'default', // 'default' | 'bold'
-                themeLayout: 'horizontal', // 'vertical' | 'horizontal' | 'mini'
-                themeColorPresets: 'cyan', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-                themeStretch: false,
-              }}
-            >
-              <ThemeProvider>
-                <MotionLazy>
-                  <SnackbarProvider>
-                    <CheckoutProvider>
-                      <SettingsDrawer />
-                      <ProgressBar />
-                      {children}
-                    </CheckoutProvider>
-                  </SnackbarProvider>
-                </MotionLazy>
-              </ThemeProvider>
-            </SettingsProvider>
-          </LocalizationProvider>
-          {/* </TonProvider> */}
-
-        </AuthProvider>
+      <body>
+        {children}
       </body>
     </html>
   );

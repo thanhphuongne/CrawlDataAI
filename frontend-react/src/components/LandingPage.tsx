@@ -100,4 +100,3 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
     </div>
   );
 }
-

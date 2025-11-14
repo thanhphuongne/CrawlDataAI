@@ -62,4 +62,3 @@ export function Navbar({ onLogout, onNavigate, userName = "User" }: NavbarProps)
     </nav>
   );
 }
-

@@ -139,4 +139,3 @@ export function RegisterPage({ onNavigate, onRegister }: RegisterPageProps) {
     </div>
   );
 }
-

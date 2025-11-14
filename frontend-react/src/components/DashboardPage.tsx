@@ -401,4 +401,3 @@ export function DashboardPage({ onNavigate, crawls, onStartCrawlFromChat }: Dash
     </div>
   );
 }
-

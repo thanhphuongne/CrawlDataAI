@@ -124,4 +124,3 @@ export function NewCrawlStep2({ url, onStart, onBack }: NewCrawlStep2Props) {
     </div>
   );
 }
-

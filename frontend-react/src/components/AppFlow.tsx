@@ -142,89 +142,155 @@ export default function AppFlow() {
     setCurrentPage(page as Page);
   };
 
-  const handleNewCrawlStep1 = (url: string) => {
+  const handleStartCrawl = (url: string, prompt: string): string => {
+    const crawlId = "crawl-" + Date.now();
     setCurrentCrawlUrl(url);
-    setCurrentPage("new-crawl-step-2");
-  };
-
-  const handleNewCrawlStart = (prompt: string) => {
     setCurrentCrawlPrompt(prompt);
-    setCurrentPage("crawl-progress");
-    // Simulate crawl progress
+    
+    const newCrawl: Crawl = {
+      id: crawlId,
+      url: url,
+      status: "running",
+      itemsFound: 0,
+      date: new Date().toISOString(),
+      prompt: prompt,
+    };
+    
+    setCrawls(prev => [newCrawl, ...prev]);
+    
+    // Simulate crawl completion after some time
     setTimeout(() => {
-      const newCrawl: Crawl = {
-        id: Date.now().toString(),
-        url: currentCrawlUrl,
-        status: "completed",
-        itemsFound: Math.floor(Math.random() * 100) + 10,
-        date: new Date().toISOString().split("T")[0],
-        prompt: currentCrawlPrompt,
-      };
-      setCrawls((prev) => [...prev, newCrawl]);
-      setCurrentPage("crawl-detail");
-      setSelectedCrawlId(newCrawl.id);
-    }, 3000);
+      setCrawls(prev => prev.map(c => 
+        c.id === crawlId 
+          ? { ...c, status: "completed", itemsFound: Math.floor(Math.random() * 50) + 10 }
+          : c
+      ));
+    }, 4000);
+    
+    return crawlId;
   };
 
-  const handleExport = (crawlId: string, format: "json" | "csv" | "pdf") => {
-    const crawl = crawls.find((c) => c.id === crawlId);
-    if (crawl) {
-      const newExport: Export = {
-        id: Date.now().toString(),
-        crawlName: crawl.url,
-        format,
-        date: new Date().toISOString().split("T")[0],
-        size: (Math.random() * 10 + 1).toFixed(1) + " MB",
-      };
-      setExports((prev) => [...prev, newExport]);
-      toast.success(`Export in ${format.toUpperCase()} format started!`);
+  const handleCrawlComplete = (crawlId: string) => {
+    setSelectedCrawlId(crawlId);
+    setCurrentPage("crawl-detail");
+  };
+
+  const handleExport = (format: string, crawlId: string) => {
+    const crawl = crawls.find(c => c.id === crawlId);
+    if (!crawl) return;
+
+    const newExport: Export = {
+      id: `export-${Date.now()}`,
+      crawlName: crawl.url,
+      format: format as "json" | "csv" | "pdf",
+      date: new Date().toISOString(),
+      size: `${Math.floor(Math.random() * 500 + 100)} KB`,
+    };
+
+    setExports(prev => [newExport, ...prev]);
+    toast.success(`Exported as ${format.toUpperCase()}`);
+  };
+
+  const handleUpdateProfile = (name: string, email: string) => {
+    if (user) {
+      const updatedUser = { ...user, name, email };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
     }
+  };
+
+  const handleUpdatePassword = (currentPassword: string, newPassword: string) => {
+    // Mock password update
+    toast.success("Password updated successfully");
+  };
+
+  const handleDeleteAccount = () => {
+    localStorage.clear();
+    setUser(null);
+    setCrawls([]);
+    setExports([]);
+    setCurrentPage("landing");
+    toast.success("Account deleted");
   };
 
   const renderPage = () => {
-    switch (currentPage) {
-      case "landing":
-        return <LandingPage onNavigate={handleNavigate} />;
-      case "register":
-        return <RegisterPage onRegister={handleRegister} onNavigate={handleNavigate} />;
-      case "login":
-        return <LoginPage onLogin={handleLogin} onNavigate={handleNavigate} />;
-      case "forgot-password":
-        return <ForgotPasswordPage onNavigate={handleNavigate} />;
-      case "chat":
-        return <ChatPage user={user} onNavigate={handleNavigate} />;
-      case "crawls":
-        return <MyCrawlsPage crawls={crawls} onNavigate={handleNavigate} />;
-      case "crawl-progress":
-        return <CrawlProgressPage url={currentCrawlUrl} prompt={currentCrawlPrompt} />;
-      case "crawl-detail":
-        return (
-          <CrawlDetailPage
-            crawl={crawls.find((c) => c.id === selectedCrawlId)!}
-            onExport={handleExport}
-            onNavigate={handleNavigate}
-          />
-        );
-      case "exports":
-        return <MyCrawlsPage crawls={crawls} onNavigate={handleNavigate} />; // Placeholder
-      case "settings":
-        return <SettingsPage user={user} onLogout={handleLogout} darkMode={darkMode} setDarkMode={setDarkMode} />;
-      default:
-        return <LandingPage onNavigate={handleNavigate} />;
+    // Public pages
+    if (!user) {
+      switch (currentPage) {
+        case "register":
+          return <RegisterPage onNavigate={handleNavigate} onRegister={handleRegister} />;
+        case "login":
+          return <LoginPage onNavigate={handleNavigate} onLogin={handleLogin} />;
+        case "forgot-password":
+          return <ForgotPasswordPage onNavigate={handleNavigate} />;
+        default:
+          return <LandingPage onNavigate={handleNavigate} />;
+      }
     }
+
+    // Authenticated pages
+    return (
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full">
+          <AppSidebar
+            currentPage={currentPage}
+            onNavigate={handleNavigate}
+            onLogout={handleLogout}
+            darkMode={darkMode}
+            onToggleDarkMode={() => setDarkMode(!darkMode)}
+          />
+          <div className="flex-1 flex flex-col">
+            <Navbar
+              onLogout={handleLogout}
+              onNavigate={handleNavigate}
+              userName={user.name}
+            />
+            <main className="flex-1 bg-background">
+              {currentPage === "chat" && (
+                <ChatPage 
+                  onNavigate={handleNavigate} 
+                  onStartCrawl={handleStartCrawl}
+                />
+              )}
+              {currentPage === "crawls" && (
+                <div className="p-6">
+                  <MyCrawlsPage 
+                    onNavigate={handleNavigate} 
+                    crawls={crawls}
+                  />
+                </div>
+              )}
+              {currentPage === "crawl-detail" && (
+                <div className="p-6">
+                  <CrawlDetailPage
+                    crawlId={selectedCrawlId}
+                    onNavigate={handleNavigate}
+                    onExport={handleExport}
+                  />
+                </div>
+              )}
+              {currentPage === "settings" && (
+                <div className="p-6">
+                  <SettingsPage
+                    user={user}
+                    onUpdateProfile={handleUpdateProfile}
+                    onUpdatePassword={handleUpdatePassword}
+                    onDeleteAccount={handleDeleteAccount}
+                  />
+                </div>
+              )}
+            </main>
+          </div>
+        </div>
+      </SidebarProvider>
+    );
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-background">
-        {user && <AppSidebar user={user} onNavigate={handleNavigate} onLogout={handleLogout} />}
-        {user && <Navbar user={user} onNavigate={handleNavigate} />}
-        <main className={user ? "lg:pl-64 pt-16" : ""}>
-          {renderPage()}
-        </main>
-        <Toaster />
-      </div>
-    </SidebarProvider>
+    <>
+      {renderPage()}
+      <Toaster />
+    </>
   );
 }
 

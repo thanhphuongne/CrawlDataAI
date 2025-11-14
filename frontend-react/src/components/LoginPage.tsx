@@ -92,4 +92,3 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
     </div>
   );
 }
-

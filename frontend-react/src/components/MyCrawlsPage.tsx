@@ -182,4 +182,3 @@ export function MyCrawlsPage({ onNavigate, crawls }: MyCrawlsPageProps) {
     </div>
   );
 }
-

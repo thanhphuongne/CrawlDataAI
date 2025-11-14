@@ -307,4 +307,3 @@ export function CrawlDetailPage({ crawlId, onNavigate, onExport }: CrawlDetailPa
     </div>
   );
 }
-

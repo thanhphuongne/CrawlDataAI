@@ -468,4 +468,3 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
     </div>
   );
 }
-

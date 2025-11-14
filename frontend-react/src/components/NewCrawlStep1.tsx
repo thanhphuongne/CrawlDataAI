@@ -98,4 +98,3 @@ export function NewCrawlStep1({ onNext, onBack }: NewCrawlStep1Props) {
     </div>
   );
 }
-

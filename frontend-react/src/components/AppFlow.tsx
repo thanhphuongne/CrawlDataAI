@@ -52,7 +52,7 @@ type Page =
   | "settings";
 
 export default function AppFlow() {
-  const [currentPage, setCurrentPage] = useState<Page>("landing");
+  const [currentPage, setCurrentPage] = useState<Page>("login");
   const [user, setUser] = useState<User | null>(null);
   const [darkMode, setDarkMode] = useState(false);
   const [crawls, setCrawls] = useState<Crawl[]>([]);

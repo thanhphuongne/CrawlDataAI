@@ -34,10 +34,10 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <Button
                       size="lg"
-                      onClick={() => onNavigate("chat")}
+                      onClick={() => onNavigate("register")}
                       className="flex-1"
                     >
-                      Start
+                      Get Started
                     </Button>
                     <Button
                       size="lg"

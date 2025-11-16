@@ -299,3 +299,23 @@ export async function getReferralInviter(req, res, next) {
     return next(error);
   }
 }
+
+export async function deleteUser(req, res, next) {
+  try {
+    const { auth } = req;
+    const { id } = req.params;
+
+    // Ensure user can only delete their own account
+    if (auth.id !== parseInt(id)) {
+      return next(new APIError(403, 'You can only delete your own account'));
+    }
+
+    await UserService.deleteUser(auth.id);
+    return res.json({
+      success: true,
+      message: 'Account deleted successfully'
+    });
+  } catch (error) {
+    return next(error);
+  }
+}

@@ -5,6 +5,11 @@ import { isAuthorized } from '../../api/auth.middleware';
 const router = new Router();
 
 router.route('/:id')
-  .post(isAuthorized(), UserController.updateUserProfileById);
+  .get(isAuthorized(), UserController.getUser)
+  .post(isAuthorized(), UserController.updateUserProfileById)
+  .delete(isAuthorized(), UserController.deleteUser);
+
+router.route('/:id/password')
+  .post(isAuthorized(), UserController.updateUserPassword);
 
 export default router;

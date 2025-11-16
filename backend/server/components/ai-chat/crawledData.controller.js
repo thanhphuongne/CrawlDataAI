@@ -135,3 +135,66 @@ export async function downloadExport(req, res, next) {
     return next(error);
   }
 }
+
+/**
+ * Get user's export history
+ */
+export async function getUserExports(req, res, next) {
+  try {
+    const { auth } = req;
+    const { page = 1, limit = 10 } = req.query;
+
+    // For now, return mock data - in real implementation, you'd have an exports table
+    const exports = [
+      {
+        id: 1,
+        request_id: 1,
+        format: 'json',
+        created_at: new Date().toISOString(),
+        size: '2.5MB',
+        status: 'completed'
+      }
+    ];
+
+    return res.json({
+      exports,
+      total: exports.length,
+      page: parseInt(page),
+      limit: parseInt(limit)
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+/**
+ * Create a new export
+ */
+export async function createExport(req, res, next) {
+  try {
+    const { auth } = req;
+    const { request_id, format } = req.body;
+
+    // Validate format
+    const supportedFormats = ['json', 'csv', 'pdf'];
+    if (!supportedFormats.includes(format)) {
+      return res.status(400).json({ error: 'Unsupported format. Supported: json, csv, pdf' });
+    }
+
+    // For now, return mock response - in real implementation, create export job
+    const exportJob = {
+      id: Date.now(),
+      request_id: parseInt(request_id),
+      format,
+      status: 'processing',
+      created_at: new Date().toISOString()
+    };
+
+    return res.json({
+      success: true,
+      export: exportJob
+    });
+  } catch (error) {
+    return next(error);
+  }
+}

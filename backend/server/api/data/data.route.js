@@ -62,4 +62,9 @@ router.route('/:request_id')
 router.route('/:request_id/:format')
   .get(isAuthorized(), CrawledDataController.downloadExport);
 
+// Export routes (when used as /api/exports)
+router.route('/')
+  .get(isAuthorized(), CrawledDataController.getUserExports)
+  .post(isAuthorized(), CrawledDataController.createExport);
+
 export default router;

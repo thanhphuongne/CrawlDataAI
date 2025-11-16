@@ -16,4 +16,10 @@ router.route('/login')
     UserController.emailLogin,
   );
 
+router.route('/forgot-password')
+  .post(UserController.forgotPassword);
+
+router.route('/reset-password')
+  .post(UserController.verifyForgotPassword);
+
 export default router;

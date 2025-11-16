@@ -497,3 +497,20 @@ export async function updateUserProfileById(id, data) {
     throw error;
   }
 }
+
+export async function deleteUser(userId) {
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      throw new APIError(404, 'User not found');
+    }
+
+    // Soft delete or hard delete - using soft delete for safety
+    await user.destroy();
+
+    return true;
+  } catch (error) {
+    logger.error(`User deleteUser error: ${error}`);
+    throw error;
+  }
+}

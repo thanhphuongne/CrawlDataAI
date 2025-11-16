@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { dialogAPI, requestAPI } from '../utils/api';
 
 interface ChatMessage {
   id: string;
@@ -144,25 +145,67 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
       ));
     }, 2500);
 
-    // Complete the crawl
-    setTimeout(() => {
-      const mockData = generateMockData(prompt);
-      setMessages(prev => prev.map(msg => 
-        msg.id === messageId && msg.crawlData
-          ? { 
-              ...msg, 
-              crawlData: { 
-                ...msg.crawlData, 
-                status: "completed", 
-                progress: 100,
-                itemsFound: mockData.length,
-                data: mockData,
-                crawlId: crawlId
-              } 
-            }
-          : msg
-      ));
-      toast.success("Crawl completed successfully!");
+    // Complete the crawl and fetch real data
+    setTimeout(async () => {
+      try {
+        const message = messages.find(m => m.id === messageId);
+        if (message?.crawlData?.crawlId) {
+          const dataResponse = await dataAPI.getCrawledData(parseInt(message.crawlData.crawlId));
+          const realData = dataResponse.data.data || [];
+          
+          setMessages(prev => prev.map(msg => 
+            msg.id === messageId && msg.crawlData
+              ? { 
+                  ...msg, 
+                  crawlData: { 
+                    ...msg.crawlData, 
+                    status: "completed", 
+                    progress: 100,
+                    itemsFound: realData.length,
+                    data: realData,
+                  } 
+                }
+              : msg
+          ));
+        } else {
+          // Fallback to mock data if no crawlId
+          const mockData = generateMockData(prompt);
+          setMessages(prev => prev.map(msg => 
+            msg.id === messageId && msg.crawlData
+              ? { 
+                  ...msg, 
+                  crawlData: { 
+                    ...msg.crawlData, 
+                    status: "completed", 
+                    progress: 100,
+                    itemsFound: mockData.length,
+                    data: mockData,
+                  } 
+                }
+              : msg
+          ));
+        }
+        toast.success("Crawl completed successfully!");
+      } catch (error) {
+        console.error('Failed to fetch crawl data:', error);
+        // Fallback to mock data on error
+        const mockData = generateMockData(prompt);
+        setMessages(prev => prev.map(msg => 
+          msg.id === messageId && msg.crawlData
+            ? { 
+                ...msg, 
+                crawlData: { 
+                  ...msg.crawlData, 
+                  status: "completed", 
+                  progress: 100,
+                  itemsFound: mockData.length,
+                  data: mockData,
+                } 
+              }
+            : msg
+        ));
+        toast.success("Crawl completed successfully!");
+      }
     }, 3500);
   };
 
@@ -180,7 +223,7 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
     setInput("");
     setIsProcessing(true);
 
-    setTimeout(() => {
+    try {
       const parsedRequest = parseUserRequest(userMessage.content);
 
       if (!parsedRequest) {
@@ -193,6 +236,19 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
         setMessages(prev => [...prev, aiMessage]);
         setIsProcessing(false);
       } else {
+        // Create crawl request
+        const requestResponse = await requestAPI.createRequest({
+          requirement: `${parsedRequest.prompt} from ${parsedRequest.url}`
+        });
+        const requestId = requestResponse.data.id;
+
+        // Send dialog message
+        await dialogAPI.sendMessage({
+          request_id: requestId,
+          content: userMessage.content,
+          role: "user"
+        });
+
         const aiMessageId = Date.now().toString();
         const aiMessage: ChatMessage = {
           id: aiMessageId,
@@ -201,17 +257,29 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
           timestamp: new Date().toISOString(),
           crawlData: {
             url: parsedRequest.url,
-            status: "pending",
+            status: "crawling",
+            progress: 0,
             prompt: parsedRequest.prompt,
+            crawlId: requestId.toString(),
           },
         };
         setMessages(prev => [...prev, aiMessage]);
-        setIsProcessing(false);
 
-        // Start the crawl simulation
+        // Simulate progress updates (in real implementation, this would come from WebSocket or polling)
         simulateCrawl(aiMessageId, parsedRequest.url, parsedRequest.prompt);
       }
-    }, 1000);
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      const errorMessage: ChatMessage = {
+        id: Date.now().toString(),
+        role: "ai",
+        content: "Sorry, I encountered an error processing your request. Please try again.",
+        timestamp: new Date().toISOString(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

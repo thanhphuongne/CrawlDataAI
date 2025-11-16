@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
@@ -30,6 +30,8 @@ import {
   FileSpreadsheet,
   FileText,
 } from "lucide-react";
+import { requestAPI, dataAPI, dialogAPI } from '../utils/api';
+import { toast } from "sonner";
 
 interface CrawlData {
   id: string;
@@ -54,30 +56,51 @@ interface CrawlDetailPageProps {
 export function CrawlDetailPage({ crawlId, onNavigate, onExport }: CrawlDetailPageProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [chatInput, setChatInput] = useState("");
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    {
-      role: "ai",
-      content: "I extracted 47 items from the page. You can ask me questions about the data or request specific insights.",
-      timestamp: new Date(Date.now() - 300000).toISOString(),
-    },
-  ]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [crawlData, setCrawlData] = useState<any[]>([]);
+  const [crawlInfo, setCrawlInfo] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data
-  const crawlInfo = {
-    url: "https://example.com/products",
-    duration: "2m 34s",
-    itemsFound: 47,
-    date: new Date().toISOString(),
-    status: "completed",
-  };
+  useEffect(() => {
+    const fetchCrawlDetails = async () => {
+      try {
+        // Fetch crawl request details
+        const requestResponse = await requestAPI.getRequest(crawlId);
+        const request = requestResponse.data;
+        
+        setCrawlInfo({
+          url: request.requirement.includes('from') ? request.requirement.split('from')[1].trim() : request.requirement,
+          duration: "2m 34s", // Mock for now
+          itemsFound: request.items_found || 0,
+          date: request.created_at,
+          status: request.status,
+        });
 
-  const mockData: CrawlData[] = Array.from({ length: 47 }, (_, i) => ({
-    id: `item-${i + 1}`,
-    name: `Product ${i + 1}`,
-    price: `$${(Math.random() * 100 + 10).toFixed(2)}`,
-    rating: `${(Math.random() * 2 + 3).toFixed(1)}/5`,
-    availability: Math.random() > 0.3 ? "In Stock" : "Out of Stock",
-  }));
+        // Fetch crawled data
+        const dataResponse = await dataAPI.getCrawledData(parseInt(crawlId));
+        setCrawlData(dataResponse.data.data || []);
+
+        // Fetch dialog messages
+        const dialogResponse = await dialogAPI.getMessages(1, { request_id: crawlId }); // Assuming user_id = 1
+        const messages = dialogResponse.data.messages.map((msg: any) => ({
+          role: msg.role,
+          content: msg.content,
+          timestamp: msg.timestamp || new Date().toISOString(),
+        }));
+        setCrawlData(messages);
+
+      } catch (error) {
+        console.error('Failed to fetch crawl details:', error);
+        toast.error('Failed to load crawl details');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (crawlId) {
+      fetchCrawlDetails();
+    }
+  }, [crawlId]);
 
   const filteredData = mockData.filter(item =>
     Object.values(item).some(val =>

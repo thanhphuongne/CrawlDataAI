@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { SidebarProvider } from "./ui/sidebar";
 import { Toaster } from "./ui/sonner";
+import { toast } from "sonner";
 import { LandingPage } from "./LandingPage";
 import { RegisterPage } from "./RegisterPage";
 import { LoginPage } from "./LoginPage";
@@ -14,9 +15,10 @@ import { CrawlDetailPage } from "./CrawlDetailPage";
 import { SettingsPage } from "./SettingsPage";
 import { AppSidebar } from "./AppSidebar";
 import { Navbar } from "./Navbar";
-import { toast } from "sonner";
+import { authAPI, userAPI, dataAPI } from '../utils/api';
 
 interface User {
+  id?: number;
   email: string;
   name: string;
   token: string;
@@ -102,34 +104,59 @@ export default function AppFlow() {
     localStorage.setItem("exports", JSON.stringify(exports));
   }, [exports]);
 
-  const handleRegister = (email: string, password: string, name: string) => {
-    const newUser: User = {
-      email,
-      name: name || email.split("@")[0],
-      token: "mock-jwt-token-" + Date.now(),
-    };
-    setUser(newUser);
-    localStorage.setItem("user", JSON.stringify(newUser));
-    setCurrentPage("chat");
-    toast.success("Account created successfully!");
+  const handleRegister = async (email: string, password: string, name: string) => {
+    try {
+      const response = await authAPI.register({ email, password, name });
+      const { user_id } = response.data;
+
+      // For now, create a mock user object since the API doesn't return full user data
+      const newUser: User = {
+        id: user_id,
+        email,
+        name: name || email.split("@")[0],
+        token: localStorage.getItem('auth_token') || '',
+      };
+
+      setUser(newUser);
+      localStorage.setItem("user", JSON.stringify(newUser));
+      setCurrentPage("chat");
+      toast.success("Account created successfully!");
+    } catch (error) {
+      console.error('Registration failed:', error);
+      toast.error("Registration failed. Please try again.");
+    }
   };
 
-  const handleLogin = (email: string, password: string) => {
-    // Mock login - in production, this would validate credentials
-    const newUser: User = {
-      email,
-      name: email.split("@")[0],
-      token: "mock-jwt-token-" + Date.now(),
-    };
-    setUser(newUser);
-    localStorage.setItem("user", JSON.stringify(newUser));
-    setCurrentPage("chat");
-    toast.success("Welcome back!");
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const response = await authAPI.login({ email, password });
+      const { token, user_id } = response.data;
+
+      // Store token
+      localStorage.setItem('auth_token', token);
+
+      // For now, create a mock user object since the API doesn't return full user data
+      const newUser: User = {
+        id: user_id,
+        email,
+        name: email.split("@")[0],
+        token,
+      };
+
+      setUser(newUser);
+      localStorage.setItem("user", JSON.stringify(newUser));
+      setCurrentPage("chat");
+      toast.success("Welcome back!");
+    } catch (error) {
+      console.error('Login failed:', error);
+      toast.error("Login failed. Please check your credentials.");
+    }
   };
 
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("auth_token");
     setCurrentPage("landing");
     toast.success("Logged out successfully");
   };
@@ -174,42 +201,76 @@ export default function AppFlow() {
     setCurrentPage("crawl-detail");
   };
 
-  const handleExport = (format: string, crawlId: string) => {
-    const crawl = crawls.find(c => c.id === crawlId);
-    if (!crawl) return;
-
-    const newExport: Export = {
-      id: `export-${Date.now()}`,
-      crawlName: crawl.url,
-      format: format as "json" | "csv" | "pdf",
-      date: new Date().toISOString(),
-      size: `${Math.floor(Math.random() * 500 + 100)} KB`,
-    };
-
-    setExports(prev => [newExport, ...prev]);
-    toast.success(`Exported as ${format.toUpperCase()}`);
-  };
-
-  const handleUpdateProfile = (name: string, email: string) => {
-    if (user) {
-      const updatedUser = { ...user, name, email };
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
+  const handleExport = async (format: string, crawlId: string) => {
+    try {
+      // Create export request
+      await dataAPI.createExport({ request_id: parseInt(crawlId), format });
+      
+      // Download the export
+      const response = await dataAPI.downloadExport(parseInt(crawlId), format);
+      
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `crawl_${crawlId}.${format}`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      toast.success(`Exported as ${format.toUpperCase()}`);
+    } catch (error) {
+      console.error('Export failed:', error);
+      toast.error('Export failed. Please try again.');
     }
   };
 
-  const handleUpdatePassword = (currentPassword: string, newPassword: string) => {
-    // Mock password update
-    toast.success("Password updated successfully");
+  const handleUpdateProfile = async (name: string, email: string) => {
+    if (!user) return;
+
+    try {
+      await userAPI.updateProfile(user.id || 1, { name, email });
+
+      const updatedUser = { ...user, name, email };
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.error('Profile update failed:', error);
+      toast.error("Failed to update profile");
+    }
   };
 
-  const handleDeleteAccount = () => {
-    localStorage.clear();
-    setUser(null);
-    setCrawls([]);
-    setExports([]);
-    setCurrentPage("landing");
-    toast.success("Account deleted");
+  const handleUpdatePassword = async (currentPassword: string, newPassword: string) => {
+    if (!user) return;
+
+    try {
+      await userAPI.updatePassword(user.id || 1, {
+        current_password: currentPassword,
+        new_password: newPassword
+      });
+      toast.success("Password updated successfully");
+    } catch (error) {
+      console.error('Password update failed:', error);
+      toast.error("Failed to update password");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+
+    try {
+      await userAPI.deleteAccount(user.id || 1);
+      localStorage.clear();
+      setUser(null);
+      setCrawls([]);
+      setExports([]);
+      setCurrentPage("landing");
+      toast.success("Account deleted");
+    } catch (error) {
+      console.error('Account deletion failed:', error);
+      toast.error("Failed to delete account");
+    }
   };
 
   const renderPage = () => {
@@ -254,8 +315,7 @@ export default function AppFlow() {
               {currentPage === "crawls" && (
                 <div className="p-6">
                   <MyCrawlsPage 
-                    onNavigate={handleNavigate} 
-                    crawls={crawls}
+                    onNavigate={handleNavigate}
                   />
                 </div>
               )}

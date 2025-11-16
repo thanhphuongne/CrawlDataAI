@@ -1,5 +1,5 @@
 import { Activity, Download, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import {
@@ -12,6 +12,8 @@ import {
 } from "./ui/table";
 import { Badge } from "./ui/badge";
 import { Input } from "./ui/input";
+import { requestAPI } from '../utils/api';
+import { toast } from "sonner";
 
 interface Crawl {
   id: string;
@@ -24,11 +26,37 @@ interface Crawl {
 
 interface MyCrawlsPageProps {
   onNavigate: (page: string, crawlId?: string) => void;
-  crawls: Crawl[];
 }
 
-export function MyCrawlsPage({ onNavigate, crawls }: MyCrawlsPageProps) {
+export function MyCrawlsPage({ onNavigate }: MyCrawlsPageProps) {
+  const [crawls, setCrawls] = useState<Crawl[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchCrawls = async () => {
+      try {
+        const response = await requestAPI.getRequests();
+        // Transform API response to match our interface
+        const transformedCrawls = response.data.requests.map((request: any) => ({
+          id: request.id.toString(),
+          url: request.requirement.includes('from') ? request.requirement.split('from')[1].trim() : request.requirement,
+          status: request.status || 'completed',
+          itemsFound: request.items_found || 0,
+          date: request.created_at || new Date().toISOString(),
+          prompt: request.requirement
+        }));
+        setCrawls(transformedCrawls);
+      } catch (error) {
+        console.error('Failed to fetch crawls:', error);
+        toast.error('Failed to load crawls');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCrawls();
+  }, []);
 
   const filteredCrawls = crawls.filter(crawl => 
     crawl.url.toLowerCase().includes(searchQuery.toLowerCase()) ||

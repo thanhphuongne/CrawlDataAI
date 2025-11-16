@@ -5,9 +5,10 @@ import { Sparkles, MessageSquare, Database, Download } from "lucide-react";
 
 interface LandingPageProps {
   onNavigate: (page: string) => void;
+  user: User | null;
 }
 
-export function LandingPage({ onNavigate }: LandingPageProps) {
+export function LandingPage({ onNavigate, user }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="container mx-auto px-4 py-12">
@@ -34,19 +35,21 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <Button
                       size="lg"
-                      onClick={() => onNavigate("register")}
+                      onClick={() => user ? onNavigate("chat") : onNavigate("login")}
                       className="flex-1"
                     >
-                      Get Started
+                      {user ? "Go to Dashboard" : "Start"}
                     </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      onClick={() => onNavigate("login")}
-                      className="flex-1"
-                    >
-                      Login
-                    </Button>
+                    {!user && (
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        onClick={() => onNavigate("register")}
+                        className="flex-1"
+                      >
+                        Sign Up
+                      </Button>
+                    )}
                   </div>
 
                   <div className="pt-6 grid grid-cols-3 gap-4 border-t">

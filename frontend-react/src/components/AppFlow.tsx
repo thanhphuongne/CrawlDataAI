@@ -52,7 +52,7 @@ type Page =
   | "settings";
 
 export default function AppFlow() {
-  const [currentPage, setCurrentPage] = useState<Page>("login");
+  const [currentPage, setCurrentPage] = useState<Page>("landing");
   const [user, setUser] = useState<User | null>(null);
   const [darkMode, setDarkMode] = useState(false);
   const [crawls, setCrawls] = useState<Crawl[]>([]);
@@ -68,10 +68,9 @@ export default function AppFlow() {
     const savedCrawls = localStorage.getItem("crawls");
     const savedExports = localStorage.getItem("exports");
 
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-      setCurrentPage("chat");
-    }
+    // if (savedUser) {
+    //   setUser(JSON.parse(savedUser));
+    // }
     if (savedDarkMode) {
       setDarkMode(JSON.parse(savedDarkMode));
     }
@@ -224,7 +223,7 @@ export default function AppFlow() {
         case "forgot-password":
           return <ForgotPasswordPage onNavigate={handleNavigate} />;
         default:
-          return <LandingPage onNavigate={handleNavigate} />;
+          return <LandingPage onNavigate={handleNavigate} user={user} />;
       }
     }
 

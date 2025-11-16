@@ -7,6 +7,7 @@ const DESCRIPTION = 'AI-powered data crawling and analysis assistant'
 const IMG_URL = 'https://quynhon.ai/quynhonAI.png'
 
 export const metadata = {
+  metadataBase: new URL('https://quynhon.ai'),
   title: TITLE,
   description: DESCRIPTION,
   openGraph: {

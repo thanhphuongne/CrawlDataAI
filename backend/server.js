@@ -1,5 +1,7 @@
 /**
  * Entry Script
  */
-import 'dotenv/config';
-import './server/server.js';
+require('@babel/register');
+require('@babel/polyfill');
+require('dotenv').config();
+require('./server/server');

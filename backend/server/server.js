@@ -2,30 +2,30 @@ import Express from 'express';
 import path from 'path';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import app from './api/index.js';
+import app from './api/index';
 
 import {
   SERVER_PORT,
   USE_EXPRESS_HOST_STATIC_FILE,
   NODE_APP_INSTANCE,
   USER_JWT_SECRET_KEY,
-} from './config.js';
-import logger from './util/logger.js';
+} from './config';
+import logger from './util/logger';
 
-import { sequelize, authenticateDatabase } from './db/connection.js';
-import { connectMongoDB } from './db/mongoConnection.js';
-import CategorySchema from './components/category/category.model.js';
-import SubmitRequest from './components/submit-request/submitRequest.model.js';
-import HistoryComments from './components/submit-request/HistoryComments.model.js';
-import User from './components/user/user.model.js';
-import Request from './components/ai-chat/request.model.js';
+import { sequelize, authenticateDatabase } from './db/connection';
+import { connectMongoDB } from './db/mongoConnection';
+import CategorySchema from './components/category/category.model';
+import SubmitRequest from './components/submit-request/submitRequest.model';
+import HistoryComments from './components/submit-request/HistoryComments.model';
+import User from './components/user/user.model';
+import Request from './components/ai-chat/request.model';
 // Import Mongoose models to register them
-import './components/ai-chat/crawledData.model.js';
-import './components/ai-chat/conversation.model.js';
-import * as ConversationService from './components/ai-chat/conversation.service.js';
-import * as RequestService from './components/ai-chat/request.service.js';
-import { processUserMessage, generateResponse } from './util/aiService.js';
-import { executeCrawling } from './util/crawler.js';
+import './components/ai-chat/crawledData.model';
+import './components/ai-chat/conversation.model';
+import * as ConversationService from './components/ai-chat/conversation.service';
+import * as RequestService from './components/ai-chat/request.service';
+import { processUserMessage, generateResponse } from './util/aiService';
+import { executeCrawling } from './util/crawler';
 // Define relationships
 CategorySchema.hasMany(SubmitRequest, { foreignKey: 'categoryId', as: 'submitRequests' });
 SubmitRequest.belongsTo(CategorySchema, { foreignKey: 'categoryId', as: 'category' });

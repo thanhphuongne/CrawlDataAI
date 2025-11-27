@@ -189,8 +189,10 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
         process.exit(1);
       } else {
         logger.info(`Backend service is running on port: ${SERVER_PORT}${NODE_APP_INSTANCE ? ` on core ${NODE_APP_INSTANCE}` : ''}!`);
+        console.log('Server is listening and ready to accept connections');
       }
     });
+    console.log('server.listen() called, waiting for connections...');
   })
   .catch((error) => {
     console.error('Unable to start backend services:');
@@ -225,5 +227,3 @@ app.use((err, req, res, next) => {
     ]
   });
 });
-
-export default app;

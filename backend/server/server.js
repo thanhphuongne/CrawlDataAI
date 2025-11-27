@@ -44,14 +44,14 @@ const io = new Server(server, {
 });
 
 Promise.all([authenticateDatabase(), connectMongoDB()])
-  .then(() => {
-    sequelize.sync({ force: false })
-      .then(() => {
-        console.log('PostgreSQL tables created successfully');
-      })
-      .catch(err => {
-        console.error('Error creating PostgreSQL tables:', err);
-      });
+  .then(async () => {
+    try {
+      await sequelize.sync({ force: false });
+      console.log('PostgreSQL tables created successfully');
+    } catch (err) {
+      console.error('Error creating PostgreSQL tables:', err);
+      throw err; // Re-throw to be caught by outer catch
+    }
 
     if (USE_EXPRESS_HOST_STATIC_FILE === true) {
       app.use('/uploads', Express.static(path.resolve(__dirname, '../uploads')));
@@ -180,10 +180,22 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
         console.log('User disconnected:', socket.id);
       });
     });
+
+    // Start HTTP server after all initialization is complete
+    server.listen(SERVER_PORT, (error) => {
+      if (error) {
+        logger.error('Cannot start backend services:');
+        logger.error(error);
+        process.exit(1);
+      } else {
+        logger.info(`Backend service is running on port: ${SERVER_PORT}${NODE_APP_INSTANCE ? ` on core ${NODE_APP_INSTANCE}` : ''}!`);
+      }
+    });
   })
   .catch((error) => {
     console.error('Unable to start backend services:');
     console.error(error);
+    process.exit(1);
   });
 
 // Prevent process from crashing on unhandled rejections
@@ -212,15 +224,6 @@ app.use((err, req, res, next) => {
       }
     ]
   });
-});
-
-server.listen(SERVER_PORT, (error) => {
-  if (error) {
-    logger.error('Cannot start backend services:');
-    logger.error(error);
-  } else {
-    logger.info(`Backend service is running on port: ${SERVER_PORT}${NODE_APP_INSTANCE ? ` on core ${NODE_APP_INSTANCE}` : ''}!`);
-  }
 });
 
 export default app;

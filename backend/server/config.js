@@ -33,7 +33,8 @@ const MONGO_DATABASE = process.env.MONGO_INITDB_DATABASE;
 const MONGO_HOST = process.env.MONGO_HOST;
 const MONGO_PORT = process.env.MONGO_PORT;
 
-export const MONGO_URI = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?retryWrites=true`;
+// Support direct MONGO_URI or build from separate variables
+export const MONGO_URI = process.env.MONGO_URI || `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?retryWrites=true`;
 export const RUN_CRON_JOB = process.env.RUN_CRON_JOB === 'yes';
 
 // Auth

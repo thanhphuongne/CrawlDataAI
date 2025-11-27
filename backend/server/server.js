@@ -26,6 +26,7 @@ import * as ConversationService from './components/ai-chat/conversation.service'
 import * as RequestService from './components/ai-chat/request.service';
 import { processUserMessage, generateResponse } from './util/aiService';
 import { executeCrawling } from './util/crawler';
+import APIError from './util/APIError';
 // Define relationships
 CategorySchema.hasMany(SubmitRequest, { foreignKey: 'categoryId', as: 'submitRequests' });
 SubmitRequest.belongsTo(CategorySchema, { foreignKey: 'categoryId', as: 'category' });

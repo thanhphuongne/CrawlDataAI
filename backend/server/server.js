@@ -43,15 +43,12 @@ const io = new Server(server, {
   }
 });
 
-Promise.all([authenticateDatabase(), connectMongoDB()])
-  .then(async () => {
-    try {
-      await sequelize.sync({ force: false });
-      console.log('PostgreSQL tables created successfully');
-    } catch (err) {
-      console.error('Error creating PostgreSQL tables:', err);
-      throw err; // Re-throw to be caught by outer catch
-    }
+const startServer = async () => {
+  try {
+    await Promise.all([authenticateDatabase(), connectMongoDB()]);
+    
+    await sequelize.sync({ force: false });
+    console.log('PostgreSQL tables created successfully');
 
     if (USE_EXPRESS_HOST_STATIC_FILE === true) {
       app.use('/uploads', Express.static(path.resolve(__dirname, '../uploads')));
@@ -193,12 +190,15 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
       }
     });
     console.log('server.listen() called, waiting for connections...');
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error('Unable to start backend services:');
     console.error(error);
     process.exit(1);
-  });
+  }
+};
+
+// Start the server
+startServer();
 
 // Prevent process from crashing on unhandled rejections
 process.on('unhandledRejection', (reason, promise) => {

@@ -70,7 +70,6 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
       if (token) {
         try {
           // Verify JWT
-          const jwt = require('jsonwebtoken');
           const decoded = jwt.verify(token, USER_JWT_SECRET_KEY);
           socket.user = { id: decoded._id || decoded.id };
 
@@ -186,6 +185,15 @@ Promise.all([authenticateDatabase(), connectMongoDB()])
     console.error('Unable to start backend services:');
     console.error(error);
   });
+
+// Prevent process from crashing on unhandled rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+});
 
 app.set('view engine', 'ejs');
 app.use((err, req, res, next) => {

@@ -74,18 +74,26 @@ export async function login(req, res, next) {
 export async function emailRegister(req, res, next) {
   try {
     const {
-      email,
+      accountName,
       password,
     } = req.body;
-    const user = await UserService.emailRegistry({
-      email,
+    const user = await UserService.registry({
+      accountName,
       password,
     });
 
-    const loginData = await UserService.emailLogin(email, password);
+    // Auto-login after registration
+    const loginData = await UserService.login(accountName, password);
+    
     return res.json({
-      user_id: user.id,
-      message: "User registered",
+      accessToken: loginData.token,
+      user: {
+        id: loginData.id,
+        accountName: loginData.accountName,
+        email: loginData.email,
+        role: loginData.role,
+      },
+      message: "User registered successfully",
     });
   } catch (error) {
     return next(error);
@@ -95,13 +103,18 @@ export async function emailRegister(req, res, next) {
 export async function emailLogin(req, res, next) {
   try {
     const {
-      email,
+      accountName,
       password,
     } = req.body;
-    const user = await UserService.emailLogin(email, password);
+    const user = await UserService.login(accountName, password);
     return res.json({
-      token: user.token,
-      user_id: user.id,
+      accessToken: user.token,
+      user: {
+        id: user.id,
+        accountName: user.accountName,
+        email: user.email,
+        role: user.role,
+      },
     });
 
   } catch (error) {

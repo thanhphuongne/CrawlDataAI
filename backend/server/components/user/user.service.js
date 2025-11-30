@@ -33,15 +33,12 @@ export async function registry(params) {
   try {
     const existedUser = await User.findOne({ where: { accountName: params.accountName } });
     if (existedUser) {
-      // console.log("============")
       throw new APIError(500, 'Account name already used, please try to login instead');
     }
-    console.log("====dddđ");
-    console.log("===", params.accountName.toLowerCase() + "@fpt.com")
     const userInfo = {
       accountName: params.accountName,
       email: params.accountName.toLowerCase() + "@fpt.com",
-      password: bcrypt.hashSync(params.password, BCRYPT_SALT_ROUNDS),
+      password: params.password, // Password will be hashed by beforeCreate hook
     };
     const user = await User.create(userInfo);
     return user;

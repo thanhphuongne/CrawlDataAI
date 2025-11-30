@@ -69,5 +69,12 @@ User.beforeSave((user, options) => {
   }
 });
 
+User.beforeCreate((user, options) => {
+  // Hash password before creating new user
+  if (user.password && !user.password.startsWith('$2')) {
+    user.password = bcrypt.hashSync(user.password, 10);
+  }
+});
+
 export default User;
 

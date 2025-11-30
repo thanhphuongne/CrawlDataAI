@@ -38,13 +38,13 @@ export const login = [
 ];
 
 export const emailRegistry = [
-  body('email').isEmail().withMessage('Email is invalid'),
+  body('accountName').notEmpty().withMessage('Account name is required'),
   body('password').isLength({ min: USER_MIN_PASSWORD_LENGTH }).withMessage(`Password must be at least ${USER_MIN_PASSWORD_LENGTH} chars long`),
   validatorErrorHandler,
 ];
 
 export const emailLogin = [
-  body('email').isEmail().withMessage('Email is invalid'),
+  body('accountName').notEmpty().withMessage('Account name is required'),
   body('password').isLength({ min: USER_MIN_PASSWORD_LENGTH }).withMessage(`Password must be at least ${USER_MIN_PASSWORD_LENGTH} chars long`),
   validatorErrorHandler,
 ];

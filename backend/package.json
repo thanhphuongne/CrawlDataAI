@@ -19,6 +19,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.6.0",
     "@babel/runtime": "^7.6.2",
+    "@google/generative-ai": "^0.21.0",
     "@sendgrid/mail": "^6.4.0",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.7",

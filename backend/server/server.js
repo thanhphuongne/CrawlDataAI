@@ -186,10 +186,12 @@ const startServer = async () => {
         process.exit(1);
       } else {
         logger.info(`Backend service is running on port: ${SERVER_PORT}${NODE_APP_INSTANCE ? ` on core ${NODE_APP_INSTANCE}` : ''}!`);
-        console.log('Server is listening and ready to accept connections');
+        console.log('✓ Server is ready and listening for connections');
+        console.log(`✓ WebSocket chat available at ws://localhost:${SERVER_PORT}`);
+        console.log(`✓ REST API available at http://localhost:${SERVER_PORT}/api`);
+        console.log('✓ Press Ctrl+C to stop the server');
       }
     });
-    console.log('server.listen() called, waiting for connections...');
   } catch (error) {
     console.error('Unable to start backend services:');
     console.error(error);
@@ -198,7 +200,11 @@ const startServer = async () => {
 };
 
 // Start the server
-startServer();
+startServer().catch((error) => {
+  console.error('Fatal error during server startup:');
+  console.error(error);
+  process.exit(1);
+});
 
 // Prevent process from crashing on unhandled rejections
 process.on('unhandledRejection', (reason, promise) => {

@@ -25,9 +25,7 @@ export async function createRequest(userId, requirement) {
  */
 export async function getRequestById(id) {
   try {
-    const request = await Request.findByPk(id, {
-      include: [{ model: require('./user.model').default, as: 'AIUser' }],
-    });
+    const request = await Request.findByPk(id);
     return request;
   } catch (error) {
     throw new Error(`Error getting request: ${error.message}`);

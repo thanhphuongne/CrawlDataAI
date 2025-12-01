@@ -19,6 +19,7 @@ import sendEmail from '../../util/sendMail';
 import { USER_JWT_SECRET_KEY_FORGOT_PASSWORD } from '../../config';
 import { FROMEMAIL } from '../../config';
 import triggerSentMailEvent from '../../handlers/triggerSentMailEvent';
+import { generateOTP, sendVerificationEmail, sendWelcomeEmail } from '../../util/emailService';
 /**
  * Registry new user account
  * @param params
@@ -35,12 +36,30 @@ export async function registry(params) {
     if (existedUser) {
       throw new APIError(500, 'Account name already used, please try to login instead');
     }
+
+    // Generate OTP
+    const otp = generateOTP();
+    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
     const userInfo = {
       accountName: params.accountName,
-      email: params.accountName.toLowerCase() + "@fpt.com",
+      email: params.email || params.accountName.toLowerCase() + "@fpt.com",
       password: params.password, // Password will be hashed by beforeCreate hook
+      verifyCode: otp,
+      isVerified: false,
+      otpExpiresAt,
     };
+    
     const user = await User.create(userInfo);
+
+    // Send verification email
+    try {
+      await sendVerificationEmail(user.email, otp, user.accountName);
+    } catch (emailError) {
+      logger.error('Failed to send verification email:', emailError);
+      // Continue registration even if email fails
+    }
+
     return user;
   } catch (error) {
     logger.error('User registry create new user error:', error);
@@ -101,6 +120,12 @@ export async function login(accountName, password) {
       //   },
       // ]);
     }
+    
+    // Check if user is verified
+    if (!user.isVerified) {
+      throw new APIError(403, 'Please verify your email before logging in');
+    }
+    
     if (!bcrypt.compareSync(password, user.password)) {
       throw new APIError(403, 'Account name or Password is not correct');
       // throw new APIError(403,
@@ -119,6 +144,90 @@ export async function login(accountName, password) {
     console.log(error);
     logger.error(`User login error: ${error}`);
     throw new APIError(500, error);
+  }
+}
+
+/**
+ * Verify OTP code
+ * @param {string} accountName
+ * @param {string} otp
+ * @returns {Promise.<*>} Success message or error
+ */
+export async function verifyOTP(accountName, otp) {
+  try {
+    const user = await User.findOne({ where: { accountName } });
+    
+    if (!user) {
+      throw new APIError(404, 'User not found');
+    }
+
+    if (user.isVerified) {
+      throw new APIError(400, 'Account already verified');
+    }
+
+    if (!user.verifyCode || user.verifyCode !== otp) {
+      throw new APIError(400, 'Invalid verification code');
+    }
+
+    // Check if OTP is expired
+    if (user.otpExpiresAt && new Date() > user.otpExpiresAt) {
+      throw new APIError(400, 'Verification code has expired');
+    }
+
+    // Update user as verified
+    await user.update({
+      isVerified: true,
+      verifyCode: null,
+      otpExpiresAt: null,
+    });
+
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(user.email, user.accountName);
+    } catch (emailError) {
+      logger.error('Failed to send welcome email:', emailError);
+    }
+
+    return { success: true, message: 'Account verified successfully' };
+  } catch (error) {
+    logger.error('OTP verification error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Resend OTP verification code
+ * @param {string} accountName
+ * @returns {Promise.<*>} Success message or error
+ */
+export async function resendOTP(accountName) {
+  try {
+    const user = await User.findOne({ where: { accountName } });
+    
+    if (!user) {
+      throw new APIError(404, 'User not found');
+    }
+
+    if (user.isVerified) {
+      throw new APIError(400, 'Account already verified');
+    }
+
+    // Generate new OTP
+    const otp = generateOTP();
+    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    await user.update({
+      verifyCode: otp,
+      otpExpiresAt,
+    });
+
+    // Send verification email
+    await sendVerificationEmail(user.email, otp, user.accountName);
+
+    return { success: true, message: 'Verification code sent to your email' };
+  } catch (error) {
+    logger.error('Resend OTP error:', error);
+    throw error;
   }
 }
 

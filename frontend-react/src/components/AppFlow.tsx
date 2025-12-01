@@ -8,6 +8,7 @@ import { LandingPage } from "./LandingPage";
 import { RegisterPage } from "./RegisterPage";
 import { LoginPage } from "./LoginPage";
 import { ForgotPasswordPage } from "./ForgotPasswordPage";
+import VerifyOTPPage from "./VerifyOTPPage";
 import { ChatPage } from "./ChatPage";
 import { MyCrawlsPage } from "./MyCrawlsPage";
 import { CrawlProgressPage } from "./CrawlProgressPage";
@@ -62,6 +63,7 @@ export default function AppFlow() {
   const [currentCrawlUrl, setCurrentCrawlUrl] = useState("");
   const [currentCrawlPrompt, setCurrentCrawlPrompt] = useState("");
   const [selectedCrawlId, setSelectedCrawlId] = useState("");
+  const [pendingVerification, setPendingVerification] = useState<{ accountName: string; password: string } | null>(null);
 
   // Load data from localStorage
   useEffect(() => {
@@ -106,27 +108,35 @@ export default function AppFlow() {
 
   const handleRegister = async (email: string, password: string, name: string) => {
     try {
-      const response = await authAPI.register({ accountName: email, password });
-      const { accessToken, user } = response.data;
-
-      // Create user object from API response
-      const newUser: User = {
-        id: user.id,
-        email: user.email || email,
-        name: name || email.split("@")[0],
-        token: accessToken,
-      };
-
-      // Store auth token
-      localStorage.setItem('auth_token', accessToken);
-      setUser(newUser);
-      localStorage.setItem("user", JSON.stringify(newUser));
-      setCurrentPage("chat");
-      toast.success("Account created successfully!");
-    } catch (error) {
+      const response = await authAPI.register({ accountName: email, password, email });
+      
+      if (response.data.success) {
+        // Store credentials for verification
+        setPendingVerification({ accountName: email, password });
+        setCurrentPage("verify-otp" as Page);
+        toast.success("Registration successful! Check your email for verification code.");
+      }
+    } catch (error: any) {
       console.error('Registration failed:', error);
-      toast.error("Registration failed. Please try again.");
+      const errorMsg = error.response?.data?.message || "Registration failed. Please try again.";
+      toast.error(errorMsg);
     }
+  };
+
+  const handleVerified = (accessToken: string, user: any) => {
+    const newUser: User = {
+      id: user.id,
+      email: user.email,
+      name: user.accountName || user.email.split("@")[0],
+      token: accessToken,
+    };
+
+    // Store auth token
+    localStorage.setItem('auth_token', accessToken);
+    setUser(newUser);
+    localStorage.setItem("user", JSON.stringify(newUser));
+    setPendingVerification(null);
+    setCurrentPage("chat");
   };
 
   const handleLogin = async (email: string, password: string) => {
@@ -281,6 +291,20 @@ export default function AppFlow() {
       switch (currentPage) {
         case "register":
           return <RegisterPage onNavigate={handleNavigate} onRegister={handleRegister} />;
+        case "verify-otp":
+          return pendingVerification ? (
+            <VerifyOTPPage
+              accountName={pendingVerification.accountName}
+              password={pendingVerification.password}
+              onVerified={handleVerified}
+              onBack={() => {
+                setPendingVerification(null);
+                setCurrentPage("register");
+              }}
+            />
+          ) : (
+            <LandingPage onNavigate={handleNavigate} user={user} />
+          );
         case "login":
           return <LoginPage onNavigate={handleNavigate} onLogin={handleLogin} />;
         case "forgot-password":

@@ -49,6 +49,18 @@ export const emailLogin = [
   validatorErrorHandler,
 ];
 
+export const verifyOTP = [
+  body('accountName').notEmpty().withMessage('Account name is required'),
+  body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be 6 digits'),
+  body('password').isLength({ min: USER_MIN_PASSWORD_LENGTH }).withMessage(`Password must be at least ${USER_MIN_PASSWORD_LENGTH} chars long`),
+  validatorErrorHandler,
+];
+
+export const resendOTP = [
+  body('accountName').notEmpty().withMessage('Account name is required'),
+  validatorErrorHandler,
+];
+
 export const updateUserProfile = [
   body('fullName').optional(),
   body('email').optional().isEmail().withMessage('Email is invalid'),

@@ -10,6 +10,18 @@ router.route('/register')
     UserController.emailRegister,
   );
 
+router.route('/verify-otp')
+  .post(
+    UserValidator.verifyOTP,
+    UserController.verifyOTP,
+  );
+
+router.route('/resend-otp')
+  .post(
+    UserValidator.resendOTP,
+    UserController.resendOTP,
+  );
+
 router.route('/login')
   .post(
     UserValidator.emailLogin,

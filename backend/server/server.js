@@ -47,7 +47,7 @@ const startServer = async () => {
   try {
     await Promise.all([authenticateDatabase(), connectMongoDB()]);
     
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ alter: true }); // Use alter to add new columns
     console.log('PostgreSQL tables created successfully');
 
     if (USE_EXPRESS_HOST_STATIC_FILE === true) {

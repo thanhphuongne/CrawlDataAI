@@ -57,6 +57,8 @@ User.init({
   role: {type: DataTypes.ENUM(USER_ROLES.USER, USER_ROLES.ADMIN, USER_ROLES.SUPERVISOR),
   defaultValue: USER_ROLES.USER},
   verifyCode: { type: DataTypes.STRING, allowNull: true },
+  isVerified: { type: DataTypes.BOOLEAN, defaultValue: false },
+  otpExpiresAt: { type: DataTypes.DATE, allowNull: true },
 }, {
   sequelize,
   modelName: 'users',

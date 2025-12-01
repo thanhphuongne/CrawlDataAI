@@ -9,17 +9,24 @@ export async function registry(req, res, next) {
     const {
       accountName,
       password,
+      email,
     } = req.body;
     const user = await UserService.registry({
       accountName: accountName,
       password: password,
-
+      email: email,
     });
 
-    const loginData = await UserService.login(accountName, password);
+    // Don't auto-login, require verification first
     return res.json({
-      accessToken: loginData.token,
-      user: user,
+      success: true,
+      message: 'Registration successful. Please check your email for verification code.',
+      user: {
+        id: user.id,
+        accountName: user.accountName,
+        email: user.email,
+        isVerified: user.isVerified,
+      },
     });
   } catch (error) {
     return next(error);
@@ -66,6 +73,35 @@ export async function login(req, res, next) {
       user: user,
     });
 
+  } catch (error) {
+    return next(error);
+  }
+}
+
+export async function verifyOTP(req, res, next) {
+  try {
+    const { accountName, otp } = req.body;
+    const result = await UserService.verifyOTP(accountName, otp);
+    
+    // Auto-login after successful verification
+    const loginData = await UserService.login(accountName, req.body.password);
+    
+    return res.json({
+      success: true,
+      message: result.message,
+      accessToken: loginData.token,
+      user: loginData,
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+export async function resendOTP(req, res, next) {
+  try {
+    const { accountName } = req.body;
+    const result = await UserService.resendOTP(accountName);
+    return res.json(result);
   } catch (error) {
     return next(error);
   }

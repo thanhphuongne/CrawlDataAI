@@ -41,9 +41,13 @@ export async function registry(params) {
     const otp = generateOTP();
     const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
+    // Determine email: use provided email, or if accountName is an email use it, otherwise append @fpt.com
+    const email = params.email || 
+                  (params.accountName.includes('@') ? params.accountName : params.accountName.toLowerCase() + "@fpt.com");
+
     const userInfo = {
       accountName: params.accountName,
-      email: params.email || params.accountName.toLowerCase() + "@fpt.com",
+      email: email,
       password: params.password, // Password will be hashed by beforeCreate hook
       verifyCode: otp,
       isVerified: false,

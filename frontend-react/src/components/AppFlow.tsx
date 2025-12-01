@@ -106,17 +106,19 @@ export default function AppFlow() {
 
   const handleRegister = async (email: string, password: string, name: string) => {
     try {
-      const response = await authAPI.register({ email, password, name });
-      const { user_id } = response.data;
+      const response = await authAPI.register({ accountName: email, password });
+      const { accessToken, user } = response.data;
 
-      // For now, create a mock user object since the API doesn't return full user data
+      // Create user object from API response
       const newUser: User = {
-        id: user_id,
-        email,
+        id: user.id,
+        email: user.email || email,
         name: name || email.split("@")[0],
-        token: localStorage.getItem('auth_token') || '',
+        token: accessToken,
       };
 
+      // Store auth token
+      localStorage.setItem('auth_token', accessToken);
       setUser(newUser);
       localStorage.setItem("user", JSON.stringify(newUser));
       setCurrentPage("chat");
@@ -129,18 +131,18 @@ export default function AppFlow() {
 
   const handleLogin = async (email: string, password: string) => {
     try {
-      const response = await authAPI.login({ email, password });
-      const { token, user_id } = response.data;
+      const response = await authAPI.login({ accountName: email, password });
+      const { accessToken, user } = response.data;
 
       // Store token
-      localStorage.setItem('auth_token', token);
+      localStorage.setItem('auth_token', accessToken);
 
-      // For now, create a mock user object since the API doesn't return full user data
+      // Create user object from API response
       const newUser: User = {
-        id: user_id,
-        email,
-        name: email.split("@")[0],
-        token,
+        id: user.id,
+        email: user.email || email,
+        name: user.accountName || email.split("@")[0],
+        token: accessToken,
       };
 
       setUser(newUser);

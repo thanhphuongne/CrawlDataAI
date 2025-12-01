@@ -173,6 +173,70 @@ router.route('/login')
 
 /**
  * @swagger
+ * /users/verify-otp:
+ *   post:
+ *     summary: Verify OTP code for email verification
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             accountName:
+ *               type: string
+ *             otp:
+ *               type: string
+ *             password:
+ *               type: string
+ *           example: {
+ *             "accountName": "user@example.com",
+ *             "otp": "123456",
+ *             "password": "Password123"
+ *           }
+ *     responses:
+ *       200:
+ *         description: Verification successful
+ */
+router.route('/verify-otp')
+  .post(
+    UserValidator.verifyOTP,
+    UserController.verifyOTP,
+  );
+
+/**
+ * @swagger
+ * /users/resend-otp:
+ *   post:
+ *     summary: Resend OTP verification code
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             accountName:
+ *               type: string
+ *           example: {
+ *             "accountName": "user@example.com"
+ *           }
+ *     responses:
+ *       200:
+ *         description: OTP resent successfully
+ */
+router.route('/resend-otp')
+  .post(
+    UserValidator.resendOTP,
+    UserController.resendOTP,
+  );
+
+/**
+ * @swagger
  * /users/me:
  *   get:
  *     summary: Get user information

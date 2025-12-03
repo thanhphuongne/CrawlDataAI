@@ -47,7 +47,18 @@ const startServer = async () => {
   try {
     await Promise.all([authenticateDatabase(), connectMongoDB()]);
     
-    await sequelize.sync({ alter: true }); // Use alter to add new columns
+    await sequelize.sync({ force: false });
+    
+    // Add verification columns if they don't exist
+    try {
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "isVerified" BOOLEAN DEFAULT false`);
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "otpExpiresAt" TIMESTAMP WITH TIME ZONE`);
+      await sequelize.query(`UPDATE users SET "isVerified" = true WHERE "isVerified" IS NULL OR "isVerified" = false`);
+      console.log('✓ Verification columns ensured');
+    } catch (e) {
+      console.log('Note: Verification columns may already exist');
+    }
+    
     console.log('PostgreSQL tables created successfully');
 
     if (USE_EXPRESS_HOST_STATIC_FILE === true) {

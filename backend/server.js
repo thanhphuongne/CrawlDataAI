@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Entry Script
  */
 require('@babel/register');

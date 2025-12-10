@@ -34,7 +34,7 @@ export async function registry(params) {
   try {
     const existedUser = await User.findOne({ where: { accountName: params.accountName } });
     if (existedUser) {
-      throw new APIError(500, 'Account name already used, please try to login instead');
+      throw new APIError(409, 'Account name already used, please try to login instead');
     }
 
     // Generate OTP
@@ -67,7 +67,11 @@ export async function registry(params) {
     return user;
   } catch (error) {
     logger.error('User registry create new user error:', error);
-    throw new APIError(500, error);
+    // Re-throw APIError as-is to preserve status code, or wrap other errors
+    if (error instanceof APIError) {
+      throw error;
+    }
+    throw new APIError(500, error.message || error);
   }
 }
 export async function registryList(params) {

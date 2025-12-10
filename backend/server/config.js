@@ -18,6 +18,7 @@ export const CORS_OPTIONS = {
   origin: serverOrigin,
   methods: 'GET,PUT,POST,DELETE',
   allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization,Accept-Language',
+  credentials: true, // Required for cookies
 };
 
 export const USE_EXPRESS_HOST_STATIC_FILE = process.env.USE_EXPRESS_HOST_STATIC_FILE === 'true';

@@ -428,8 +428,8 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-        <div className="max-w-4xl mx-auto space-y-6">
+      <ScrollArea className="flex-1 p-4">
+        <div className="max-w-4xl mx-auto space-y-6" ref={scrollRef}>
           {messages.map((msg) => (
             <div
               key={msg.id}

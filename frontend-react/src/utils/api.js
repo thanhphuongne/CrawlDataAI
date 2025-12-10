@@ -8,15 +8,18 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // ⭐ CRITICAL: Send cookies with requests
 });
 
-// Request interceptor to add auth token
+// Request interceptor to add auth token (for backward compatibility)
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('auth_token');
+    // Check both localStorage and sessionStorage for token (backward compatibility)
+    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // Note: Cookie will be sent automatically due to withCredentials: true
     return config;
   },
   (error) => {
@@ -29,10 +32,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
+      // Token expired or invalid - clear all auth data
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      sessionStorage.removeItem('auth_token');
+      sessionStorage.removeItem('user');
+      // Redirect to landing page
+      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+        window.location.href = '/';
+      }
     }
     return Promise.reject(error);
   }
@@ -44,6 +52,7 @@ export const authAPI = {
   verifyOTP: (data) => api.post('/api/auth/verify-otp', data),
   resendOTP: (data) => api.post('/api/auth/resend-otp', data),
   login: (data) => api.post('/api/auth/login', data),
+  logout: () => api.post('/api/auth/logout'), // New logout endpoint
   forgotPassword: (data) => api.post('/api/auth/forgot-password', data),
   resetPassword: (data) => api.post('/api/auth/reset-password', data),
 };

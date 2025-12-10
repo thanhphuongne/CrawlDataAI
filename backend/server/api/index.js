@@ -4,6 +4,8 @@ import i18n from 'i18n';
 import cors from 'cors';
 import compression from 'compression';
 import bodyParser from 'body-parser';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import { CORS_OPTIONS } from '../config';
 import errorHandler from './errorHandler';
 import routeV1 from './v1';
@@ -11,6 +13,29 @@ import routeApi from './api';
 import { DEFAULT_LANGUAGE } from '../constants';
 
 const app = new Express();
+
+// Security middleware - MUST be first
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // Adjust for production
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Cookie parser for HttpOnly cookies
+app.use(cookieParser());
+
 // Note: All request handle use CORS must be write bellow CORS settings
 app.use(cors(CORS_OPTIONS));
 if (process.env.NODE_ENV === 'development') {

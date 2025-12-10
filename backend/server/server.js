@@ -229,13 +229,26 @@ process.on('uncaughtException', (error) => {
 app.set('view engine', 'ejs');
 app.use((err, req, res, next) => {
   if (err instanceof APIError) {
-    return res.status(err.status).json({
-      errors: err.errors
-    });
+    // Return both message and errors for better frontend compatibility
+    const response = {
+      success: false,
+      message: err.message || 'An error occurred',
+    };
+    
+    if (err.errors) {
+      response.errors = err.errors;
+    }
+    
+    console.log(`[API Error] Status: ${err.statusCode}, Message: ${err.message}`);
+    console.log('[API Error] Response:', JSON.stringify(response));
+    
+    return res.status(err.statusCode || 500).json(response);
   }
 
   console.error('Unhandled error:', err);
   return res.status(500).json({
+    success: false,
+    message: 'Internal Server Error',
     errors: [
       {
         msg: 'Internal Server Error',

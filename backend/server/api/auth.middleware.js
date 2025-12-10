@@ -15,48 +15,64 @@ export function isAuthorized(secret = null) {
   return async (req, res, next) => {
     // console.log('req.path: ', req.path)
 
+    // Check for token in Authorization header OR cookie
     const authorization = req.header('Authorization');
-    if (typeof authorization !== 'string') {
+    const cookieToken = req.cookies?.auth_token;
+    
+    let token = null;
+    
+    // Try Authorization header first
+    if (typeof authorization === 'string') {
+      const authorizationArray = authorization.split(' ');
+      if (authorizationArray[0] === 'Bearer') {
+        token = authorizationArray[1];
+      }
+    }
+    
+    // Fallback to cookie if no header token
+    if (!token && cookieToken) {
+      token = cookieToken;
+    }
+    
+    // No token found
+    if (!token) {
       if (req.path === '/execute-flow') {
         return next();
       }
       return next(new APIError(401, 'Unauthorized'));
     }
 
-    const authorizationArray = authorization.split(' ');
-    if (authorizationArray[0] === 'Bearer') {
-      const token = authorizationArray[1];
-      let userData;
-      try {
-        userData = jwt.verify(token, secret || USER_JWT_SECRET_KEY);
-        // console.log('userData: ', userData);
+    // Verify token
+    let userData;
+    try {
+      userData = jwt.verify(token, secret || USER_JWT_SECRET_KEY);
+      // console.log('userData: ', userData);
 
-      } catch (error) {
+    } catch (error) {
+      if (req.path === '/execute-flow') {
+        return next();
+      }
+      return next(new APIError(401, 'Unauthorized'));
+    }
+    
+    try {
+      req.auth = await User.findByPk(userData._id);
+      // console.log('isAuthorized: ', req.auth);
+
+      if (!req.auth) {
+        console.log('Unauthorized')
         if (req.path === '/execute-flow') {
           return next();
         }
         return next(new APIError(401, 'Unauthorized'));
       }
-      try {
-        req.auth = await User.findByPk(userData._id);
-        // console.log('isAuthorized: ', req.auth);
+      // console.log('Authorized')
 
-        if (!req.auth) {
-          console.log('Unauthorized')
-          if (req.path === '/execute-flow') {
-            return next();
-          }
-          return next(new APIError(401, 'Unauthorized'));
-        }
-        // console.log('Authorized')
-
-        return next();
-      } catch (error) {
-        console.log('here ---- ', error)
-        return next(new APIError(500, 'Internal Server Error'));
-      }
+      return next();
+    } catch (error) {
+      console.log('here ---- ', error)
+      return next(new APIError(500, 'Internal Server Error'));
     }
-    return next(new APIError(401, 'Unauthorized'));
   };
 }
 

@@ -5,6 +5,7 @@ import * as UserMulter from './user.multer';
 import { isAuthorized, isAdmin, limitRequest } from '../../api/auth.middleware';
 import { multerBodyParser, setExpressRequestTimeout } from '../../api/multerBodyParser.middleware';
 import { USER_JWT_SECRET_KEY_FORGOT_PASSWORD } from '../../config';
+import { authLimiter, registerLimiter, otpLimiter } from '../../api/rateLimiter';
 
 const router = new Router();
 
@@ -81,6 +82,7 @@ const router = new Router();
  */
 router.route('/registry')
   .post(
+    registerLimiter,
     UserValidator.registry,
     UserController.registry,
   );
@@ -167,6 +169,7 @@ router.route('/registryList')
  */
 router.route('/login')
   .post(
+    authLimiter,
     UserValidator.login,
     UserController.login,
   );
@@ -569,9 +572,9 @@ router.route('/password')
  */
 router.route('/forgot-password')
   .post(
+    otpLimiter,
     UserValidator.forgotPassword,
     UserController.forgotPassword,
-    limitRequest(5, 10),
   );
 router.route('/verify-code')
   .post(

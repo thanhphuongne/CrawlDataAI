@@ -118,18 +118,14 @@ export async function emailRegister(req, res, next) {
       password,
     });
 
-    // Auto-login after registration
-    const loginData = await UserService.login(accountName, password);
-    
     return res.json({
-      accessToken: loginData.token,
+      success: true,
+      message: "User registered successfully. Please check your email to verify your account.",
       user: {
-        id: loginData.id,
-        accountName: loginData.accountName,
-        email: loginData.email,
-        role: loginData.role,
+        id: user.id,
+        accountName: user.accountName,
+        email: user.email,
       },
-      message: "User registered successfully",
     });
   } catch (error) {
     return next(error);
@@ -141,10 +137,23 @@ export async function emailLogin(req, res, next) {
     const {
       accountName,
       password,
+      rememberMe = true, // Default to remember me
     } = req.body;
     const user = await UserService.login(accountName, password);
+    
+    // Set HttpOnly cookie with JWT token
+    const cookieOptions = {
+      httpOnly: true, // Prevents JavaScript access
+      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+      sameSite: 'strict', // CSRF protection
+      maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000, // 7 days or 1 day
+    };
+    
+    res.cookie('auth_token', user.token, cookieOptions);
+    
     return res.json({
-      accessToken: user.token,
+      success: true,
+      accessToken: user.token, // Still send for backward compatibility (remove later)
       user: {
         id: user.id,
         accountName: user.accountName,

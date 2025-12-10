@@ -18,6 +18,25 @@ import { AppSidebar } from "./AppSidebar";
 import { Navbar } from "./Navbar";
 import { authAPI, userAPI, dataAPI } from '../utils/api';
 
+// Secure storage utility
+const secureStorage = {
+  setAuth: (user: any, token: string, rememberMe: boolean = true) => {
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem('user', JSON.stringify(user));
+    storage.setItem('auth_token', token);
+    // Clear the other storage
+    const otherStorage = rememberMe ? sessionStorage : localStorage;
+    otherStorage.removeItem('user');
+    otherStorage.removeItem('auth_token');
+  },
+  clearAuth: () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('auth_token');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('auth_token');
+  }
+};
+
 interface User {
   id?: number;
   email: string;
@@ -65,16 +84,30 @@ export default function AppFlow() {
   const [selectedCrawlId, setSelectedCrawlId] = useState("");
   const [pendingVerification, setPendingVerification] = useState<{ accountName: string; password: string } | null>(null);
 
-  // Load data from localStorage
+  // Load data from localStorage/sessionStorage
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
+    // Check both localStorage (remember me) and sessionStorage (current session)
+    const savedUser = localStorage.getItem("user") || sessionStorage.getItem("user");
+    const savedToken = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     const savedDarkMode = localStorage.getItem("darkMode");
     const savedCrawls = localStorage.getItem("crawls");
     const savedExports = localStorage.getItem("exports");
 
-    // if (savedUser) {
-    //   setUser(JSON.parse(savedUser));
-    // }
+    if (savedUser && savedToken) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        
+        // Optional: Verify token is not expired (if you implement JWT expiration)
+        // You can decode the JWT and check the 'exp' field
+        
+        setUser(parsedUser);
+        setCurrentPage("chat"); // Redirect to chat page if user is logged in
+      } catch (error) {
+        console.error('Error parsing saved user:', error);
+        // Clear corrupted data
+        secureStorage.clearAuth();
+      }
+    }
     if (savedDarkMode) {
       setDarkMode(JSON.parse(savedDarkMode));
     }
@@ -118,7 +151,9 @@ export default function AppFlow() {
       }
     } catch (error: any) {
       console.error('Registration failed:', error);
-      const errorMsg = error.response?.data?.message || "Registration failed. Please try again.";
+      
+      const errorMsg = error.response?.data?.message || error.message || "Registration failed. Please try again.";
+      console.log('Showing error toast:', errorMsg);
       toast.error(errorMsg);
     }
   };
@@ -131,21 +166,17 @@ export default function AppFlow() {
       token: accessToken,
     };
 
-    // Store auth token
-    localStorage.setItem('auth_token', accessToken);
+    // Store auth token with secure storage (default: remember me)
+    secureStorage.setAuth(newUser, accessToken, true);
     setUser(newUser);
-    localStorage.setItem("user", JSON.stringify(newUser));
     setPendingVerification(null);
     setCurrentPage("chat");
   };
 
-  const handleLogin = async (email: string, password: string) => {
+  const handleLogin = async (email: string, password: string, rememberMe: boolean = true) => {
     try {
       const response = await authAPI.login({ accountName: email, password });
       const { accessToken, user } = response.data;
-
-      // Store token
-      localStorage.setItem('auth_token', accessToken);
 
       // Create user object from API response
       const newUser: User = {
@@ -155,8 +186,9 @@ export default function AppFlow() {
         token: accessToken,
       };
 
+      // Store with secure storage (localStorage or sessionStorage based on rememberMe)
+      secureStorage.setAuth(newUser, accessToken, rememberMe);
       setUser(newUser);
-      localStorage.setItem("user", JSON.stringify(newUser));
       setCurrentPage("chat");
       toast.success("Welcome back!");
     } catch (error) {
@@ -165,10 +197,17 @@ export default function AppFlow() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      // Call logout API to clear HttpOnly cookie
+      await authAPI.logout();
+    } catch (error) {
+      console.error('Logout API error:', error);
+      // Continue with logout even if API fails
+    }
+    
     setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("auth_token");
+    secureStorage.clearAuth();
     setCurrentPage("landing");
     toast.success("Logged out successfully");
   };

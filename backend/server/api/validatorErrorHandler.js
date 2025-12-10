@@ -90,6 +90,7 @@ export default function validatorErrorHandler(req, res, next) {
     });
     return res.status(422).json({
       success: false,
+      message: arrayErrors[0]?.msg || 'Validation failed',
       errors: arrayErrors,
     });
   }

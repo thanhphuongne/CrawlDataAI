@@ -20,13 +20,13 @@ export async function processUserMessage(message) {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
     
     const prompt = `
-You are an AI assistant that helps users create data crawling requests. Analyze the user's message and determine if they are requesting data collection/crawling.
+You are an AI assistant for a data crawling service. Analyze if the user is requesting data collection/crawling.
 
-If it's a data request, format it into a clear requirement with:
-- Data type/subject
-- Time period (if mentioned)
-- Sources (if mentioned)
-- Any specific criteria
+IMPORTANT: Only mark as data request if the message contains BOTH:
+1. A valid URL (http:// or https://)
+2. Keywords indicating crawling/scraping intent (crawl, scrape, extract, collect data, etc.)
+
+For general questions, greetings, or messages without URLs, mark as isDataRequest: false.
 
 Return ONLY valid JSON in this exact format (no markdown, no extra text):
 {
@@ -34,8 +34,6 @@ Return ONLY valid JSON in this exact format (no markdown, no extra text):
   "formattedRequirement": "Clear description of what data to crawl",
   "explanation": "Brief explanation of why this is/isn't a data request"
 }
-
-If not a data request, respond normally as a helpful assistant.
 
 User message: "${message}"
 `;
@@ -62,22 +60,28 @@ User message: "${message}"
  */
 function detectDataRequestFallback(message) {
   const lowerMsg = message.toLowerCase();
-  const dataKeywords = ['crawl', 'scrape', 'collect data', 'get data', 'fetch data', 'extract data', 'download data', 'gather information', 'need data about', 'want data on'];
   
-  const isDataRequest = dataKeywords.some(keyword => lowerMsg.includes(keyword));
+  // Check for URL in message
+  const urlPattern = /https?:\/\/[^\s]+/i;
+  const hasUrl = urlPattern.test(message);
   
-  if (isDataRequest) {
+  // Data crawling keywords
+  const dataKeywords = ['crawl', 'scrape', 'collect data', 'get data', 'fetch data', 'extract data', 'download data', 'gather information'];
+  const hasDataKeyword = dataKeywords.some(keyword => lowerMsg.includes(keyword));
+  
+  // Only mark as data request if it has BOTH URL and data keywords
+  if (hasUrl && hasDataKeyword) {
     return {
       isDataRequest: true,
       formattedRequirement: message,
-      explanation: 'This appears to be a data collection request based on keywords detected.'
+      explanation: 'This appears to be a data collection request with URL and crawl intent.'
     };
   }
   
   return {
     isDataRequest: false,
     formattedRequirement: '',
-    explanation: 'This does not appear to be a data request. How can I help you?'
+    explanation: 'This is a general conversation message.'
   };
 }
 
@@ -96,7 +100,15 @@ export async function generateResponse(message) {
 
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
     
-    const prompt = `You are a helpful AI assistant for a data crawling service. Provide a brief, friendly response to the user's message. Keep your response under 100 words.
+    const prompt = `You are a helpful and friendly AI assistant for CrawlDataAI, a web data crawling service. 
+
+Your role is to:
+- Have natural, engaging conversations with users
+- Answer questions about web scraping, data extraction, and the service
+- Help users when they want to crawl websites (they need to provide a URL with crawl keywords)
+- Be conversational, helpful, and informative
+
+Provide a natural, friendly response to the user's message. Keep your response conversational and under 150 words.
 
 User message: "${message}"`;
     
@@ -117,17 +129,21 @@ User message: "${message}"`;
 function generateFallbackResponse(message) {
   const lowerMsg = message.toLowerCase();
   
-  if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
-    return 'Hello! I\'m here to help you with data crawling requests. What data would you like to collect?';
+  if (lowerMsg.includes('hello') || lowerMsg.includes('hi') || lowerMsg.includes('hey')) {
+    return 'Hello! 👋 I\'m your AI assistant for CrawlDataAI. I can help you with general questions or set up web crawling requests. What would you like to know?';
   }
   
-  if (lowerMsg.includes('help')) {
-    return 'I can help you create data crawling requests. Just tell me what data you need, like "I need to collect product prices from e-commerce sites" or "Crawl news articles about technology".';
+  if (lowerMsg.includes('help') || lowerMsg.includes('what can you do')) {
+    return 'I can help you in two ways:\n\n1. **General Chat**: Ask me anything about web scraping, data extraction, or our service\n2. **Crawl Websites**: Provide a URL with keywords like "crawl", "scrape", or "extract" and I\'ll help you collect data\n\nWhat would you like to do?';
   }
   
   if (lowerMsg.includes('thank')) {
-    return 'You\'re welcome! Let me know if you need anything else.';
+    return 'You\'re welcome! Feel free to ask me anything else. 😊';
   }
   
-  return 'I understand. To create a data crawling request, please describe what data you need to collect. Include details like the type of data, sources, and any specific requirements.';
+  if (lowerMsg.includes('how') || lowerMsg.includes('what') || lowerMsg.includes('why')) {
+    return 'That\'s a great question! I\'m here to help with web scraping and data extraction. Could you provide more details about what you\'d like to know?';
+  }
+  
+  return 'I\'m here to chat and help! Feel free to ask me questions, or if you want to crawl a website, just include the URL with keywords like "crawl" or "extract data from".';
 }

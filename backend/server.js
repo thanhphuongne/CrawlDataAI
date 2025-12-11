@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Entry Script
  */
 require('@babel/register');
@@ -10,3 +10,4 @@ const { validateEnvironment } = require('./server/util/envValidator');
 validateEnvironment();
 
 require('./server/server');
+

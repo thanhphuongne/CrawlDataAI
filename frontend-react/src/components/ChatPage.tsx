@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, Loader2, Download, FileJson, FileSpreadsheet, FileText, Sparkles, Copy, Check } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { dialogAPI, requestAPI } from '../utils/api';
+import { useWebSocket } from '../hooks/useWebSocket';
 
 interface ChatMessage {
   id: string;
@@ -49,6 +49,49 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleChatResponse = useCallback((message: string) => {
+    const aiMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: "ai",
+      content: message,
+      timestamp: new Date().toISOString(),
+    };
+    setMessages(prev => [...prev, aiMessage]);
+    setIsProcessing(false);
+  }, []);
+
+  const handleDataRequestProposal = useCallback((data: any) => {
+    // When backend detects a crawl request
+    const aiMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: "ai",
+      content: `I detected a data crawling request:\n\n**Requirement:** ${data.requirement}\n\n${data.explanation}\n\nStarting the crawl...`,
+      timestamp: new Date().toISOString(),
+    };
+    setMessages(prev => [...prev, aiMessage]);
+    // Auto-approve the request
+    approveDataRequest(data.requirement, data.message_id);
+  }, []);
+
+  const handleConversationHistory = useCallback((data: any) => {
+    // Load previous conversation history
+    if (data.messages && data.messages.length > 0) {
+      const historyMessages: ChatMessage[] = data.messages.map((msg: any, index: number) => ({
+        id: `history-${index}`,
+        role: msg.role === 'user' ? 'user' : 'ai',
+        content: msg.content,
+        timestamp: msg.timestamp || new Date().toISOString(),
+      }));
+      setMessages(prev => [...historyMessages, ...prev]);
+    }
+  }, []);
+
+  const { isConnected, sendMessage, approveDataRequest } = useWebSocket({
+    onChatResponse: handleChatResponse,
+    onDataRequestProposal: handleDataRequestProposal,
+    onConversationHistory: handleConversationHistory,
+  });
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -209,8 +252,8 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
     }, 3500);
   };
 
-  const handleSendMessage = async () => {
-    if (!input.trim() || isProcessing) return;
+  const handleSendMessage = () => {
+    if (!input.trim() || isProcessing || !isConnected) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -223,63 +266,8 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
     setInput("");
     setIsProcessing(true);
 
-    try {
-      const parsedRequest = parseUserRequest(userMessage.content);
-
-      if (!parsedRequest) {
-        const aiMessage: ChatMessage = {
-          id: Date.now().toString(),
-          role: "ai",
-          content: "I couldn't find a valid URL in your request. Please include the full website URL (starting with http:// or https://).\n\n**Example formats:**\n• \"Extract product names and prices from https://example.com/shop\"\n• \"Get job listings from https://careers.example.com\"\n• \"Scrape article data from https://blog.example.com\"",
-          timestamp: new Date().toISOString(),
-        };
-        setMessages(prev => [...prev, aiMessage]);
-        setIsProcessing(false);
-      } else {
-        // Create crawl request
-        const requestResponse = await requestAPI.createRequest({
-          requirement: `${parsedRequest.prompt} from ${parsedRequest.url}`
-        });
-        const requestId = requestResponse.data.id;
-
-        // Send dialog message
-        await dialogAPI.sendMessage({
-          request_id: requestId,
-          content: userMessage.content,
-          role: "user"
-        });
-
-        const aiMessageId = Date.now().toString();
-        const aiMessage: ChatMessage = {
-          id: aiMessageId,
-          role: "ai",
-          content: `Perfect! I'll help you with that.\n\n**Target URL:** ${parsedRequest.url}\n**Task:** ${parsedRequest.prompt}\n\nStarting the crawl now...`,
-          timestamp: new Date().toISOString(),
-          crawlData: {
-            url: parsedRequest.url,
-            status: "crawling",
-            progress: 0,
-            prompt: parsedRequest.prompt,
-            crawlId: requestId.toString(),
-          },
-        };
-        setMessages(prev => [...prev, aiMessage]);
-
-        // Simulate progress updates (in real implementation, this would come from WebSocket or polling)
-        simulateCrawl(aiMessageId, parsedRequest.url, parsedRequest.prompt);
-      }
-    } catch (error) {
-      console.error('Failed to send message:', error);
-      const errorMessage: ChatMessage = {
-        id: Date.now().toString(),
-        role: "ai",
-        content: "Sorry, I encountered an error processing your request. Please try again.",
-        timestamp: new Date().toISOString(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsProcessing(false);
-    }
+    // Send message through WebSocket
+    sendMessage(userMessage.content);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -418,12 +406,20 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
     <div className="flex flex-col h-[calc(100vh-4rem)]">
       {/* Header */}
       <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
-          <h1 className="text-xl">AI Crawl Assistant</h1>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <h1 className="text-xl">AI Crawl Assistant</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
+            <span className="text-xs text-muted-foreground">
+              {isConnected ? 'Connected' : 'Disconnected'}
+            </span>
+          </div>
         </div>
         <p className="text-sm text-muted-foreground mt-1">
-          Describe your data needs and let AI handle the crawling
+          Chat naturally with AI - ask questions, get help, or crawl websites!
         </p>
       </div>
 
@@ -507,19 +503,24 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
       {/* Input */}
       <div className="border-t bg-background p-4">
         <div className="max-w-4xl mx-auto">
+          {!isConnected && (
+            <div className="mb-3 p-2 bg-yellow-500/10 border border-yellow-500/20 rounded text-sm text-yellow-600 dark:text-yellow-400">
+              Connecting to AI server... Please wait.
+            </div>
+          )}
           <div className="flex gap-2">
             <Input
-              placeholder="Describe what data you want to crawl... (include the URL)"
+              placeholder="Chat with AI or describe what data you want to crawl..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              disabled={isProcessing}
+              disabled={isProcessing || !isConnected}
               className="flex-1"
             />
             <Button 
               size="icon" 
               onClick={handleSendMessage}
-              disabled={!input.trim() || isProcessing}
+              disabled={!input.trim() || isProcessing || !isConnected}
             >
               {isProcessing ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -529,7 +530,7 @@ export function ChatPage({ onNavigate, onStartCrawl }: ChatPageProps) {
             </Button>
           </div>
           <p className="text-xs text-muted-foreground mt-2">
-            Include the URL in your message. Press Enter to send.
+            Chat naturally or include URL for crawling. Press Enter to send.
           </p>
         </div>
       </div>

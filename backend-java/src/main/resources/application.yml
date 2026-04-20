@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: crawldataai-backend
+
+  # PostgreSQL Configuration
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # MongoDB Configuration
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+
+  # Spring AI Configuration
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+
+server:
+  port: 8080
+
+# Custom Security Configurations
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: 86400000 # 24 hours

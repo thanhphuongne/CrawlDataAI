@@ -83,4 +83,22 @@ async def export_crawled_data(
             raise HTTPException(status_code=400, detail="Unsupported export format")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error exporting data: {str(e)}")
+
+from ..utils.crawler import execute_crawling
+import asyncio
+
+@router.post("/crawl")
+async def trigger_crawling(
+    payload: dict
+):
+    """Trigger crawling for a specific request"""
+    request_id = payload.get("request_id")
+    requirement = payload.get("requirement")
+    
+    if not request_id or not requirement:
+        raise HTTPException(status_code=400, detail="Missing request_id or requirement")
+    
+    # Run crawling asynchronously
+    asyncio.create_task(execute_crawling(request_id, requirement, db))
+    
+    return {"success": True, "message": "Crawling triggered"}

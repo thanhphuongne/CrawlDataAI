@@ -54,6 +54,7 @@ export const DB_DATABASE = process.env.DB_DATABASE;
 export const DB_USERNAME = process.env.DB_USERNAME;
 export const DB_PASSWORD = process.env.DB_PASSWORD;
 export const DB_PART = process.env.DB_PART;
+export const DB_SSL = process.env.DB_SSL === 'true';
 
 export const RSCRIPT_PATH = process.env.RSCRIPT_PATH;
 

@@ -7,20 +7,25 @@ import {
   DB_PART,
   DB_DATABASE,
   DB_USERNAME,
-  DB_PASSWORD
+  DB_PASSWORD,
+  DB_SSL
 } from './../config';
+
+// Prepare dialect options conditionally (disable SSL for local Postgres)
+const dialectOptions = {};
+if (DB_SSL) {
+  dialectOptions.ssl = {
+    require: true,
+    rejectUnauthorized: false // For cloud DBs like Supabase
+  };
+}
 
 // Sequelize Connection
 const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
   host: DB_HOST,
   port: DB_PORT,
   dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false // Supabase requires SSL
-    }
-  },
+  dialectOptions,
   pool: {
     max: 10, // maximum number of connection in pool
     min: 0, // minimum number of connection in pool

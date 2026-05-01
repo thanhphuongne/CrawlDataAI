@@ -4,6 +4,7 @@ from ..database import get_db
 from ..mongodb import db
 from ..utils.auth import get_current_user
 from ..models import Request
+from ..utils.crawler import execute_crawling
 import json
 from motor.motor_asyncio import AsyncIOMotorCollection
 from datetime import datetime
@@ -83,9 +84,7 @@ async def export_crawled_data(
             raise HTTPException(status_code=400, detail="Unsupported export format")
 
     except Exception as e:
-
-from ..utils.crawler import execute_crawling
-import asyncio
+        raise HTTPException(status_code=500, detail=f"Error exporting data: {str(e)}")
 
 @router.post("/crawl")
 async def trigger_crawling(
@@ -98,7 +97,9 @@ async def trigger_crawling(
     if not request_id or not requirement:
         raise HTTPException(status_code=400, detail="Missing request_id or requirement")
     
-    # Run crawling asynchronously
-    asyncio.create_task(execute_crawling(request_id, requirement, db))
-    
-    return {"success": True, "message": "Crawling triggered"}
+    try:
+        await execute_crawling(request_id, requirement, db)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Crawling failed: {str(e)}")
+
+    return {"success": True, "message": "Crawling completed"}

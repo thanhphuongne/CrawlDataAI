@@ -27,6 +27,9 @@ export const UPLOAD_GET_HOST = process.env.UPLOAD_GET_HOST;
 export const FRONTEND_HOST = process.env.FRONTEND_HOST;
 export const LOGO_URL = process.env.LOGO_URL;
 
+// Python backend (crawl service)
+export const PYTHON_BACKEND_URL = process.env.PYTHON_BACKEND_URL || process.env.PYTHON_CRAWL_URL;
+
 // Service config
 const MONGO_USERNAME = process.env.MONGO_INITDB_USERNAME;
 const MONGO_PASSWORD = process.env.MONGO_INITDB_PASSWORD;

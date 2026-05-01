@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import * as CrawledDataService from '../components/ai-chat/crawledData.service.js';
 import * as RequestService from '../components/ai-chat/request.service.js';
+import { PYTHON_BACKEND_URL } from '../config';
 
 /**
  * Extract data from HTML based on common patterns
@@ -176,6 +177,13 @@ export async function executeCrawling(requestId, requirement) {
     // Update request status to processing
     await RequestService.updateRequestStatus(requestId, 'processing');
 
+    // Prefer Python backend for crawling when configured
+    if (PYTHON_BACKEND_URL) {
+      await triggerPythonCrawl(requestId, requirement);
+      await RequestService.updateRequestStatus(requestId, 'completed');
+      return;
+    }
+
     // Generate URLs to crawl
     const urls = generateURLsFromRequirement(requirement);
 
@@ -220,4 +228,26 @@ export async function testCrawling(url) {
   } catch (error) {
     throw new Error(`Test crawling failed: ${error.message}`);
   }
+}
+
+function buildPythonCrawlUrl() {
+  if (!PYTHON_BACKEND_URL) return null;
+  const baseUrl = PYTHON_BACKEND_URL.replace(/\/$/, '');
+  return `${baseUrl}/api/data/crawl`;
+}
+
+async function triggerPythonCrawl(requestId, requirement) {
+  const url = buildPythonCrawlUrl();
+  if (!url) {
+    throw new Error('PYTHON_BACKEND_URL is not configured');
+  }
+
+  const response = await axios.post(url, {
+    request_id: requestId,
+    requirement,
+  }, {
+    timeout: 300000,
+  });
+
+  return response.data;
 }

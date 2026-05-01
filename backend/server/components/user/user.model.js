@@ -51,18 +51,19 @@ class User extends Model {
 }
 
 User.init({
-  accountName:{ type: DataTypes.STRING, allowNull: false },
+  accountName:{ type: DataTypes.STRING, allowNull: false, field: 'account_name' },
   email: { type: DataTypes.STRING, allowNull: false },
   password: { type: DataTypes.STRING, allowNull: false },
   role: {type: DataTypes.ENUM(USER_ROLES.USER, USER_ROLES.ADMIN, USER_ROLES.SUPERVISOR),
   defaultValue: USER_ROLES.USER},
-  verifyCode: { type: DataTypes.STRING, allowNull: true },
-  isVerified: { type: DataTypes.BOOLEAN, defaultValue: false },
-  otpExpiresAt: { type: DataTypes.DATE, allowNull: true },
+  verifyCode: { type: DataTypes.STRING, allowNull: true, field: 'verify_code' },
+  isVerified: { type: DataTypes.BOOLEAN, defaultValue: false, field: 'is_verified' },
+  otpExpiresAt: { type: DataTypes.DATE, allowNull: true, field: 'otp_expires_at' },
 }, {
   sequelize,
   modelName: 'users',
   timestamps: true,
+  underscored: true,
 });
 
 User.beforeSave((user, options) => {

@@ -50,14 +50,21 @@ const startServer = async () => {
     
     await sequelize.sync({ force: false });
     
-    // Add verification columns if they don't exist
+    // Add verification/login columns if they don't exist
     try {
-      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "isVerified" BOOLEAN DEFAULT false`);
-      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "otpExpiresAt" TIMESTAMP WITH TIME ZONE`);
-      await sequelize.query(`UPDATE users SET "isVerified" = true WHERE "isVerified" IS NULL OR "isVerified" = false`);
-      console.log('✓ Verification columns ensured');
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "account_name" VARCHAR(255)`);
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "verify_code" VARCHAR(255)`);
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMP WITH TIME ZONE`);
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "updated_at" TIMESTAMP WITH TIME ZONE`);
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "is_verified" BOOLEAN DEFAULT false`);
+      await sequelize.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS "otp_expires_at" TIMESTAMP WITH TIME ZONE`);
+      await sequelize.query(`UPDATE users SET "account_name" = email WHERE "account_name" IS NULL`);
+      await sequelize.query(`UPDATE users SET "created_at" = CURRENT_TIMESTAMP WHERE "created_at" IS NULL`);
+      await sequelize.query(`UPDATE users SET "updated_at" = CURRENT_TIMESTAMP WHERE "updated_at" IS NULL`);
+      await sequelize.query(`UPDATE users SET "is_verified" = true WHERE "is_verified" IS NULL OR "is_verified" = false`);
+      console.log('✓ Auth columns ensured');
     } catch (e) {
-      console.log('Note: Verification columns may already exist');
+      console.log('Note: Auth columns may already exist');
     }
     
     console.log('PostgreSQL tables created successfully');
